@@ -4,7 +4,6 @@ package Game;
  * Basic idea for the domino, subject to change
  */
 
-import dominos.Domino;
 
 public class Domino implements Comparable<Domino> {
 
