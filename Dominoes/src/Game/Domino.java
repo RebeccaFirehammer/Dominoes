@@ -4,11 +4,11 @@ package Game;
  * Basic idea for the domino, subject to change
  */
 
-
 public class Domino implements Comparable<Domino> {
 
 	/** The ends of the domino */
-	private int endA, endB;
+	//private int endA, endB;
+	private int[] end;
 	
 	/**
 	 * Constructs a Domino consisting of two ends containing integer values.
@@ -16,8 +16,13 @@ public class Domino implements Comparable<Domino> {
 	 * @param endB An integer value
 	 */
 	public Domino(int endA, int endB){
-		this.endA = endA;
-		this.endB = endB;
+		this.end = new int[]{endA, endB};
+		//this.endA = endA;
+		//this.endB = endB;
+	}
+	
+	public Domino(Domino d){
+		this(d.getEndA(), d.getEndB());
 	}
 	
 	/**
@@ -25,7 +30,8 @@ public class Domino implements Comparable<Domino> {
 	 * @return An integer value
 	 */
 	public int getEndA(){
-		return this.endA;
+		return this.end[0];
+		//return this.endA;
 	}
 	
 	/**
@@ -33,25 +39,20 @@ public class Domino implements Comparable<Domino> {
 	 * @return An integer value
 	 */
 	public int getEndB(){
-		return this.endB;
+		return this.end[1];
+		//return this.endB;
 	}
 	
 	/**
-	 * Switches the values of the domino.
+	 * Returns the sum of both ends
+	 * @return An integer value
 	 */
-	public void flip(){
-		int temp = this.endA;
-		this.endA = this.endB;
-		this.endB = temp;
+	public int value(){
+		return getEndA() + getEndB();
 	}
-
-	/**
-	 * Returns true if both ends of the domino are equal.
-	 * Returns false if the ends are not equal.
-	 * @return A boolean value
-	 */
-	public boolean isDouble(){
-		return (this.endA == this.endB);
+	
+	public int[] asArray(){
+		return this.end;
 	}
 	
 	/**
@@ -63,11 +64,10 @@ public class Domino implements Comparable<Domino> {
 	 * @return An integer value
 	 */
 	public int compareTo(Domino other) {
-		return (this.getEndA() > other.getEndA() && this.getEndA() > other.getEndB()) ? 1 : //returns 1 if end A is greater than both ends of other
-				(this.getEndB() > other.getEndA() && this.getEndB() > other.getEndB()) ? 1 : //returns 1 if end B is greater than both ends of other
-				(this.getEndA() < other.getEndA() && this.getEndA() < other.getEndB()) ? -1 :	//returns -1 if end A is less than both ends of other
-				(this.getEndB() < other.getEndA() && this.getEndB() < other.getEndB()) ?-1 : 0; //returns -1 if end B is less than both ends of other
-				//all other conditions return 0
+		return (getEndA() > other.getEndA()) ? 1 
+				: (getEndA() < other.getEndA()) ? -1 
+				: (getEndB() > other.getEndB()) ? 1
+				: (getEndB() < other.getEndB()) ? -1 : 0;
 	}
 	
 	/**
@@ -89,3 +89,4 @@ public class Domino implements Comparable<Domino> {
 		return "[" + getEndA() + "|" + getEndB() + "]";
 	}	
 }
+
