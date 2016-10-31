@@ -119,13 +119,5 @@ public class Player {
 
 	public String toString(){
 		return getName() + "\nScore: " + getScore() + "\nHand: " + this.hand;
-	}
-	
-	
-	public static void main(String args[]){
-		Player p = new Player("Player 1");
-		p.addToHand(new ArrayList<Domino>(Arrays.asList(new Domino(6,1),new Domino(1,1), new Domino(1,0), new Domino(6,6))));
-		System.out.println(p.toString());
-	}
-		
+	}		
 }

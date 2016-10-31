@@ -1,4 +1,4 @@
-package Game
+package Game;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 
 public class DominoesView extends JFrame {
 	
-	private DominoesModel model;
+	private GameModel model;
 	
-	public DominoesView(DominoesModel model){
+	public DominoesView(GameModel model){
 		super("Dominoes");
 		this.model = model;
 		
