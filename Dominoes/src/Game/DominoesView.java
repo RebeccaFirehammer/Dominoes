@@ -26,7 +26,7 @@ public class DominoesView extends JFrame {
 		this.add(board, BorderLayout.CENTER);
 		
 		//add scoreboard
-		ScoreView score = new ScoreView();
+		ScoreView score = new ScoreView(this.model);
 		score.setPreferredSize(new Dimension(200,200));
 		this.add(score, BorderLayout.EAST);
 		
