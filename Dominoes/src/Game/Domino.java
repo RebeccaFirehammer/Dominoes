@@ -7,8 +7,10 @@ package Game;
 public class Domino implements Comparable<Domino> {
 
 	/** The ends of the domino */
-	//private int endA, endB;
 	private int[] end;
+	
+	/**Holds the boolean value that determines if domino is a double*/
+	private boolean isDouble;
 	
 	/**
 	 * Constructs a Domino consisting of two ends containing integer values.
@@ -17,8 +19,6 @@ public class Domino implements Comparable<Domino> {
 	 */
 	public Domino(int endA, int endB){
 		this.end = new int[]{endA, endB};
-		//this.endA = endA;
-		//this.endB = endB;
 	}
 	
 	public Domino(Domino d){
@@ -31,7 +31,6 @@ public class Domino implements Comparable<Domino> {
 	 */
 	public int getEndA(){
 		return this.end[0];
-		//return this.endA;
 	}
 	
 	/**
@@ -40,7 +39,6 @@ public class Domino implements Comparable<Domino> {
 	 */
 	public int getEndB(){
 		return this.end[1];
-		//return this.endB;
 	}
 	
 	/**
@@ -51,8 +49,13 @@ public class Domino implements Comparable<Domino> {
 		return getEndA() + getEndB();
 	}
 	
-	public int[] asArray(){
-		return this.end;
+	/**
+	 * Returns a boolean representing whether the domino
+	 * is a double or not
+	 * @return
+	 */
+	public boolean isDouble(){
+		return isDouble;
 	}
 	
 	/**
