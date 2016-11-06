@@ -62,9 +62,34 @@ public class GameModel {
 		}
 	}
 	
+	/**
+	 * Returns an ArrayList of player's in this game.
+	 * @return An ArrayList of Player Objects
+	 */
 	public ArrayList<Player> getPlayers(){
 		return (new ArrayList<Player>(players));
 	}
+	
+	/**
+	 * Changes a specified player's name.
+	 * @param playerNum An integer value specifying which player's name to change
+	 * @param name A string literal specifying the new name of the player
+	 */
+	public void setPlayerName(int playerNum, String name){
+		if(validPlayer(playerNum)){
+			this.players.get(playerNum).setName(name);
+		}
+	}
+	
+	/**
+	 * Returns the specified player's name.
+	 * @param playerNum An integer value specifying which player's name to return
+	 * @return A string literal representing the player's name
+	 */
+	public String getPlayerName(int playerNum){
+		return this.players.get(playerNum).getName();
+	}
+	
 	
 	/**
 	 * Returns the score required to win the game.
@@ -84,7 +109,7 @@ public class GameModel {
 			this.players.get(playerNum).addPoints(points);
 		}
 	}
-	
+		
 	/**
 	 * Returns the specified players current score.
 	 * @param playerNum An integer value representing the specified player
@@ -109,6 +134,7 @@ public class GameModel {
 		}
 		return 0;
 	}
+	
 	
 	/**
 	 * Returns the number of players in this game.

@@ -1,6 +1,7 @@
 package Game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,7 +21,8 @@ public class DominoesView extends JFrame {
 	public DominoesView(GameModel model){
 		super("Dominoes");
 		this.model = model;
-		setLayout(new BorderLayout());
+		this.getContentPane().setBackground(Color.BLACK);
+		setLayout(new BorderLayout(2, 2));
 		
 		//add icon
 		ImageIcon dominoIcon = new ImageIcon("Images/Domino-icon.png");
@@ -36,7 +38,7 @@ public class DominoesView extends JFrame {
 		
 		//add scoreboard
 		ScorePanel score = new ScorePanel(this.model);
-		score.setPreferredSize(new Dimension(200,200));
+		score.setPreferredSize(new Dimension(275,200));
 		this.add(score, BorderLayout.EAST);
 		
 		//add hand
@@ -45,12 +47,17 @@ public class DominoesView extends JFrame {
 		this.add(hand,  BorderLayout.SOUTH);
 		
 		//test values for updating score board 
-		//uses model.addPoints(playerNumber, points)
+		//model.setPlayerName(playerNumber, String) for changing names
+		//model.addPoints(playerNumber, points) for adding points
 		//score.updatePanel(model) redraws the score panel to reflect changes to model
 		model.addPoints(0, 105);
 		model.addPoints(1, 80);
 		model.addPoints(2, 55);
 		model.addPoints(3, 35);
+		model.setPlayerName(0, "Shane");
+		model.setPlayerName(1, "Marcus");
+		model.setPlayerName(2, "Rebecca");
+		model.setPlayerName(3, "Steve");
 		score.updatePanel(model);
 	}
 }
