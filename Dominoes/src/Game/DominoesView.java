@@ -44,10 +44,10 @@ public class DominoesView extends JFrame {
 		hand.setPreferredSize(new Dimension(200,150));
 		this.add(hand,  BorderLayout.SOUTH);
 		
-		model.addPoints(0, 75);
-		model.addPoints(1, 100);
-		model.addPoints(2, 200);
-		model.addPoints(3, 400);
+		model.addPoints(0, 105);
+		model.addPoints(1, 80);
+		model.addPoints(2, 55);
+		model.addPoints(3, 35);
 		score.updatePanel(model);
 	}
 }

@@ -68,6 +68,23 @@ public class RoundPanel extends JPanel {
 		    	d = new Dimension(x,y2);
 		    }
 		}
+		
+		//draw remaining tally marks
+		for(int i = 0; i < this.bars; i++){
+			int reqSpace = 0;
+		    g.setColor(Color.BLACK);
+		    g.drawLine(x, y1, x, y2);
+		    x += tallySpace;
+		    reqSpace += tallySpace;
+		    
+		    if((x + reqSpace) < this.getWidth()){
+		        d.setSize(x, y2);
+		    }else{
+		    	y1 += 20;
+		    	y2 += 20;
+		    	x = (this.getWidth() / 6);
+		    }
+		}
 	}
 	
 	public String toString(){
