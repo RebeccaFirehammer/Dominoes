@@ -44,6 +44,9 @@ public class DominoesView extends JFrame {
 		hand.setPreferredSize(new Dimension(200,150));
 		this.add(hand,  BorderLayout.SOUTH);
 		
+		//test values for updating score board 
+		//uses model.addPoints(playerNumber, points)
+		//score.updatePanel(model) redraws the score panel to reflect changes to model
 		model.addPoints(0, 105);
 		model.addPoints(1, 80);
 		model.addPoints(2, 55);
