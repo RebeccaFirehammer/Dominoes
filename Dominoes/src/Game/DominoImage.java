@@ -1,4 +1,4 @@
-package dominoImage;
+package Game;
 
 import java.awt.*;
 

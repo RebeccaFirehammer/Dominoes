@@ -8,20 +8,24 @@ public class Player {
 	/** The player's name */
 	private String name;
 	
-	/** The [layer's score */
-	private int score;
+	/** The Player's score for the current round */
+	private int roundScore;
+	
+	/** The Player's score */
+	private int totalScore;
 	
 	/** The player's hand */
 	private ArrayList<Domino> hand;
 	
 	/**
-	 * Constructs a player consisting of a name, 
-	 * an initial score of 0 and a empty hand of Dominos.
-	 * @param name A string literal
+	 * Constructs a player consisting of a name, an initial round score of 0,
+	 * an initial score of 0 and a empty hand of Dominoes.
+	 * @param name A string literal specifying the players name
 	 */
 	public Player(String name){
 		this.name = name;
-		this.score = 0;
+		this.roundScore = 0;
+		this.totalScore = 0;
 		this.hand = new ArrayList<Domino>();
 	}
 	
@@ -38,6 +42,10 @@ public class Player {
 		this.name = name;
 	}
 	
+	/**
+	 * Returns the name of the player.
+	 * @return A string literal specifying the players name
+	 */
 	public String getName(){
 		return this.name;
 	}
@@ -47,22 +55,38 @@ public class Player {
 	 * @param points An integer value
 	 */
 	public void addPoints(int points){
-		this.score += points;
+		this.roundScore += points;
+		this.totalScore += points;
+	}
+	
+	/**
+	 * Returns the player's score for the current round.
+	 * @return An integer value representing the player's current round score
+	 */
+	public int getRoundScore(){
+		return this.roundScore;
+	}
+	
+	/**
+	 * Resets the player's round score to 0.
+	 */
+	public void clearRound(){
+		this.roundScore = 0;
 	}
 	
 	/**
 	 * Returns the player's score.
 	 * @return An integer value
 	 */
-	public int getScore(){
-		return this.score;
+	public int getTotalScore(){
+		return this.totalScore;
 	}
 	
 	/**
 	 * Sets this player's score to zero.
 	 */
-	public void clearScore(){
-		this.score = 0;
+	public void clearTotalScore(){
+		this.totalScore = 0;
 	}
 	
 	/**
@@ -103,21 +127,38 @@ public class Player {
 		return this.hand.remove(d);
 	}
 	
+	/**
+	 * Removes all Dominoes from the current players hand 
+	 * and returns them as an ArrayList of Dominoes.
+	 * @return An ArrayList of Domino objects
+	 */
 	public ArrayList<Domino> clearHand(){
 		ArrayList<Domino> temp = this.hand;
 		this.hand.clear();
 		return temp;
 	}
 	
+	/**
+	 * Returns the number of Dominoes in the player's hand
+	 * @return An integer value representing the number of Dominoes
+	 * 		   in the player's hand
+	 */
 	public int handSize(){
 		return this.hand.size();
 	}
 	
+	/**
+	 * Returns true if the hand is empty otherwise false.
+	 * @return A boolean value specifying if the player's hand is empty
+	 */
 	public boolean isHandEmpty(){
 		return this.hand.size() == 0;
 	}
 
+	/**
+	 * A string literal representation of this player.
+	 */
 	public String toString(){
-		return getName() + "\nScore: " + getScore() + "\nHand: " + this.hand;
+		return getName() + "\nScore: " + getTotalScore() + "\nHand: " + this.hand;
 	}		
 }
