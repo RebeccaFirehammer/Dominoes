@@ -73,6 +73,12 @@ public class Domino implements Comparable<Domino> {
 				: (getEndB() < other.getEndB()) ? -1 : 0;
 	}
 	
+	public void flip(){
+		int temp = this.end[0];
+		this.end[0] = this.end[1];
+		this.end[1] = temp;
+	}
+	
 	/**
 	 * Compares this Domino with another object and...
 	 * Returns true if Dominos are equal.
