@@ -65,10 +65,15 @@ public class RoundPanel extends JPanel {
 	 */
 	public void paintComponent(Graphics g)
 	{
-		final int tallySpace = 3;   //space between tally marks
-		int y1 = 5, y2 = 15;		//initial tally mark y coordinates
-		int x = (this.getWidth() / 6); //initial tally mark x coordinate
-		Dimension d = new Dimension(x,y2); //used to draw diagonal tally mark
+		//constants used for resizing purposes
+		final int X_SPACING = this.getWidth() / 20;   //space between tally marks
+		final int INITIAL_X = this.getWidth() / 9;
+		final int BAR_HEIGHT = this.getHeight() / 99, BAR_BASE = this.getHeight() / 30;
+		final int Y_SPACING = this.getHeight() / 30;
+		//used to keep track of where to draw the tally marks
+		int y1 = BAR_HEIGHT, y2 = BAR_BASE;		//initial tally mark y coordinates
+		int x = INITIAL_X; 						//initial tally mark x coordinate
+		Dimension d = new Dimension(x , y2); 	//used to draw diagonal tally mark
 		
 		//draw tally marks with diagonal line through them
 		for(int i = 0; i < this.crosses; i++){
@@ -76,23 +81,23 @@ public class RoundPanel extends JPanel {
 			for(int j = 0; j < 5; j++){
 			    g.setColor(Color.BLACK);
 			    g.drawLine(x, y1, x, y2);
-			    x += tallySpace;
-			    reqSpace += tallySpace;
+			    x += X_SPACING;
+			    reqSpace += X_SPACING;
 			}
 		    g.setColor(Color.BLACK);
 		    g.drawLine((int)d.getWidth()- 3,(int)d.getHeight() , x, y1);
 		    
 		    //set up next set up tally marks with diagonal line through them
-		    x += tallySpace;
-		    reqSpace += tallySpace;
+		    x += X_SPACING;
+		    reqSpace += X_SPACING;
 		    
 		    
 		    if((x + reqSpace) < this.getWidth()){ //check if more marks can be drawn on same axis
 		        d.setSize(x, y2);
 		    }else{  //move marks down to next "line"
-		    	y1 += 20;
-		    	y2 += 20;
-		    	x = (this.getWidth() / 6);
+		    	y1 += Y_SPACING;
+		    	y2 += Y_SPACING;
+		    	x = INITIAL_X;
 		    	d = new Dimension(x,y2);
 		    }
 		}
@@ -102,15 +107,15 @@ public class RoundPanel extends JPanel {
 			int reqSpace = 0;
 		    g.setColor(Color.BLACK);
 		    g.drawLine(x, y1, x, y2);
-		    x += tallySpace;
-		    reqSpace += tallySpace;
+		    x += X_SPACING;
+		    reqSpace += X_SPACING;
 		    
 		    if((x + reqSpace) < this.getWidth()){ //check if more marks can be drawn on same axis
 		        d.setSize(x, y2);
 		    }else{  //move marks down to next "line"
-		    	y1 += 20;
-		    	y2 += 20;
-		    	x = (this.getWidth() / 6);
+		    	y1 += Y_SPACING;
+		    	y2 += Y_SPACING;
+		    	x = INITIAL_X;
 		    }
 		}
 	}

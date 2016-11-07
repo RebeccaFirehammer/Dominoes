@@ -39,7 +39,7 @@ public class DominoesView extends JFrame {
 		
 		//add scoreboard
 		ScorePanel score = new ScorePanel(this.model);
-		score.setPreferredSize(new Dimension(275,200));
+		score.setPreferredSize(new Dimension(275,0));
 		this.add(score, BorderLayout.EAST);
 		
 		//add hand
@@ -51,14 +51,16 @@ public class DominoesView extends JFrame {
 		//model.setPlayerName(playerNumber, String) for changing names
 		//model.addPoints(playerNumber, points) for adding points
 		//score.updatePanel(model) redraws the score panel to reflect changes to model
-		model.addPoints(0, 105);
-		model.addPoints(1, 80);
-		model.addPoints(2, 55);
-		model.addPoints(3, 35);
+		model.addPoints(0, 310);
+		model.addPoints(1, 405);
+		model.addPoints(2, 515);
+		model.addPoints(3, 645);
 		model.setPlayerName(0, "Shane");
 		model.setPlayerName(1, "Marcus");
 		model.setPlayerName(2, "Rebecca");
 		model.setPlayerName(3, "Steve");
 		score.updatePanel(model);
+		
+		System.out.println(this.getWidth());
 	}
 }
