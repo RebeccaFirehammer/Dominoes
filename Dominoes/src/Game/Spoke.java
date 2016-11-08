@@ -20,19 +20,10 @@ public class Spoke {
 	 * 		  be played off of
 	 */
 	public Spoke(int openPips){
-		setOpenPips(openPips);
+		this.openPips = openPips;
 		this.spoke = new ArrayList<Domino>();
 	}
-	
-	/**
-	 * Changes the open pips value.
-	 * @param openPips An intger value representing the pips that can 
-	 * 		  be played off of.
-	 */
-	private void setOpenPips(int openPips){
-		this.openPips = openPips;
-	}
-	
+		
 	/**
 	 * Returns the value of the side of the open Domino that can be played off of.
 	 * @return An integer value representing the open pips
