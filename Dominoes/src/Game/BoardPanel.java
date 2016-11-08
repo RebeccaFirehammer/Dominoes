@@ -6,9 +6,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class BoardView extends JPanel{
+public class BoardPanel extends JPanel{
 
-	public BoardView(){
+	public BoardPanel(){
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 }

@@ -17,7 +17,7 @@ public class DominoesView extends JFrame {
 	private GameModel model;
 	
 	/**Displays the menu options */
-	private MenuPanel menuPanel;
+	private MenuBar menuPanel;
 	
 	/** The board panel that displays the game board */
 	private BoardPanel boardPanel;
@@ -44,7 +44,7 @@ public class DominoesView extends JFrame {
 		setIconImage(dominoIcon.getImage());
 		
 		//menu
-		this.menuPanel = new MenuPanel();
+		this.menuPanel = new MenuBar();
 		
 		//board
 		this.boardPanel = new BoardPanel();

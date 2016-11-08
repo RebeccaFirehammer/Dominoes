@@ -7,7 +7,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
-public class MenuPanel extends JMenuBar {
+public class MenuBar extends JMenuBar {
 
 	/**
 	 * The game menu
@@ -22,7 +22,7 @@ public class MenuPanel extends JMenuBar {
 	/**
 	 * Creates a new MenuPanel for the game
 	 */
-	public MenuPanel(){
+	public MenuBar(){
 		//game menu
 		gameMenu = new JMenu("Game");
 		gameMenu.setMnemonic('G');
