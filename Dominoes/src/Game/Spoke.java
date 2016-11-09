@@ -28,8 +28,11 @@ public class Spoke {
 	 * Returns the value of the side of the open Domino that can be played off of.
 	 * @return An integer value representing the open pips
 	 */
-	public int getOpenPips(){
-		return this.openPips;
+	public int getOpenValue(){
+		if(getSpoke().size() > 0){
+			return this.openPips;
+		}
+		return 0;
 	}
 	
 	/**
@@ -39,7 +42,7 @@ public class Spoke {
 	 */
 	public void addDomino(Domino d){
 		if(isValidMove(d)){
-			if(getOpenPips() == d.getEndB()){
+			if(this.openPips == d.getEndB()){
 				d.flip();
 			}
 			this.openPips = d.getEndB();
@@ -62,7 +65,7 @@ public class Spoke {
 	 * @return A boolean value representing if the move is valid
 	 */
 	public boolean isValidMove(Domino d){
-		return (d.getEndA() == getOpenPips() || d.getEndB() == getOpenPips()) ? true : false;
+		return (d.getEndA() == this.openPips || d.getEndB() == this.openPips) ? true : false;
 	}
 	
 	/**
