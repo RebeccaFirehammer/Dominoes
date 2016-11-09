@@ -21,7 +21,6 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
-		System.out.println(command);
 		if (command.equals("Exit")) {
 			view.dispose();
 			System.exit(0);
@@ -33,7 +32,6 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 	 */
 	public void keyTyped(KeyEvent event) {
 		char c = event.getKeyChar();
-		System.out.println(c);
 		if (c == 'e' || c == 'E') {
 			view.dispose();
 			System.exit(0);

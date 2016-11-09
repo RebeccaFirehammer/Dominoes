@@ -66,6 +66,16 @@ public class Spoke {
 	}
 	
 	/**
+	 * Clears all Dominoes from the spoke and returns them in an ArrayList.
+	 * @return An ArrayList of Domino objects
+	 */
+	public ArrayList<Domino> clearSpoke(){
+		ArrayList<Domino> temp = this.spoke;
+		this.spoke.clear();
+		return temp;
+	}
+	
+	/**
 	 * Returns a string representation of this Spoke object.
 	 * @return A string literal value specifying information about this object
 	 */
