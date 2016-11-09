@@ -1,28 +1,27 @@
 package Game;
 
+/**
+ * Creates a RoundPanel that displays each player's
+ * current round score in the form of "tally" marks.
+ */
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class RoundPanel extends JPanel {
 
 	/**
-	 * The score to be displayed in "Tally marks"
+	 * The player's current score for the round
 	 */
 	private int score;
-	
+		
 	/**
-	 * number of vertical lines representing a score
+	 * The number of tally marks to draw
 	 */
-	private int bars;
-	
-	/**
-	 * The number of lines with a cross through them (5 tally marks)
-	 */
-	private int crosses;
+	private int tallyMarks;
 	
 	/**
 	 * Constructs a RoundPanel with a specified score.
@@ -46,85 +45,65 @@ public class RoundPanel extends JPanel {
 	public void updateScore(int score){
 		if(score % 5 == 0){ //score most be a multiple of 5
 			this.score = score;
-			setMarks();
+			this.tallyMarks = this.score / 5;
 		}
 		repaint();
-	}
-	
-	/**
-	 * sets the number of tally marks (crosses and bars) that will be displayed.
-	 */
-	private void setMarks(){
-		this.crosses = (this.score / 25 >= 1) ? this.score / 25 : 0; 
-		this.bars = (this.score - (this.crosses * 25)) / 5;
 	}
 	
 	/**
 	 * Draws the tally marks on the panel.
 	 * @param g A Graphics object that will draw tally marks
 	 */
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g){
+		final Color MARK_COLOR = Color.BLACK;    //tally mark color
+		
 		//constants used for resizing purposes
-		final int X_SPACING = this.getWidth() / 20;   //space between tally marks
-		final int INITIAL_X = this.getWidth() / 9;
-		final int BAR_HEIGHT = this.getHeight() / 99, BAR_BASE = this.getHeight() / 30;
-		final int Y_SPACING = this.getHeight() / 30;
-		//used to keep track of where to draw the tally marks
-		int y1 = BAR_HEIGHT, y2 = BAR_BASE;		//initial tally mark y coordinates
-		int x = INITIAL_X; 						//initial tally mark x coordinate
+		final int X_OFFSET = this.getWidth() / 18;   //space between tally marks
+		final int FIRST_X = X_OFFSET * 2;  		     //starting x position
+		final int Y_OFFSET = this.getHeight() / 26;  //space between rows
+		
+		//used for tally mark positions
+		int y1 = this.getHeight() / 99;			//initial tally mark y coordinates
+		int y2 = this.getHeight() / 30;		
+		int x = FIRST_X; 						//initial tally mark x coordinate
 		Dimension d = new Dimension(x , y2); 	//used to draw diagonal tally mark
 		
-		//draw tally marks with diagonal line through them
-		for(int i = 0; i < this.crosses; i++){
-			int reqSpace = 0;
-			for(int j = 0; j < 5; j++){
-			    g.setColor(Color.BLACK);
-			    g.drawLine(x, y1, x, y2);
-			    x += X_SPACING;
-			    reqSpace += X_SPACING;
+		int marks = 0;
+		for(int i = 1 ; i <= this.tallyMarks; i++){
+			marks++;
+			switch(marks % 5){ //determines if line should be straight or diagonal
+			case 0:	//draw diagonal mark
+			    g.setColor(MARK_COLOR);
+			    g.drawLine((int)d.getWidth()- 3,(int)d.getHeight() , x, y1);
+			    x += X_OFFSET;
+			    d.setSize(x, y2);
+			    marks = 0; 
+				break;
+			default: //draw straight mark
+				if((x + X_OFFSET) <= (this.getWidth() - X_OFFSET)){ //draw on current row
+					g.setColor(MARK_COLOR);
+					g.drawLine(x, y1, x, y2);
+					x += X_OFFSET;
+				}else{ //draw on next row
+			    	y1 += Y_OFFSET;
+			    	y2 += Y_OFFSET;
+			    	x = FIRST_X;
+					d.setSize(x, y2);
+					g.setColor(MARK_COLOR);
+					g.drawLine(x, y1, x, y2);
+					x += X_OFFSET;
+			    	marks = 1;
+				}
+				break;
 			}
-		    g.setColor(Color.BLACK);
-		    g.drawLine((int)d.getWidth()- 3,(int)d.getHeight() , x, y1);
-		    
-		    //set up next set up tally marks with diagonal line through them
-		    x += X_SPACING;
-		    reqSpace += X_SPACING;
-		    
-		    
-		    if((x + reqSpace) < this.getWidth()){ //check if more marks can be drawn on same axis
-		        d.setSize(x, y2);
-		    }else{  //move marks down to next "line"
-		    	y1 += Y_SPACING;
-		    	y2 += Y_SPACING;
-		    	x = INITIAL_X;
-		    	d = new Dimension(x,y2);
-		    }
-		}
-		
-		//draw remaining tally marks
-		for(int i = 0; i < this.bars; i++){
-			int reqSpace = 0;
-		    g.setColor(Color.BLACK);
-		    g.drawLine(x, y1, x, y2);
-		    x += X_SPACING;
-		    reqSpace += X_SPACING;
-		    
-		    if((x + reqSpace) < this.getWidth()){ //check if more marks can be drawn on same axis
-		        d.setSize(x, y2);
-		    }else{  //move marks down to next "line"
-		    	y1 += Y_SPACING;
-		    	y2 += Y_SPACING;
-		    	x = INITIAL_X;
-		    }
 		}
 	}
-	
+		
 	/**
 	 * Returns a string representation of this Object.
 	 * @return A string literal specifying information about this object
 	 */
 	public String toString(){
-		return "Crosses = " + this.crosses +"\nBars = " + this.bars;
+		return "Current Round Score = " + this.score + "\nTally Marks =" + this.tallyMarks;
 	}
 }

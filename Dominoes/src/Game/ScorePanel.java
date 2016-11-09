@@ -70,7 +70,7 @@ public class ScorePanel extends JPanel{
 	
 	public void updatePanel(GameModel model){
 		//the component positions
-		final int playerName = 0, roundScore = 1, totalScore = 2;
+		final int nameLabel = 0, scorePanel = 1, scoreLabel = 2;
 		//update model
 		this.model = model;
 		//the player position
@@ -79,16 +79,16 @@ public class ScorePanel extends JPanel{
 		if(this.playerPanels.size() == this.model.playerSize()){ //verify panel number matches player number
 			for(JPanel p : this.playerPanels){
 				//updates the player's name
-				if(p.getComponent(playerName) instanceof JLabel){
-					((JLabel) p.getComponent(playerName)).setText(this.model.getPlayerName(player));
+				if(p.getComponent(nameLabel) instanceof JLabel){
+					((JLabel) p.getComponent(nameLabel)).setText(this.model.getPlayerName(player));
 				}
 				//updates the rounds score panel
-				if(p.getComponent(roundScore) instanceof RoundPanel){
-					((RoundPanel) p.getComponent(roundScore)).updateScore(this.model.getPlayerTotalScore(player));
+				if(p.getComponent(scorePanel) instanceof RoundPanel){
+					((RoundPanel) p.getComponent(scorePanel)).updateScore(this.model.getPlayerTotalScore(player));
 				}
 				//updates the total score panel
-				if(p.getComponent(totalScore) instanceof JLabel){
-					((JLabel) p.getComponent(totalScore)).setText(this.model.getPlayerTotalScore(player) + "");
+				if(p.getComponent(scoreLabel) instanceof JLabel){
+					((JLabel) p.getComponent(scoreLabel)).setText(this.model.getPlayerTotalScore(player) + "");
 				}
 				player++;
 			}
