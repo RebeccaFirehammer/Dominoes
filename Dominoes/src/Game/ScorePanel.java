@@ -1,5 +1,10 @@
 package Game;
 
+/**
+ * Creates a scoring panel that displays the player's names
+ * current round score and game total score in that order.
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;

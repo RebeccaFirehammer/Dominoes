@@ -12,6 +12,9 @@ public class Domino implements Comparable<Domino> {
 	/**Holds the boolean value that determines if domino is a double*/
 	private boolean isDouble;
 	
+	/** True if he A side of the Domino is facing out */
+	private boolean endAOpen;
+	
 	/**
 	 * Constructs a Domino consisting of two ends containing integer values.
 	 * @param endA An integer value
@@ -19,6 +22,7 @@ public class Domino implements Comparable<Domino> {
 	 */
 	public Domino(int endA, int endB){
 		this.end = new int[]{endA, endB};
+		this.endAOpen = false;
 	}
 	
 	public Domino(Domino d){
@@ -55,7 +59,7 @@ public class Domino implements Comparable<Domino> {
 	 * @return
 	 */
 	public boolean isDouble(){
-		return isDouble;
+		return getEndA() == getEndB();
 	}
 	
 	/**
@@ -73,10 +77,20 @@ public class Domino implements Comparable<Domino> {
 				: (getEndB() < other.getEndB()) ? -1 : 0;
 	}
 	
-	public void flip(){
-		int temp = this.end[0];
-		this.end[0] = this.end[1];
-		this.end[1] = temp;
+	/**
+	 * A boolean value representing the "flipping" of the Domino.
+	 */
+	public void flipEndA(){
+		this.endAOpen = (this.endAOpen) ? false : true;
+	}
+	
+	/**
+	 * Returns an boolean value specifying if the A end of the Domino
+	 * 		   is "Open". 
+	 * @return A boolean value
+	 */
+	public boolean isAOpen(){
+		return this.endAOpen;
 	}
 	
 	/**
@@ -95,7 +109,8 @@ public class Domino implements Comparable<Domino> {
 	 * @return A string literal
 	 */
 	public String toString(){
-		return "[" + getEndA() + "|" + getEndB() + "]";
+		return (isAOpen()) ? "[" + getEndB() + "|" + getEndA() + "]" 
+				: "[" + getEndA() + "|" + getEndB() + "]";
 	}	
 }
 

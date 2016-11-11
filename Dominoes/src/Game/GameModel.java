@@ -15,6 +15,17 @@ public class GameModel {
 	private int winningScore;
 	
 	/**
+	 * The game board containing all the Dominoes that have been played.
+	 */
+	private Board board;
+	
+	
+	/**
+	 * The boneyard containing all possible Dominoes that can be played.
+	 */
+	private Boneyard boneyard;
+	
+	/**
 	 * Constructs the model of the game
 	 * @param players An ArrayList of Player objects representing the players 
 	 * 		  of the game
@@ -22,6 +33,8 @@ public class GameModel {
 	 * 		  to win this game
 	 */
 	public GameModel(ArrayList<Player> players, int winningScore){
+		this.boneyard = new Boneyard();
+		this.board = new Board();
 		this.players = players;
 		this.winningScore = (winningScore <= 5 && winningScore % 5 == 0 ) ? winningScore : 250;
 	}

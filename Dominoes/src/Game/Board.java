@@ -1,5 +1,10 @@
 package Game;
 
+/**
+ * Creates a Domino board containing a spinner and 4 Domino
+ * spokes.
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,8 +25,11 @@ public class Board {
 	 * @param spinner A Domino object representing the first Domini played
 	 */
 	public Board(Domino spinner){
-		this.spinner = null;
 		setSpinner(spinner);
+	}
+	
+	public Board(){
+		this(null);
 	}
 	
 	/**
@@ -30,11 +38,13 @@ public class Board {
 	 * @param Spinner A Domino object representing the new spinner
 	 */
 	public void setSpinner(Domino spinner){
-		if(this.spinner == null){
+		if(spinner != null){
 			this.spinner = spinner;
 			this.spokes = new ArrayList<Spoke>(Arrays.asList(new Spoke[]{new Spoke(this.spinner.getEndA()),
 					new Spoke(this.spinner.getEndA()), new Spoke(this.spinner.getEndA()), 
 					new Spoke(this.spinner.getEndA())}));
+		}else{
+			this.spokes = new ArrayList<Spoke>();
 		}
 	}
 	
@@ -46,18 +56,25 @@ public class Board {
 		return new Domino(this.spinner);
 	}
 	
+	/**
+	 * Returns the total of all the open pips on the board.
+	 * @return An integer value representing the total value of the pips
+	 * 		   currently open on the board.
+	 */
 	public int getBoardValue(){
 		int value = 0;
-		switch(spokeCount()){
-		case 0:
-			value = this.spinner.getEndA() * 2;
-			break;
-		case 1:
-			value = (this.spinner.getEndA() * 2) + openPipsTotal();
-			break;
-		case 2: case 3: case 4:
-			value = openPipsTotal();
-			break;
+		if(this.spokes.size() > 0){
+			switch(spokeCount()){
+			case 0:
+				value = this.spinner.getEndA() * 2;
+				break;
+			case 1:
+				value = (this.spinner.getEndA() * 2) + openPipsTotal();
+				break;
+			case 2: case 3: case 4:
+				value = openPipsTotal();
+				break;
+			}
 		}
 		return value;
 	}
@@ -70,8 +87,11 @@ public class Board {
 	private int openPipsTotal(){
 		int value = 0;
 		for(Spoke s: this.spokes){
-			System.out.println("Spoke value: " + s.getOpenValue());
-			value += s.getOpenValue();
+			if((s.size() - 1 >= 0) && s.getSpoke().get(s.size() - 1).isDouble()){
+				value += s.getSpoke().get(s.size() - 1).value(); //add total value if double
+			}else{
+				value += s.getOpenValue();
+			}
 		}
 		return value;
 	}
@@ -121,10 +141,7 @@ public class Board {
 	 * @return An ArrayList of spoke objects
 	 */
 	public ArrayList<Spoke> getSpokes(){
-		if(this.spinner != null){
-			return new ArrayList<Spoke>(this.spokes);
-		}
-		return null;
+		return new ArrayList<Spoke>(this.spokes);
 	}
 	
 	/**
@@ -148,37 +165,52 @@ public class Board {
 	 */
 	public int spokeCount(){
 		int count = 0;
-		for(Spoke s: getSpokes()){
-			count += (s.getSpoke().size() > 0) ? 1 : 0;
+		if(getSpokes().size() > 0){
+			for(Spoke s: getSpokes()){
+				count += (s.getSpoke().size() > 0) ? 1 : 0;
+			}
 		}
 		return count;
 	}
 	
-	public String toString(){
-		String result = "";
-		result += "Spinner: " + getSpinner().toString() + "\n";
-		for(int i = 0; i < this.spokes.size(); i++){
-			result += "Spoke " + i + ": " + getSpokes().get(i).toString() + "\n";
+	/**
+	 * Returns a character representation of the of the direction the specified spoke
+	 * is facing, N for north, S for south, E for east and W for west. Returns a ? if
+	 * the specified spoke does not exist.
+	 * @param index An integer value specifying the spoke direction to return
+	 * @return A character value
+	 */
+	public char spokeDirection(int index){
+		if(index >= 0 && index < this.spokes.size()){
+			switch(index){
+			case 0:
+				return 'N';
+			case 1:
+				return 'S';
+			case 2:
+				return 'E';
+			case 3:
+				return 'W';
+			}
 		}
-		result += "Board Value: " + getBoardValue();
-		return result;
+		return '?';
 	}
 	
-	public static void main(String args[]){
-		Board board = new Board(new Domino(6,6));
-		System.out.println(board.getSpinner().toString());
-		board.addToSpoke(0, new Domino(6,3));
-		System.out.println(board.spokeCount());
-		System.out.println(board.getBoardValue());
-		System.out.println(board.toString());
-		board.addToSpoke(0, new Domino(3,4));
-		System.out.println(board.toString());
-		board.addToSpoke(1, new Domino(6,2));
-		System.out.println(board.toString());
-		board.addToSpoke(2, new Domino(6,4));
-		System.out.println(board.toString());
-		board.addToSpoke(3, new Domino(6,5));
-		System.out.println(board.toString());
-		
+	/**
+	 * Returns a string literal representation of this Board object.
+	 * @return A string literal
+	 */
+	public String toString(){
+		String result = "";
+		if(this.spinner != null){
+			result += "Spinner: " + getSpinner().toString() + "\n";
+			for(int i = 0; i < this.spokes.size(); i++){
+				result += "Spoke " + spokeDirection(i) + ": " + getSpokes().get(i).toString() + "\n";
+			}
+			result += "Board Value: " + getBoardValue();
+		}else{
+			result += "Board Empty";
+		}
+		return result;
 	}
 }

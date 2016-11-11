@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ *	Creates a spoke of Dominoes. 
+ */
+
 import java.util.ArrayList;
 
 public class Spoke {
@@ -40,12 +44,14 @@ public class Spoke {
 	 * 	is a valid move, otherwise the no action occurs.
 	 * @param d A Domino object to be added
 	 */
-	public void addDomino(Domino d){
+	public void addDomino(Domino d){		
 		if(isValidMove(d)){
-			if(this.openPips == d.getEndB()){
-				d.flip();
+			if(d.getEndA() == this.openPips){ //end A attaches to the open end of the spoke
+				this.openPips = d.getEndB();
+			}else{
+				this.openPips = d.getEndA(); //end B attaches to the open end of the spoke
+				d.flipEndA();  //flips the Domino so A end faces out
 			}
-			this.openPips = d.getEndB();
 			this.spoke.add(d);
 		}
 	}
@@ -65,7 +71,7 @@ public class Spoke {
 	 * @return A boolean value representing if the move is valid
 	 */
 	public boolean isValidMove(Domino d){
-		return (d.getEndA() == this.openPips || d.getEndB() == this.openPips) ? true : false;
+		return (this.openPips == d.getEndA() || this.openPips == d.getEndB());
 	}
 	
 	/**
@@ -76,6 +82,15 @@ public class Spoke {
 		ArrayList<Domino> temp = this.spoke;
 		this.spoke.clear();
 		return temp;
+	}
+	
+	/**
+	 * Returns number of Dominoes current in this spoke.
+	 * @return An integer value representing the number
+	 * 		   of Dominoes in this spoke
+	 */
+	public int size(){
+		return this.spoke.size();
 	}
 	
 	/**
