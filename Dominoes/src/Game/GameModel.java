@@ -83,6 +83,14 @@ public class GameModel {
 		return (new ArrayList<Player>(players));
 	}
 	
+	public void setBoard(Board board){
+		this.board = board;
+	}
+	
+	public Board getBoard(){
+		return new Board(this.board);
+	}
+	
 	/**
 	 * Changes a specified player's name.
 	 * @param playerNum An integer value specifying which player's name to change

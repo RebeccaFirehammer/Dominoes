@@ -28,8 +28,13 @@ public class Board {
 		setSpinner(spinner);
 	}
 	
+	public Board(Board board){
+		this.spinner = board.getSpinner();
+		this.spokes = board.getSpokes();
+	}
+	
 	public Board(){
-		this(null);
+		
 	}
 	
 	/**

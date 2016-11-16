@@ -47,7 +47,9 @@ public class DominoesView extends JFrame {
 		this.menuPanel = new MenuBar();
 		
 		//board
-		this.boardPanel = new BoardPanel();
+		Board board = new Board(new Domino(6,6)); //for testing board
+		this.model.setBoard(board);
+		this.boardPanel = new BoardPanel(this.model);
 		
 		//scoreboard
 		this.scorePanel = new ScorePanel(this.model);
