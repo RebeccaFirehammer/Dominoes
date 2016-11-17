@@ -111,6 +111,10 @@ public class GameModel {
 		return this.players.get(playerNum).getName();
 	}
 	
+	public void addToPlayerHand(int player, int handSize){
+		this.players.get(player).addToHand(this.boneyard.drawHand(handSize));
+	}
+	
 	
 	/**
 	 * Returns the score required to win the game.
@@ -173,6 +177,7 @@ public class GameModel {
 	private boolean validPlayer(int playerNum){
 		return (playerNum < this.players.size() && playerNum >= 0 ) ? true : false;
 	}
+	
 	
 	/**
 	 * Returns true if the points are a valid addition for this game and

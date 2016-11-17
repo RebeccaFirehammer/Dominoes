@@ -28,7 +28,7 @@ public class BoardPanel extends JPanel{
 		domino.invert();
 		final Dimension center = new Dimension((this.getWidth()/2), (this.getHeight()/2));
 		domino.setValue(SpinnerPips, SpinnerPips);   //testing
-		domino.paintDomino(g, 70, center.width - domino.getX(), center.height - domino.getY()); //testing draw domino
+		domino.paintDomino(g, 70, center.width - (70/2), center.height - (70)); //testing draw domino
 		
 	}
 }

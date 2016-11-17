@@ -52,7 +52,7 @@ public class DominoImage {
 			drawHalf(g, x, y);
 			dot.drawSide(g, x, y, leftValue);
 			drawHalf(g, x, y+height);
-			dot.drawSide(g, x+width, y, rightValue);			
+			dot.drawSide(g, x, y+height, rightValue);			
 		} else {
 			drawHalf(g, x, y);
 			dot.drawSide(g, x, y, leftValue);
@@ -77,7 +77,7 @@ public class DominoImage {
 			drawHalf(g, x, y);
 			dot.drawSide(g, x, y, leftValue);
 			drawHalf(g, x, y+height);
-			dot.drawSide(g, x+width, y, rightValue);			
+			dot.drawSide(g, x, y+height, rightValue);			
 		} else {
 			drawHalf(g, x, y);
 			dot.drawSide(g, x, y, leftValue);
