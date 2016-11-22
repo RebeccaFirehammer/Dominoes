@@ -194,6 +194,14 @@ public class DominoImage {
 	}
 	
 	/**
+	 * Returns a boolean value specifying if the image if inverted
+	 * @return A boolean value
+	 */
+	public boolean isInverted(){
+		return this.invert;
+	}
+	
+	/**
 	 * Draws half of a Domino.
 	 * @param g Graphics Class
 	 * @param x Horizontal location of top-left corner

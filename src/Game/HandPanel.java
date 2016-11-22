@@ -67,7 +67,7 @@ public class HandPanel extends JPanel{
 	}	
 	
 	public Domino getDomino(DominoImage d){
-		return this.dominoes.at(images.indexOf(d));
+		return this.dominoes.get(images.indexOf(d));
 	}
 	
 	public void paintComponent(Graphics g){

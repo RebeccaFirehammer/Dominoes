@@ -26,6 +26,11 @@ public class GameModel {
 	private Boneyard boneyard;
 	
 	/**
+	 * The player that is currently "playing"
+	 */
+	private int currentPlayer;
+	
+	/**
 	 * Constructs the model of the game
 	 * @param players An ArrayList of Player objects representing the players 
 	 * 		  of the game
@@ -37,6 +42,7 @@ public class GameModel {
 		this.board = new Board();
 		this.players = players;
 		this.winningScore = (winningScore <= 5 && winningScore % 5 == 0 ) ? winningScore : 250;
+		currentPlayer = 0;
 	}
 	
 	/**
@@ -65,15 +71,7 @@ public class GameModel {
 		this(250);
 	}
 	
-	/**
-	 * Creates a default set of specified players.
-	 * @param playerNum The number of players to be created
-	 */
-	private void makePlayers(int playerNum){
-		for(int i = 1; i <= playerNum; i++){
-			this.players.add(new Player("Player" + i));
-		}
-	}
+
 	
 	/**
 	 * Returns an ArrayList of player's in this game.
@@ -111,6 +109,11 @@ public class GameModel {
 		return this.players.get(playerNum).getName();
 	}
 	
+	/**
+	 * Adds a specified amount of Dominoes to a specified player's hand.
+	 * @param player An integer value representing the specified player
+	 * @param handSize An integer value representing the specified hand size
+	 */
 	public void addToPlayerHand(int player, int handSize){
 		this.players.get(player).addToHand(this.boneyard.drawHand(handSize));
 	}
@@ -170,6 +173,48 @@ public class GameModel {
 	}
 	
 	/**
+	 * Changes the current player to a new specified current player,
+	 * if the specified player does not exist, nothing changes.
+	 * @param currentPlayer An integer value representing the new current player
+	 */
+	public void setCurrentPlayer(int currentPlayer){
+		if(validPlayer(currentPlayer)){
+			this.currentPlayer = currentPlayer;
+		}
+	}
+	
+	/**
+	 * Changes the current player to a new specified player,
+	 * if the specified player does not exist, nothing changes.
+	 * @param currentPlayer A string literal specifying the new player
+	 */
+	public void setCurrentPlayer(String currentPlayer){
+		for(int i = 0; i < players.size(); i++){
+			if(players.get(i).getName().equalsIgnoreCase(currentPlayer)){
+				this.currentPlayer = i;
+			}
+		}
+	}
+	
+	/**
+	 * Returns an integer value representing the player current "playing".
+	 * @return An integer value
+	 */
+	public int CurrentPlayer(){
+		return currentPlayer;
+	}
+	
+	/**
+	 * Creates a default set of specified players.
+	 * @param playerNum The number of players to be created
+	 */
+	private void makePlayers(int playerNum){
+		for(int i = 1; i <= playerNum; i++){
+			this.players.add(new Player("Player" + i));
+		}
+	}
+	
+	/**
 	 * Returns true if the player number exist and false otherwise
 	 * @param playerNum An integer value representing the player number
 	 * @return A boolean value
@@ -188,4 +233,5 @@ public class GameModel {
 	private boolean validPoints(int points){
 		return (points % 5 == 0) ? true: false;
 	}
+	
 }

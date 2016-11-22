@@ -86,7 +86,7 @@ public class HandView extends JPanel{
 		repaint();
 	}
 	
-	public Domino getDomino(Component d){
+	public Domino getDomino(DominoImage d){
 		return handPanel.getDomino(d);
 	}
 }
