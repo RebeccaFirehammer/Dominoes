@@ -31,7 +31,7 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 		} 
 		if(command.equals("Rules")){
 			String rules = ("Starting the game:"
-					+ "\n\nEach player starts with 5 dominoes.The player with the highest double (six-six) places that double on the board to start the game. "
+					+ "\n\nEach player starts with 7 dominoes.The player with the highest double (six-six) places that double on the board to start the game. "
 					+ "\nAfter the first round, the person who won the previous round starts first."
 					+ "\n\nPlaying the Game:"
 					+ "\nThe next player must then place a matching domino next to the first domino. "
