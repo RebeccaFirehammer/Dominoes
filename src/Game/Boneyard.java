@@ -94,6 +94,10 @@ public class Boneyard {
 		}
 	}
 	
+	public ArrayList<Domino> getBoneyard(){
+		return boneyard;
+	}
+	
 	/**
 	 * Returns a string representing of this bone-yard.
 	 * @return A string literal

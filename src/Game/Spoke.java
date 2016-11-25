@@ -33,10 +33,10 @@ public class Spoke {
 	 * @return An integer value representing the open pips
 	 */
 	public int getOpenValue(){
-		if(getSpoke().size() > 0){
+		//if(getSpoke().size() > 0){
 			return this.openPips;
-		}
-		return 0;
+		//}
+		//return 0;
 	}
 	
 	/**
