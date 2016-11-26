@@ -12,9 +12,12 @@ public class PlayerAI extends Player{
 	
 	private int level;
 	
+	private int highValue;
+	
 	public PlayerAI(String name, int level){
 		super(name);
 		this.level=level;
+		highValue = 0;
 		playable = new HashMap<Domino, List<Integer>>();
 		scorable = new HashMap<Domino, List<Integer>>();
 		scorevalues = new HashMap<Domino, List<Integer>>();
@@ -30,7 +33,9 @@ public class PlayerAI extends Player{
 		if(playable.isEmpty()){
 			playFromBoneyard(board, b);
 		}
-		//findScore(board);	
+		System.out.printf("\nPlayable dominos: " + playable.keySet() + "\nPlayable spokes: " + playable.values());
+		findScore(board);	
+		System.out.printf("\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values() + "\n");
 		chooseMove(board);
 		reset();
 	}
@@ -113,10 +118,13 @@ public class PlayerAI extends Player{
 					}
 				}
 				
-				System.out.printf("Domino %s: cmpval = %d\n", d, cmpval);
+				System.out.printf("\nDomino %s: cmpval = %d\n", d, cmpval);
 				if(/*(d.getEndA() == cmppip || d.getEndB() == cmppip) &&*/ cmpval % 5 == 0){
 					spokes.add(index);
 					values.add(cmpval);
+					if(cmpval > highValue){
+						highValue = cmpval;
+					}
 				}
 			}
 			if(!spokes.isEmpty()){
@@ -135,27 +143,30 @@ public class PlayerAI extends Player{
 	private void chooseMove(Board board){
 		Domino play;
 		Random random = new Random();
-		int scoreval = 0, playIndex;
+		int playIndex;
 		List<Domino> playableDominoes = new ArrayList<Domino>(playable.keySet());
+		List<Domino> highValueDominoes = new ArrayList<Domino>();
 		//Level 1 AI selects move at random, prioritizing scoring moves
 		if(level == 1){
 			//Unable to score, just select a playable domino at random
 			if(scorable.isEmpty()){
 				play = playableDominoes.get(random.nextInt(playableDominoes.size()));
 				playIndex = playable.get(play).get(random.nextInt(playable.get(play).size()));
-				System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
-				board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
 			}
 			//Score is possible, select highest scoring domino
 			else {
 				for(Domino d : scorable.keySet()){
 					for(Integer value : scorevalues.get(d)){
-						if(value > scoreval){
-							scoreval = value;
+						if(value == highValue){
+							highValueDominoes.add(d);
 						}
 					}
 				}
+				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
+				playIndex = scorevalues.get(play).indexOf(highValue);
 			}
+			System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
+			board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
 		}
 	}
 	
@@ -167,7 +178,7 @@ public class PlayerAI extends Player{
 	 */
 	private void playFromBoneyard(Board board, Boneyard b){
 		Domino d;
-		do{
+		while(b.getBoneyard().size() > 0 && playable.isEmpty()){
 			d = b.draw();
 			addToHand(d);
 			List<Integer> spokes = new ArrayList<Integer>();
@@ -186,7 +197,7 @@ public class PlayerAI extends Player{
 			if(!spokes.isEmpty()){
 				playable.put(d, spokes);
 			}
-		}while(b.getBoneyard().size() > 0 && playable.isEmpty());
+		}
 	}
 	
 	/**
@@ -196,12 +207,13 @@ public class PlayerAI extends Player{
 	public void reset(){
 		playable.clear();
 		scorable.clear();
+		highValue = 0;
 	}
 
 	public String toString(){
 		return super.toString() + "\nLevel: " + level +
-							"\nPlayable dominos: " + playable.keySet() + "\nPlayable spokes: " + playable.values()
-							+ "\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values();
+					"\nPlayable dominos: " + playable.keySet() + "\nPlayable spokes: " + playable.values()
+					+ "\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values();
 	}
 	
 	/*
@@ -210,6 +222,7 @@ public class PlayerAI extends Player{
 	 * to start play
 	 */
 	public static void main(String args[]){
+		int turn = 1;
 		Boneyard btest = new Boneyard(6);
 		btest.shuffle();
 		Domino spin = new Domino(btest.draw());
@@ -220,11 +233,23 @@ public class PlayerAI extends Player{
 		}
 		Board board = new Board(spin);
 		PlayerAI player = new PlayerAI("AI", 1);
+		PlayerAI player2 = new PlayerAI("AI 2", 1);
 		player.addToHand(btest.drawHand(7));
-		while(!player.isHandEmpty()){
-			player.takeTurn(board, btest);
-			System.out.println(player.toString());
+		player2.addToHand(btest.drawHand(7));
+		//Two AI players play against each other
+		while(!(player.isHandEmpty() || player2.isHandEmpty())){
+			System.out.printf("----------Turn %d----------\n", turn);
+			System.out.println("Current board state");
 			System.out.println(board.toString());
+			System.out.println("Player 1's turn");
+			player.takeTurn(board, btest);
+			//System.out.println(player.toString());
+			System.out.println("Current board state");
+			System.out.println(board.toString());
+			System.out.println("Player 2's turn");
+			player2.takeTurn(board, btest);
+			//System.out.println(player2.toString());
+			turn++;
 		}
 	}
 }
