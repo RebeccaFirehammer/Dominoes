@@ -34,7 +34,7 @@ public class Board {
 	}
 	
 	public Board(){
-		
+		this(new Domino(-1, -1));
 	}
 	
 	/**

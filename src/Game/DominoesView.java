@@ -4,11 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class DominoesView extends JFrame {
@@ -28,16 +34,26 @@ public class DominoesView extends JFrame {
 	/** The hand panel that displays the hand of the player */
 	private HandView handView;
 	
+	private JPanel startPanel;
+	
+	private boolean screen;
+	
+	private enum Actions{
+		START,
+		RULES,
+		OPTIONS,
+		EXIT
+	};
+	
 	/**
 	 * Constructs a Dominoes View which contains all the GUI
 	 * elements on the game.
 	 * @param model The Game Model from which the GUI pulls the game information
 	 */
-	public DominoesView(GameModel model){
+	public DominoesView(){
 		super("Dominoes");
-		this.model = model;
 		this.getContentPane().setBackground(Color.BLACK);
-		setLayout(new BorderLayout(2, 2));
+		
 		
 		//add icon
 		ImageIcon dominoIcon = new ImageIcon("Images/Domino-icon.png");
@@ -45,6 +61,61 @@ public class DominoesView extends JFrame {
 		
 		//menu
 		this.menuPanel = new MenuBar();
+		this.model = new GameModel();		
+		startScreen();
+	}
+	
+	public void startScreen(){
+		screen = true;	
+		model.clearGame();
+		this.getContentPane().removeAll();
+		this.getContentPane().remove(menuPanel);
+		this.setJMenuBar(null);
+		startPanel = new JPanel(new GridBagLayout());
+		startPanel.setOpaque(false);
+	
+		//Buttons layout
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		
+		
+		//Start button
+		JButton start = new JButton("Start Game");
+		start.setActionCommand(Actions.START.name());
+		
+		//Rules button
+		JButton rules = new JButton("Rules");
+		rules.setActionCommand(Actions.RULES.name());
+		
+		//Options button
+		JButton options = new JButton("Options");
+		options.setActionCommand(Actions.OPTIONS.name());
+		
+		//Exit button
+		JButton exit = new JButton("Exit");
+		exit.setActionCommand(Actions.EXIT.name());
+		
+		
+		//add buttons
+		startPanel.add(start, gbc);
+		startPanel.add(rules, gbc);
+		startPanel.add(options, gbc);
+		startPanel.add(exit, gbc);
+		
+		//add button panel
+		this.add(startPanel);
+		this.validate();
+		repaint();
+	}
+	
+	public void gameScreen(GameModel model){
+		screen = false;
+		this.getContentPane().removeAll();
+		//this.setBackground(Color.BLACK);
+		setLayout(new BorderLayout(2, 2));
+		this.model = model;
 		
 		//board
 		Board board = new Board(new Domino(6,6)); //for testing board
@@ -94,11 +165,14 @@ public class DominoesView extends JFrame {
 		//test values for updating players hand
 		model.addToPlayerHand(0, 7);
 		handView.update();
-				
+		
+		this.validate();
+		repaint();
+		
 		this.setFocusable(true);
 		this.requestFocus();
 	}
-	
+		
 	/**
 	 * Registers the listener for the Menu. More listeners to be added.
 	 * @param menuController The menu listener
@@ -114,5 +188,40 @@ public class DominoesView extends JFrame {
 	    		  }
 	    	  }
 	       }
+	}
+	
+	/**
+	 * Registers the controllers on the title screen.
+	 * @param controller
+	 */
+	public void registerListeners(ActionListener controller){
+		Component[] menu = startPanel.getComponents();
+		
+		for(Component c: menu){
+			if(c instanceof JButton){
+				((JButton) c).addActionListener(controller);
+			}
+		}
+	}
+		
+	/**
+	 * Paints graphics components
+	 */
+	public void paint(Graphics g){
+		super.paint(g);
+		if(screen == true){
+			title(g);
+		}
+	}
+	
+	/**
+	 * Paints Title of Game on Title Screen
+	 * @param g
+	 */
+	public void title(Graphics g){
+		Font fnt = new Font("arial", Font.BOLD, 100);
+		g.setFont(fnt);
+		g.setColor(Color.white);
+		g.drawString("DOMINOES", 220, 200);
 	}
 }

@@ -1,18 +1,9 @@
 package Game;
 
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -21,62 +12,30 @@ import javax.swing.SwingUtilities;
  *
  */
 @SuppressWarnings("serial")
-public class StartPanel extends JPanel implements ActionListener {
+public class StartPanelController implements ActionListener {
+	
 	private enum Actions{
 		START,
 		RULES,
 		OPTIONS,
 		EXIT
 	};
-	public void paint(Graphics g){
-		
-		setOpaque(false);
-		
-		//Game Title
-		Font fnt = new Font("arial", Font.BOLD, 100);
-		g.setFont(fnt);
-		g.setColor(Color.white);
-		g.drawString("DOMINOES", 220, 200);
-		
-		//Buttons layout
-		setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		
-		//Start button
-		JButton start = new JButton("Start Game");
-		start.setActionCommand(Actions.START.name());
-		start.addActionListener(this);
-		add(start, gbc);
-		
-		//Rules button
-		JButton rules = new JButton("Rules");
-		rules.setActionCommand(Actions.RULES.name());
-		rules.addActionListener(this);
-		add(rules, gbc);
-		
-		//Options button
-		JButton options = new JButton("Options");
-		options.setActionCommand(Actions.OPTIONS.name());
-		options.addActionListener(this);
-		add(options, gbc);
-		
-		//Exit button
-		JButton exit = new JButton("Exit");
-		exit.setActionCommand(Actions.EXIT.name());
-		exit.addActionListener(this);
-		add(exit, gbc);
+	
+	private DominoesView view;
+	
+	private GameModel model;
+	
+	
+	public StartPanelController(GameModel model, DominoesView view){
+		this.model = model;
+		this.view = view;
 	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == Actions.START.name()){
-			GameModel model = new GameModel();
-			DominoesView view = new DominoesView(model);
 			GameMenuController menuController = new GameMenuController(model, view);
+			view.gameScreen(model);
 			view.registerListeners(menuController);
-			view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			view.setSize(1000, 800);
-			view.setVisible(true);
 		}
 		else if(e.getActionCommand() == Actions.RULES.name()){
 			String rules = ("Starting the game:"
