@@ -87,7 +87,6 @@ public class BoardPanel extends JPanel{
 				}
 			}
 			index++;
-		}
-		
+		}	
 	}
 }

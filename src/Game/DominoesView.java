@@ -6,15 +6,25 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionListener;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.awt.font.TextLayout;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+
 
 @SuppressWarnings("serial")
 public class DominoesView extends JFrame {
@@ -106,6 +116,7 @@ public class DominoesView extends JFrame {
 		
 		//add button panel
 		this.add(startPanel);
+		this.getLayeredPane().moveToFront(startPanel);
 		this.validate();
 		repaint();
 	}
@@ -219,9 +230,12 @@ public class DominoesView extends JFrame {
 	 * @param g
 	 */
 	public void title(Graphics g){
-		Font fnt = new Font("arial", Font.BOLD, 100);
-		g.setFont(fnt);
-		g.setColor(Color.white);
-		g.drawString("DOMINOES", 220, 200);
+		//draw title
+		final int width = (getWidth() / 4) - (getWidth() / 50) ;
+		final int height = getHeight() / 4;
+	    Font f = new Font("arial", 1, width / 2);
+	    g.setColor(Color.WHITE);
+	    g.setFont(f);
+	    g.drawString("Dominoes", width, height);
 	}
 }
