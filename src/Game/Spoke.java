@@ -25,7 +25,7 @@ public class Spoke {
 	 */
 	public Spoke(int openPips){
 		this.openPips = openPips;
-		this.spoke = new ArrayList<Domino>();
+		spoke = new ArrayList<Domino>();
 	}
 		
 	/**
@@ -34,7 +34,7 @@ public class Spoke {
 	 */
 	public int getOpenValue(){
 		//if(getSpoke().size() > 0){
-			return this.openPips;
+			return openPips;
 		//}
 		//return 0;
 	}
@@ -46,13 +46,13 @@ public class Spoke {
 	 */
 	public void addDomino(Domino d){		
 		if(isValidMove(d)){
-			if(d.getEndA() == this.openPips){ //end A attaches to the open end of the spoke
-				this.openPips = d.getEndB();
+			if(d.getEndA() == openPips){ //end A attaches to the open end of the spoke
+				openPips = d.getEndB();
 			}else{
-				this.openPips = d.getEndA(); //end B attaches to the open end of the spoke
+				openPips = d.getEndA(); //end B attaches to the open end of the spoke
 				d.flipEndA();  //flips the Domino so A end faces out
 			}
-			this.spoke.add(d);
+			spoke.add(d);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class Spoke {
 	 * @return An ArrayList of Domino objects
 	 */
 	public ArrayList<Domino> getSpoke(){
-		return (new ArrayList<Domino>(this.spoke));
+		return spoke;
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class Spoke {
 	 * @return A boolean value representing if the move is valid
 	 */
 	public boolean isValidMove(Domino d){
-		return (this.openPips == d.getEndA() || this.openPips == d.getEndB());
+		return (openPips == d.getEndA() || openPips == d.getEndB());
 	}
 	
 	/**
@@ -79,8 +79,8 @@ public class Spoke {
 	 * @return An ArrayList of Domino objects
 	 */
 	public ArrayList<Domino> clearSpoke(){
-		ArrayList<Domino> temp = this.spoke;
-		this.spoke.clear();
+		ArrayList<Domino> temp = spoke;
+		spoke.clear();
 		return temp;
 	}
 	
@@ -90,7 +90,7 @@ public class Spoke {
 	 * 		   of Dominoes in this spoke
 	 */
 	public int size(){
-		return this.spoke.size();
+		return spoke.size();
 	}
 	
 	/**

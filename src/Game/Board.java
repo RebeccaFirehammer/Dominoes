@@ -29,8 +29,8 @@ public class Board {
 	}
 	
 	public Board(Board board){
-		this.spinner = board.getSpinner();
-		this.spokes = board.getSpokes();
+		spinner = board.getSpinner();
+		spokes = board.getSpokes();
 	}
 	
 	public Board(){
@@ -45,11 +45,11 @@ public class Board {
 	public void setSpinner(Domino spinner){
 		if(spinner != null){
 			this.spinner = spinner;
-			this.spokes = new ArrayList<Spoke>(Arrays.asList(new Spoke[]{new Spoke(this.spinner.getEndA()),
+			spokes = new ArrayList<Spoke>(Arrays.asList(new Spoke[]{new Spoke(this.spinner.getEndA()),
 					new Spoke(this.spinner.getEndA()), new Spoke(this.spinner.getEndA()), 
 					new Spoke(this.spinner.getEndA())}));
 		}else{
-			this.spokes = new ArrayList<Spoke>();
+			spokes = new ArrayList<Spoke>();
 		}
 	}
 	
@@ -58,7 +58,7 @@ public class Board {
 	 * @return A Domino object representing the spinner
 	 */
 	public Domino getSpinner(){
-		return new Domino(this.spinner);
+		return spinner;
 	}
 	
 	/**
@@ -68,13 +68,13 @@ public class Board {
 	 */
 	public int getBoardValue(){
 		int value = 0;
-		if(this.spokes.size() > 0){
+		if(spokes.size() > 0){
 			switch(spokeCount()){
 			case 0:
-				value = this.spinner.getEndA() * 2;
+				value = spinner.getEndA() * 2;
 				break;
 			case 1:
-				value = (this.spinner.getEndA() * 2) + openPipsTotal();
+				value = (spinner.getEndA() * 2) + openPipsTotal();
 				break;
 			case 2: case 3: case 4:
 				value = openPipsTotal();
@@ -94,7 +94,7 @@ public class Board {
 		for(Spoke s: this.spokes){
 			if((s.size() - 1 >= 0) && s.getSpoke().get(s.size() - 1).isDouble()){
 				value += s.getSpoke().get(s.size() - 1).value(); //add total value if double
-			}else{
+			}else if(s.size() > 0){ //only include value if spoke size > 0
 				value += s.getOpenValue();
 			}
 		}
@@ -110,32 +110,32 @@ public class Board {
 	public void addToSpoke(int index, Domino d){
 		switch(spokeCount()){
 		case 0:
-			this.spokes.get(0).addDomino(d);
+			spokes.get(0).addDomino(d);
 			break;
 		case 1:
 			if(index == 0){
-				this.spokes.get(index).addDomino(d);
+				spokes.get(index).addDomino(d);
 			}else{
-				this.spokes.get(1).addDomino(d);
+				spokes.get(1).addDomino(d);
 			}
 			break;
 		case 2:
 			if(index == 0 || index == 1){
-				this.spokes.get(index).addDomino(d);
+				spokes.get(index).addDomino(d);
 			}else{
-				this.spokes.get(2).addDomino(d);
+				spokes.get(2).addDomino(d);
 			}
 			break;
 		case 3:
 			if(index == 0 || index == 1 || index == 2){
-				this.spokes.get(index).addDomino(d);
+				spokes.get(index).addDomino(d);
 			}else{
-				this.spokes.get(3).addDomino(d);
+				spokes.get(3).addDomino(d);
 			}
 			break;
 		default:
 			if(index >= 0 && index < spokeCount()){
-				this.spokes.get(index).addDomino(d);
+				spokes.get(index).addDomino(d);
 			}
 		}
 	}
@@ -146,7 +146,7 @@ public class Board {
 	 * @return An ArrayList of spoke objects
 	 */
 	public ArrayList<Spoke> getSpokes(){
-		return new ArrayList<Spoke>(this.spokes);
+		return spokes;
 	}
 	
 	/**
@@ -155,11 +155,11 @@ public class Board {
 	 */
 	public ArrayList<Domino> clearBoard(){
 		ArrayList<Domino> temp = new ArrayList<Domino>();
-		temp.add(this.spinner);
-		this.spinner = null;
+		temp.add(spinner);
+		spinner = null;
 		for(Spoke s: spokes){
 			temp.addAll(s.clearSpoke());
-			this.spokes.remove(s);
+			spokes.remove(s);
 		}
 		return temp;
 	}
@@ -186,7 +186,7 @@ public class Board {
 	 * @return A character value
 	 */
 	public char spokeDirection(int index){
-		if(index >= 0 && index < this.spokes.size()){
+		if(index >= 0 && index < spokes.size()){
 			switch(index){
 			case 0:
 				return 'N';
@@ -207,9 +207,9 @@ public class Board {
 	 */
 	public String toString(){
 		String result = "";
-		if(this.spinner != null){
+		if(spinner != null){
 			result += "Spinner: " + getSpinner().toString() + "\n";
-			for(int i = 0; i < this.spokes.size(); i++){
+			for(int i = 0; i < spokes.size(); i++){
 				result += "Spoke " + spokeDirection(i) + ": " + getSpokes().get(i).toString() + "\n";
 			}
 			result += "Board Value: " + getBoardValue();
