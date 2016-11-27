@@ -128,7 +128,7 @@ public class DominoesView extends JFrame {
 		setLayout(new BorderLayout(2, 2));
 		this.model = model;
 		
-		//board
+		//board testing
 		Board board = new Board(new Domino(6,6)); //for testing board
 		board.addToSpoke(0, new Domino(6,1));
 		board.addToSpoke(0, new Domino(1,3));

@@ -56,7 +56,7 @@ public class BoardPanel extends JPanel{
 					if(!d.isDouble()){ 
 						domino.paintDomino(g, dSize, nextX, nextY);
 						nextX += (domino.getWidth() * 2) + offset;
-					}else{ //draw double
+					}else{//draw double
 						domino.invert();
 						domino.paintDomino(g, dSize, nextX, (nextY - (domino.getWidth() / 2)));
 						domino.invert();
