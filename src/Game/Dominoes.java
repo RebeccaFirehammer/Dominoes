@@ -7,7 +7,6 @@ public class Dominoes {
 	public static void main(String args[]){
 			GameModel model = new GameModel();
 			DominoesView view = new DominoesView();
-			view.startScreen();
 			StartPanelController controller = new StartPanelController(model, view);
 			
 			view.registerListeners(controller);
