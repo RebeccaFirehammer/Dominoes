@@ -204,6 +204,18 @@ public class GameModel {
 		return currentPlayer;
 	}
 	
+	public void clearGame(){
+		for(Player p: this.players){
+			boneyard.add(p.clearHand());
+			p.clearRound();
+			p.clearTotalScore();
+		}
+		if(board.spokeCount() != 0){
+			//boneyard.add(board.clearBoard());
+		}
+		
+	}
+	
 	/**
 	 * Creates a default set of specified players.
 	 * @param playerNum The number of players to be created
