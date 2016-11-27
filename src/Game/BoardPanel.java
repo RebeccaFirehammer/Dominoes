@@ -53,10 +53,10 @@ public class BoardPanel extends JPanel{
 				}
 				switch(index){
 				case 0:	//east spoke
-					if(!d.isDouble()){
+					if(!d.isDouble()){ 
 						domino.paintDomino(g, dSize, nextX, nextY);
 						nextX += (domino.getWidth() * 2) + offset;
-					}else{
+					}else{ //draw double
 						domino.invert();
 						domino.paintDomino(g, dSize, nextX, (nextY - (domino.getWidth() / 2)));
 						domino.invert();
