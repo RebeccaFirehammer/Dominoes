@@ -122,7 +122,7 @@ public class DominoesView extends JFrame {
 		board.addToSpoke(0, new Domino(6,5));
 		board.addToSpoke(0, new Domino(5,4));
 		board.addToSpoke(0, new Domino(4,4));
-		board.addToSpoke(0, new Domino(4,3));
+		//board.addToSpoke(0, new Domino(4,3));
 		board.addToSpoke(1, new Domino(6,3));
 		board.addToSpoke(1, new Domino(3,3));
 		board.addToSpoke(1, new Domino(3,5));
