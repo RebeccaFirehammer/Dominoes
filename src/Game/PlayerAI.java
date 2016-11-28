@@ -154,6 +154,7 @@ public class PlayerAI extends Player{
 		Random random = new Random();
 		int playIndex;
 		List<Domino> playableDominoes = new ArrayList<Domino>(playable.keySet());
+		List<Domino> scorableDominoes = new ArrayList<Domino>(scorable.keySet());
 		List<Domino> highValueDominoes = new ArrayList<Domino>();
 		//Level 1 AI selects move at random, prioritizing scoring moves
 		if(level == 1){
@@ -162,24 +163,26 @@ public class PlayerAI extends Player{
 				play = playableDominoes.get(random.nextInt(playableDominoes.size()));
 				playIndex = playable.get(play).get(random.nextInt(playable.get(play).size()));
 			}
-			//Score is possible, select highest scoring domino
+			//Score is possible, select random scoring domino
 			else if(!(scorable.isEmpty())){
-				for(Domino d : scorable.keySet()){
+				/*for(Domino d : scorable.keySet()){
 					for(Integer value : scorevalues.get(d)){
 						if(value == highValue){
 							highValueDominoes.add(d);
 						}
 					}
 				}
-				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
-				System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
-				playIndex = scorevalues.get(play).indexOf(highValue);
+				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));*/
+				play = scorableDominoes.get(random.nextInt(scorableDominoes.size()));
+				playIndex = scorable.get(play).get(random.nextInt(scorable.get(play).size()));
+				/*(System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
+				playIndex = scorable.get(play).get(scorevalues.get(play).indexOf(highValue));*/
 			}
 			else{
 				//System.out.println("No moves possible");
 				return;
 			}
-			//System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
+			System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
 			board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
 		}
 		else if(level == 2){
@@ -206,7 +209,7 @@ public class PlayerAI extends Player{
 				}
 				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
 				System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
-				playIndex = scorevalues.get(play).indexOf(highValue);
+				playIndex = scorable.get(play).get(scorevalues.get(play).indexOf(highValue));
 			}
 			else{
 				//System.out.println("No moves possible");

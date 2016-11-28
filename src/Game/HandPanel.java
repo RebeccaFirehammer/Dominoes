@@ -32,8 +32,8 @@ public class HandPanel extends JPanel implements ActionListener{
 		this.dominoes = model.getPlayers().get(0).getHand();
 		this.side = width;
 		this.images = new ArrayList<DominoImage>();
-		storeImages(dominoes);	
-		
+		storeImages(dominoes);
+		addButtons();	
 	}	
 
 	private void storeImages(ArrayList<Domino> d) {
@@ -53,10 +53,11 @@ public class HandPanel extends JPanel implements ActionListener{
 	}
 
 	public void  updateHand(int player) {
-		this.dominoes.clear();
 		this.dominoes = model.getPlayers().get(player).getHand();
 		storeImages(dominoes);
 		addButtons();
+		validate();
+		repaint();
 	}
 
 	public ArrayList<DominoImage> getImages() {
@@ -79,6 +80,7 @@ public class HandPanel extends JPanel implements ActionListener{
 	}
 	
 	private void addButtons(){
+		this.removeAll();
 		for(DominoImage i : images){
 			JButton button = new JButton(i);
 			button.setPreferredSize(new Dimension(i.getIconWidth(), i.getIconHeight()));
@@ -90,7 +92,7 @@ public class HandPanel extends JPanel implements ActionListener{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.setBackground(Color.CYAN);		
+		this.setBackground(Color.CYAN);
 	}
 
 	@Override

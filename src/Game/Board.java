@@ -94,7 +94,7 @@ public class Board {
 		for(Spoke s: this.spokes){
 			if((s.size() - 1 >= 0) && s.getSpoke().get(s.size() - 1).isDouble()){
 				value += s.getSpoke().get(s.size() - 1).value(); //add total value if double
-			}else{
+			}else if(s.size() > 0){
 				value += s.getOpenValue();
 			}
 		}

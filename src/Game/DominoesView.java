@@ -225,4 +225,9 @@ public class DominoesView extends JFrame {
 		g.setColor(Color.white);
 		g.drawString("DOMINOES", 220, 200);
 	}
+	
+	public void update(){
+		handView.update();
+		scorePanel.updatePanel(model);
+	}
 }
