@@ -41,9 +41,7 @@ public class MenuBar extends JMenuBar {
 		helpMenu.setMnemonic('H');
 		JMenuItem rulesItem = new JMenuItem("Rules");
 		rulesItem.setMnemonic('R');
-		helpMenu.add(rulesItem);
-		
-				
+		helpMenu.add(rulesItem);		
 
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.add(gameMenu);

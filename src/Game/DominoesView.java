@@ -10,6 +10,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -54,8 +57,7 @@ public class DominoesView extends JFrame {
 	 */
 	public DominoesView(){
 		super("Dominoes");
-		this.getContentPane().setBackground(Color.BLACK);
-		
+		this.getContentPane().setBackground(Color.BLACK);	
 		
 		//add icon
 		ImageIcon dominoIcon = new ImageIcon("Images/Domino-icon.png");
@@ -80,8 +82,6 @@ public class DominoesView extends JFrame {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		
 		
 		//Start button
 		JButton start = new JButton("Start Game");
@@ -99,7 +99,6 @@ public class DominoesView extends JFrame {
 		JButton exit = new JButton("Exit");
 		exit.setActionCommand(Actions.EXIT.name());
 		
-		
 		//add buttons
 		startPanel.add(start, gbc);
 		startPanel.add(rules, gbc);
@@ -115,11 +114,9 @@ public class DominoesView extends JFrame {
 	public void gameScreen(GameModel model){
 		screen = false;
 		this.getContentPane().removeAll();
-		//this.setBackground(Color.BLACK);
 		setLayout(new BorderLayout(2, 2));
 		this.model = model;
 		
-		//board
 		Board board = new Board(new Domino(6,6)); //for testing board
 		board.addToSpoke(0, new Domino(6,5));
 		board.addToSpoke(0, new Domino(5,4));
@@ -137,7 +134,6 @@ public class DominoesView extends JFrame {
 		board.addToSpoke(3, new Domino(0,0));
 		board.addToSpoke(3, new Domino(0,1));
 		
-		
 		this.model.setBoard(board);
 		this.boardPanel = new BoardPanel(this.model);
 		boardPanel.setPreferredSize(new Dimension(750,1000));
@@ -148,6 +144,8 @@ public class DominoesView extends JFrame {
 		scrollPane.setViewportView(boardPanel);
 		scrollPane.getViewport().setViewPosition(new Point(100,250));
 		scrollPane.setOpaque(false);
+		boardPanel.addMouseListener(new BoardPanelController());
+		
 		
 		//scoreboard
 		this.scorePanel = new ScorePanel(this.model);
@@ -159,10 +157,10 @@ public class DominoesView extends JFrame {
 		
 		//add components
 		this.setJMenuBar(menuPanel);
+		
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(scorePanel, BorderLayout.EAST);
 		this.add(handView, BorderLayout.SOUTH);
-		
 		
 		//test values for updating score board 
 		//model.setPlayerName(playerNumber, String) for changing names
