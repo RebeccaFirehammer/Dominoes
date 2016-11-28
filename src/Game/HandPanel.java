@@ -85,7 +85,6 @@ public class HandPanel extends JPanel implements ActionListener{
 			button.addActionListener(this);
 			this.add(button);
 		}
-		System.out.println("Call");
 	}
 	
 	@Override
