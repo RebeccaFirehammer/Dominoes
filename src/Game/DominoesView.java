@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class DominoesView extends JFrame {
@@ -122,7 +123,9 @@ public class DominoesView extends JFrame {
 		board.addToSpoke(0, new Domino(6,5));
 		board.addToSpoke(0, new Domino(5,4));
 		board.addToSpoke(0, new Domino(4,4));
-		//board.addToSpoke(0, new Domino(4,3));
+		board.addToSpoke(0, new Domino(4,3));
+		board.addToSpoke(0, new Domino(3,2));
+		board.addToSpoke(0, new Domino(2,6));
 		board.addToSpoke(1, new Domino(6,3));
 		board.addToSpoke(1, new Domino(3,3));
 		board.addToSpoke(1, new Domino(3,5));
@@ -133,9 +136,16 @@ public class DominoesView extends JFrame {
 		board.addToSpoke(3, new Domino(0,0));
 		board.addToSpoke(3, new Domino(0,1));
 		
+		
 		this.model.setBoard(board);
 		this.boardPanel = new BoardPanel(this.model);
-		boardPanel.setPreferredSize(new Dimension(725,1000));
+		boardPanel.setPreferredSize(new Dimension(750,1000));
+		
+		JScrollPane scrollPane = new JScrollPane(boardPanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setViewportView(boardPanel);
+		scrollPane.setOpaque(false);
 		
 		//scoreboard
 		this.scorePanel = new ScorePanel(this.model);
@@ -147,7 +157,7 @@ public class DominoesView extends JFrame {
 		
 		//add components
 		this.setJMenuBar(menuPanel);
-		this.add(boardPanel, BorderLayout.CENTER);
+		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(scorePanel, BorderLayout.EAST);
 		this.add(handView, BorderLayout.SOUTH);
 		

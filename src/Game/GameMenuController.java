@@ -25,6 +25,9 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
+		if(command.equals("Refresh")){
+			view.update();
+		}
 		if (command.equals("Exit")) {
 			view.startScreen();
 			view.registerListeners(new StartPanelController(model, view));
