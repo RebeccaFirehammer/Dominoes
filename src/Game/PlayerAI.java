@@ -89,7 +89,13 @@ public class PlayerAI extends Player{
 			List<Integer> spokes = new ArrayList<Integer>();
 			List<Integer> values = new ArrayList<Integer>();
 			for(Integer index : playable.get(d)){
-				cmppip = board.getSpokes().get(index).getOpenValue();
+				//Doesn't count the open pip value for spokes 2/3(E/W) if they are empty
+				if(index > 1 && board.getSpokes().get(index).size() == 0){
+					cmppip = 0;
+				}
+				else{
+					cmppip = board.getSpokes().get(index).getOpenValue();
+				}
 				//Only the spinner is on the board
 				if(board.getSpokes().get(0).size() == 0 && board.getSpokes().get(1).size() == 0){
 					//System.out.printf("Only the spinner is on the table. Pip value = %d\tBoard value = %d\n", cmppip, value);
@@ -185,6 +191,11 @@ public class PlayerAI extends Player{
 			System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
 			board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
 		}
+		/*
+		 * Level 2 AI plays the highest value domino it has if it can't score
+		 * and plays the highest scoring domino if it can score, choosing a
+		 * domino at random in the event of a tie
+		 */
 		else if(level == 2){
 			//Unable to score, get rid of most valuable domino, still plays on random spoke
 			if(scorable.isEmpty() && !(playable.isEmpty())){
@@ -200,6 +211,7 @@ public class PlayerAI extends Player{
 			}
 			//Score is possible, select highest scoring domino
 			else if(!(scorable.isEmpty())){
+				int maxValue = 0;
 				for(Domino d : scorable.keySet()){
 					for(Integer value : scorevalues.get(d)){
 						if(value == highValue){
@@ -208,7 +220,6 @@ public class PlayerAI extends Player{
 					}
 				}
 				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
-				System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
 				playIndex = scorable.get(play).get(scorevalues.get(play).indexOf(highValue));
 			}
 			else{
@@ -287,17 +298,17 @@ public class PlayerAI extends Player{
 		player.addToHand(btest.drawHand(7));
 		player2.addToHand(btest.drawHand(7));
 		//Two AI players play against each other
-		while(!(player.isHandEmpty() || player2.isHandEmpty() || btest.getBoneyard().isEmpty())){
+		while(!(player.isHandEmpty() || player2.isHandEmpty())){
 			System.out.printf("----------Turn %d----------\n", turn);
 			System.out.println("Current board state");
 			System.out.println(board.toString());
 			System.out.println("Player 1's turn");
-			//System.out.println(player.toString());
+			System.out.println(player.getHand());
 			player.takeTurn(board, btest);			
 			System.out.println("Current board state");
 			System.out.println(board.toString());
 			System.out.println("Player 2's turn");
-			//System.out.println(player2.toString());
+			System.out.println(player2.getHand());
 			player2.takeTurn(board, btest);
 			turn++;
 		}
