@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import java.awt.Graphics;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -59,7 +59,11 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 	            }
 	        };
 	        SwingUtilities.invokeLater(r);
-		}	
+		}
+		if(command.equals("New Game")){
+			model.newGame();
+			view.update();
+		}
 	}
 	
 	/**

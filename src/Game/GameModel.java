@@ -260,5 +260,14 @@ public class GameModel {
 		this.active = d;
 		System.out.println(d);
 	}
+
+	public void newGame() {
+		clearGame();
+		this.boneyard = new Boneyard();
+		boneyard.shuffle();
+		for(int i = 0; i < this.playerSize(); i++){
+			addToPlayerHand(i,7);
+		}		
+	}
 	
 }
