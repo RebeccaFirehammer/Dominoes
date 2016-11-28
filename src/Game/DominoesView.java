@@ -230,10 +230,11 @@ public class DominoesView extends JFrame {
 	 * @param g
 	 */
 	public void title(Graphics g){
-		Font fnt = new Font("arial", Font.BOLD, 100);
+		final int x = this.getWidth() / 4, y = this.getHeight() / 4;
+		Font fnt = new Font("arial", Font.BOLD, (x / 3));
 		g.setFont(fnt);
 		g.setColor(Color.white);
-		g.drawString("DOMINOES", 220, 200);
+		g.drawString("DOMINOES", x + (x/15), y);
 	}
 	
 	public void update(){
