@@ -37,6 +37,7 @@ public class PlayerAI extends Player{
 		findScore(board);	
 		System.out.printf("\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values() + "\n");
 		chooseMove(board);
+		System.out.printf("Current score: %d\n", getRoundScore());
 		reset();
 	}
 	
@@ -211,7 +212,7 @@ public class PlayerAI extends Player{
 			}
 			//Score is possible, select highest scoring domino
 			else if(!(scorable.isEmpty())){
-				int maxValue = 0;
+				//int maxValue = 0;
 				for(Domino d : scorable.keySet()){
 					for(Integer value : scorevalues.get(d)){
 						if(value == highValue){
@@ -265,7 +266,7 @@ public class PlayerAI extends Player{
 	 * Resets the playable and scorable lists
 	 */
 	
-	public void reset(){
+	private void reset(){
 		playable.clear();
 		scorable.clear();
 		highValue = 0;
@@ -283,34 +284,76 @@ public class PlayerAI extends Player{
 	 * to start play
 	 */
 	public static void main(String args[]){
-		int turn = 1;
-		Boneyard btest = new Boneyard(6);
-		btest.shuffle();
-		Domino spin = new Domino(btest.draw());
-		while(!(spin.isDouble())){
-			btest.add(spin);
-			btest.shuffle();
-			spin = btest.draw();
-		}
-		Board board = new Board(spin);
+		int turn = 1, round = 1;
+		boolean gameOver = false;
 		PlayerAI player = new PlayerAI("AI", 1);
 		PlayerAI player2 = new PlayerAI("AI 2", 2);
-		player.addToHand(btest.drawHand(7));
-		player2.addToHand(btest.drawHand(7));
 		//Two AI players play against each other
-		while(!(player.isHandEmpty() || player2.isHandEmpty())){
-			System.out.printf("----------Turn %d----------\n", turn);
-			System.out.println("Current board state");
-			System.out.println(board.toString());
-			System.out.println("Player 1's turn");
-			System.out.println(player.getHand());
-			player.takeTurn(board, btest);			
-			System.out.println("Current board state");
-			System.out.println(board.toString());
-			System.out.println("Player 2's turn");
-			System.out.println(player2.getHand());
-			player2.takeTurn(board, btest);
-			turn++;
+		while(!gameOver){
+			Boneyard btest = new Boneyard(6);
+			btest.shuffle();
+			Domino spin = new Domino(btest.draw());
+			while(!(spin.isDouble())){
+				btest.add(spin);
+				btest.shuffle();
+				spin = btest.draw();
+			}
+			Board board = new Board(spin);
+			player.addToHand(btest.drawHand(7));
+			player2.addToHand(btest.drawHand(7));
+			while(!(player.isHandEmpty() || player2.isHandEmpty())){
+				System.out.printf("----------Round %d Turn %d----------\n", round, turn);
+				System.out.println("Current board state");
+				System.out.println(board.toString());
+				System.out.println("Player 1's turn");
+				System.out.println(player.getHand());
+				player.takeTurn(board, btest);		
+				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 ==0){
+					player.addPoints(board.getBoardValue());
+					System.out.printf("Player 1's score is round: %d\ttotal: %d\n", player.getRoundScore(), player.getTotalScore());
+					if(player.getTotalScore() >= 250){
+						gameOver = true;
+						break;
+					}
+				}
+				System.out.println("Current board state");
+				System.out.println(board.toString());
+				System.out.println("Player 2's turn");
+				System.out.println(player2.getHand());
+				player2.takeTurn(board, btest);
+				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 ==0){
+					player2.addPoints(board.getBoardValue());
+					System.out.printf("Player 2's score is round: %d\ttotal: %d\n", player2.getRoundScore(), player2.getTotalScore());
+					if(player2.getTotalScore() >= 250){
+						gameOver = true;
+						break;
+					}
+				}
+				turn++;
+			}
+			if(gameOver){
+				break;
+			}
+			int handScore = 0;
+			if(player.isHandEmpty()){
+				for(Domino d : player2.getHand()){
+					handScore += d.value();
+				}
+				player.addPoints(handScore - (handScore%5));
+				player2.clearHand();
+			}
+			else if(player2.isHandEmpty()){
+				for(Domino d : player.getHand()){
+					handScore += d.value();
+				}
+				player2.addPoints(handScore - (handScore%5));
+				player.clearHand();
+			}
+			System.out.printf("Round Over, round scores: Player 1: %d\tPlayer2: %d\n", player.getRoundScore(), player2.getRoundScore());
+			player2.clearRound();
+			player.clearRound();
+			round++;
 		}
+		System.out.printf("Game Over\nFinal Score: Player 1: %d\tPlayer2: %d\n", player.getTotalScore(), player2.getTotalScore());
 	}
 }
