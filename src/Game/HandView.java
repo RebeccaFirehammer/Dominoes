@@ -4,14 +4,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 
 @SuppressWarnings("serial")
 public class HandView extends JPanel{
@@ -41,7 +36,7 @@ public class HandView extends JPanel{
 //		this.add(imgLabel, BorderLayout.LINE_START);
 //		handPanel = new JPanel();
 		
-		handPanel = new HandPanel(width, hand);
+		handPanel = new HandPanel(width, model);
 		this.add(handPanel, BorderLayout.CENTER);
 	}
 	
@@ -59,7 +54,7 @@ public class HandView extends JPanel{
 		playerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(playerLabel, BorderLayout.NORTH);
 		
-		handPanel = new HandPanel(width, model.getPlayers().get(0).getHand());
+		handPanel = new HandPanel(width, model);
 		this.add(handPanel, BorderLayout.CENTER);
 		
 	}
@@ -81,9 +76,7 @@ public class HandView extends JPanel{
 		this.owner = model.getPlayerName(player);
 		this.hand = model.getPlayers().get(player).getHand();		
 		playerLabel.setText(owner);
-		handPanel.updateHand(hand);
-		validate();
-		repaint();
+		handPanel.updateHand(player);
 	}
 	
 	public Domino getDomino(DominoImage d){

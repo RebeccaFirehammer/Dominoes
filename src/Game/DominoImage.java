@@ -2,12 +2,14 @@ package Game;
 
 import java.awt.*;
 
-public class DominoImage {
+import javax.swing.Icon;
+
+public class DominoImage implements Icon{
 
 	/**
 	 * width of a side of the domino based on the width of the panel
 	 */
-	private int width;
+	private int width = 55;
 
 	/**
 	 * height of a side of a domino; same as width
@@ -28,6 +30,11 @@ public class DominoImage {
 	 * track if domino is inverted
 	 */
 	private boolean invert = false;
+	
+	/**
+	 * Domino Object containing values
+	 */
+	private Domino domino;
 	
 	/**
 	 * Value of Left or Top side of a Domino
@@ -170,9 +177,18 @@ public class DominoImage {
 	 * @param leftValue
 	 * @param rightValue
 	 */
-	public void setValue(int leftValue, int rightValue){
-		this.leftValue = leftValue;
-		this.rightValue = rightValue;
+	public void setValue(Domino d){
+		this.domino = d;
+		this.leftValue = d.getEndA();
+		this.rightValue = d.getEndB();
+	}
+	
+	/**
+	 * return the Domino being drawn
+	 * @return domino
+	 */
+	public Domino getDomino(){
+		return domino;
 	}
 
 	/**
@@ -212,5 +228,21 @@ public class DominoImage {
 		g.fill3DRect(x, y, width, height, true);
 		g.setColor(Color.black);
 		g.draw3DRect(x, y, width, height, true);
+	}
+
+	@Override
+	public int getIconHeight() {
+		return width*2;
+	}
+
+	@Override
+	public int getIconWidth() {
+		return width;
+	}
+
+	@Override
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		paintDomino(g, width, x, y);
+		
 	}
 }

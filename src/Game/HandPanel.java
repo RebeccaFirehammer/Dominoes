@@ -1,15 +1,19 @@
 package Game;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class HandPanel extends JPanel{
+public class HandPanel extends JPanel implements ActionListener{
 	private int side;
 	private ArrayList<Domino> dominoes;
 	private ArrayList<DominoImage> images;
+	private GameModel model;
 	
 	
 	public HandPanel(){
@@ -23,19 +27,21 @@ public class HandPanel extends JPanel{
 		this.side = width;
 	}
 	
-	public HandPanel(int width, ArrayList<Domino> d){
-		this.dominoes = d;
+	public HandPanel(int width, GameModel model){
+		this.model = model;
+		this.dominoes = model.getPlayers().get(0).getHand();
 		this.side = width;
 		this.images = new ArrayList<DominoImage>();
-		storeImages(d);	
+		storeImages(dominoes);	
 		
 	}	
 
 	private void storeImages(ArrayList<Domino> d) {
 		int i = 0;
+		images.clear();
 		for(Domino domino: d){
 			DominoImage image = new DominoImage();
-			image.setValue(domino.getEndA(), domino.getEndB());
+			image.setValue(domino);
 			image.invert();
 			images.add(i, image);
 			i++;
@@ -46,9 +52,11 @@ public class HandPanel extends JPanel{
 		return dominoes;
 	}
 
-	public void  updateHand(ArrayList<Domino> dominoes) {
-		this.dominoes = dominoes;
+	public void  updateHand(int player) {
+		this.dominoes.clear();
+		this.dominoes = model.getPlayers().get(player).getHand();
 		storeImages(dominoes);
+		addButtons();
 	}
 
 	public ArrayList<DominoImage> getImages() {
@@ -70,13 +78,25 @@ public class HandPanel extends JPanel{
 		return this.dominoes.get(images.indexOf(d));
 	}
 	
+	private void addButtons(){
+		for(DominoImage i : images){
+			JButton button = new JButton(i);
+			button.addActionListener(this);
+			this.add(button);
+		}
+		System.out.println("Call");
+	}
+	
+	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.setBackground(Color.CYAN);
-		int x = (int) ((getWidth()/2)- ((images.size()/2) * side));
-		for(DominoImage i : images){
-			i.paintDomino(g, side, x, 20);			
-			x += side+10;
-		}		
+		this.setBackground(Color.CYAN);		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton button = (JButton) e.getSource();
+		DominoImage icon = (DominoImage) button.getIcon();
+		model.setActive(icon.getDomino());		
 	}
 }

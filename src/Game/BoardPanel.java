@@ -30,7 +30,7 @@ public class BoardPanel extends JPanel{
 		int nextY = sLoc.height; //next Y coordinate for drawing Domino
 		
 		DominoImage domino = new DominoImage();
-		domino.setValue(this.board.getSpinner().getEndA(), this.board.getSpinner().getEndA()); 
+		domino.setValue(this.board.getSpinner()); 
 		domino.invert();
 		
 		//draw spinner
@@ -47,9 +47,9 @@ public class BoardPanel extends JPanel{
 			for(int i = 0; i < s.getSpoke().size(); i++){
 				Domino d = s.getSpoke().get(i);
 				if(d.isAOpen()){
-					domino.setValue(d.getEndB(), d.getEndA());
+					domino.setValue(d);
 				}else{
-					domino.setValue(d.getEndA(), d.getEndB());
+					domino.setValue(d);
 				}
 				switch(index){
 				case 0:	//east spoke

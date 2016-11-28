@@ -2,6 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 
+
 public class GameModel {
 	
 	/**
@@ -29,6 +30,11 @@ public class GameModel {
 	 * The player that is currently "playing"
 	 */
 	private int currentPlayer;
+	
+	/**
+	 * The Active Domino being played
+	 */
+	private Domino active;
 	
 	/**
 	 * Constructs the model of the game
@@ -244,6 +250,15 @@ public class GameModel {
 	 */
 	private boolean validPoints(int points){
 		return (points % 5 == 0) ? true: false;
+	}
+	
+	/**
+	 * sets the active domino to the players choice, passed by handPanel.
+	 * @param d
+	 */
+	public void setActive(Domino d){
+		this.active = d;
+		System.out.println(d);
 	}
 	
 }
