@@ -42,8 +42,8 @@ public class BoardPanel extends JPanel{
 		domino.invert();
 		
 		//draws spokes
-		int index = 0;
-		for(Spoke s: board.getSpokes()){
+		for(int index = 0; index < board.getSpokes().size(); index++){
+			Spoke s = board.getSpokes().get(index);
 			for(int i = 0; i < s.getSpoke().size(); i++){
 				Domino d = s.getSpoke().get(i);
 				if(d.isAOpen()){
@@ -115,7 +115,6 @@ public class BoardPanel extends JPanel{
 					break;
 				}
 			}
-			index++;
 		}	
 	}
 }

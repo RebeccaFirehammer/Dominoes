@@ -81,6 +81,7 @@ public class HandPanel extends JPanel implements ActionListener{
 	private void addButtons(){
 		for(DominoImage i : images){
 			JButton button = new JButton(i);
+			button.setPreferredSize(new Dimension(i.getIconWidth(), i.getIconHeight()));
 			button.addActionListener(this);
 			this.add(button);
 		}

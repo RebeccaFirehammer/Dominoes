@@ -121,13 +121,16 @@ public class DominoesView extends JFrame {
 		Board board = new Board(new Domino(6,6)); //for testing board
 		board.addToSpoke(0, new Domino(6,5));
 		board.addToSpoke(0, new Domino(5,4));
+		board.addToSpoke(0, new Domino(4,4));
 		board.addToSpoke(0, new Domino(4,3));
 		board.addToSpoke(1, new Domino(6,3));
+		board.addToSpoke(1, new Domino(3,3));
 		board.addToSpoke(1, new Domino(3,5));
 		board.addToSpoke(1, new Domino(5,2));
 		board.addToSpoke(2, new Domino(6,4));
 		board.addToSpoke(2, new Domino(4,1));
 		board.addToSpoke(3, new Domino(6,0));
+		board.addToSpoke(3, new Domino(0,0));
 		board.addToSpoke(3, new Domino(0,1));
 		
 		this.model.setBoard(board);
