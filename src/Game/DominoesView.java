@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -145,6 +146,7 @@ public class DominoesView extends JFrame {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setViewportView(boardPanel);
+		scrollPane.getViewport().setViewPosition(new Point(100,250));
 		scrollPane.setOpaque(false);
 		
 		//scoreboard
