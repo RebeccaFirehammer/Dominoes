@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel{
 	
 	private Board board;
-	private ArrayList<Domino> dominoes;
-	private ArrayList<DominoImage> images;
 
 	public BoardPanel(GameModel model){
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -23,9 +21,6 @@ public class BoardPanel extends JPanel{
 	public void updateBoard(GameModel model){
 		this.board = model.getBoard();
 		repaint();
-	}
-	private void addButtons(){
-		
 	}
 	
 	public void paintComponent(Graphics g){
