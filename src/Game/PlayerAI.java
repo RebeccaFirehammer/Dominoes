@@ -48,11 +48,15 @@ public class PlayerAI extends Player{
 	private void findMove(Board board){
 		for(Domino d : getHand()){
 			List<Integer> spokes = new ArrayList<Integer>();
+			int openSpokes = 2;
+			if(board.getSpokes().get(0).size() > 0 && board.getSpokes().get(1).size() > 0){
+				openSpokes = 4;
+			}
 			/*
 			 * Check sides A and B of current Domino D against open spoke values. If a match is found,
 			 * add the index to a list of playable spokes which will be associated with Domino D. 
 			 */
-			for(int i = 0; i < board.getSpokes().size(); i++){
+			for(int i = 0; i < openSpokes; i++){
 				if(d.getEndA() == board.getSpokes().get(i).getOpenValue()){
 					spokes.add(i);
 				}
@@ -88,7 +92,7 @@ public class PlayerAI extends Player{
 				cmppip = board.getSpokes().get(index).getOpenValue();
 				//Only the spinner is on the board
 				if(board.getSpokes().get(0).size() == 0 && board.getSpokes().get(1).size() == 0){
-					System.out.printf("Only the spinner is on the table. Pip value = %d\tBoard value = %d\n", cmppip, value);
+					//System.out.printf("Only the spinner is on the table. Pip value = %d\tBoard value = %d\n", cmppip, value);
 					if(d.getEndA() == cmppip){
 						cmpval = value + d.getEndB();
 					}
@@ -110,16 +114,21 @@ public class PlayerAI extends Player{
 					}
 				}
 				else{
-					if(d.getEndA() == cmppip){
-						cmpval = (value - cmppip) + d.getEndB();
+					if(d.isDouble()){
+						cmpval = (value - cmppip) + d.getEndA()*2;
 					}
 					else{
-						cmpval = (value - cmppip) + d.getEndA();
+						if(d.getEndA() == cmppip){
+							cmpval = (value - cmppip) + d.getEndB();
+						}
+						else{
+							cmpval = (value - cmppip) + d.getEndA();
+						}
 					}
 				}
 				
-				System.out.printf("\nDomino %s: cmpval = %d\n", d, cmpval);
-				if(/*(d.getEndA() == cmppip || d.getEndB() == cmppip) &&*/ cmpval % 5 == 0){
+				//System.out.printf("\nDomino %s: cmpval = %d\n", d, cmpval);
+				if(cmpval > 0 && cmpval % 5 == 0){
 					spokes.add(index);
 					values.add(cmpval);
 					if(cmpval > highValue){
@@ -149,12 +158,12 @@ public class PlayerAI extends Player{
 		//Level 1 AI selects move at random, prioritizing scoring moves
 		if(level == 1){
 			//Unable to score, just select a playable domino at random
-			if(scorable.isEmpty()){
+			if(scorable.isEmpty() && !(playable.isEmpty())){
 				play = playableDominoes.get(random.nextInt(playableDominoes.size()));
 				playIndex = playable.get(play).get(random.nextInt(playable.get(play).size()));
 			}
 			//Score is possible, select highest scoring domino
-			else {
+			else if(!(scorable.isEmpty())){
 				for(Domino d : scorable.keySet()){
 					for(Integer value : scorevalues.get(d)){
 						if(value == highValue){
@@ -163,7 +172,45 @@ public class PlayerAI extends Player{
 					}
 				}
 				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
+				System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
 				playIndex = scorevalues.get(play).indexOf(highValue);
+			}
+			else{
+				//System.out.println("No moves possible");
+				return;
+			}
+			//System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
+			board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
+		}
+		else if(level == 2){
+			//Unable to score, get rid of most valuable domino, still plays on random spoke
+			if(scorable.isEmpty() && !(playable.isEmpty())){
+				int maxValue = 0;
+				play = playableDominoes.get(0);
+				for(Domino d : playableDominoes){
+					if(d.value() > maxValue){
+						maxValue = d.value();
+						play = d;
+					}
+				}
+				playIndex = playable.get(play).get(random.nextInt(playable.get(play).size()));
+			}
+			//Score is possible, select highest scoring domino
+			else if(!(scorable.isEmpty())){
+				for(Domino d : scorable.keySet()){
+					for(Integer value : scorevalues.get(d)){
+						if(value == highValue){
+							highValueDominoes.add(d);
+						}
+					}
+				}
+				play = highValueDominoes.get(random.nextInt(highValueDominoes.size()));
+				System.out.printf("%s\t%s\n", scorevalues.get(play), scorevalues.get(play).indexOf(highValue));
+				playIndex = scorevalues.get(play).indexOf(highValue);
+			}
+			else{
+				//System.out.println("No moves possible");
+				return;
 			}
 			System.out.printf("Playing domino %s on spoke %d\n", play, playIndex);
 			board.addToSpoke(playIndex, playDomino(getHand().indexOf(play)));
@@ -233,22 +280,22 @@ public class PlayerAI extends Player{
 		}
 		Board board = new Board(spin);
 		PlayerAI player = new PlayerAI("AI", 1);
-		PlayerAI player2 = new PlayerAI("AI 2", 1);
+		PlayerAI player2 = new PlayerAI("AI 2", 2);
 		player.addToHand(btest.drawHand(7));
 		player2.addToHand(btest.drawHand(7));
 		//Two AI players play against each other
-		while(!(player.isHandEmpty() || player2.isHandEmpty())){
+		while(!(player.isHandEmpty() || player2.isHandEmpty() || btest.getBoneyard().isEmpty())){
 			System.out.printf("----------Turn %d----------\n", turn);
 			System.out.println("Current board state");
 			System.out.println(board.toString());
 			System.out.println("Player 1's turn");
-			player.takeTurn(board, btest);
 			//System.out.println(player.toString());
+			player.takeTurn(board, btest);			
 			System.out.println("Current board state");
 			System.out.println(board.toString());
 			System.out.println("Player 2's turn");
-			player2.takeTurn(board, btest);
 			//System.out.println(player2.toString());
+			player2.takeTurn(board, btest);
 			turn++;
 		}
 	}
