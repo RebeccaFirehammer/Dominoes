@@ -154,7 +154,7 @@ public class DrawDomino{
 		g.draw3DRect(x, y, endSize, endSize, true);
 		
 		locations(pips, x, y);
-		int index[] = new int[]{0};
+		int index[] = new int[]{};
 		switch(pips){
 		case 1:
 			index = new int[]{4};

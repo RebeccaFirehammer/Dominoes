@@ -58,9 +58,9 @@ public class RoundPanel extends JPanel {
 		final Color MARK_COLOR = Color.BLACK;    //tally mark color
 		
 		//constants used for resizing purposes
-		final int X_OFFSET = this.getWidth() / 18;   //space between tally marks
+		final int X_OFFSET = (this.getWidth() / 15 < 2) ? 1 : this.getWidth() / 15;   //space between tally marks
 		final int FIRST_X = X_OFFSET * 2;  		     //starting x position
-		final int Y_OFFSET = this.getHeight() / 26;  //space between rows
+		final int Y_OFFSET = (this.getHeight() / 25 < 2) ? 1 : this.getHeight() / 25;  //space between rows
 		
 		//used for tally mark positions
 		int y1 = this.getHeight() / 99;			//initial tally mark y coordinates
