@@ -136,7 +136,7 @@ public class DominoesView extends JFrame {
 		
 		this.model.setBoard(board);
 		this.boardPanel = new BoardPanel(this.model);
-		boardPanel.setPreferredSize(new Dimension(750,1000));
+		//boardPanel.setPreferredSize(new Dimension(750,1000));
 		
 		JScrollPane scrollPane = new JScrollPane(boardPanel);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
