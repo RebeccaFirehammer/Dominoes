@@ -101,7 +101,8 @@ public class Domino implements Comparable<Domino> {
 	 * @return A boolean value
 	 */
 	public boolean equals(Domino other){
-		return this.getEndA() == other.getEndA() && this.getEndB() == other.getEndB();
+		return (this.getEndA() == other.getEndA() && this.getEndB() == other.getEndB()) ||
+				(this.getEndA() == other.getEndB() && this.getEndB() == other.getEndA());
 	}
 	
 	/**

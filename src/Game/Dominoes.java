@@ -1,5 +1,7 @@
 package Game;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 public class Dominoes {
@@ -11,7 +13,8 @@ public class Dominoes {
 			
 			view.registerListeners(controller);
 			view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			view.setSize(1000, 800);
+			view.setMinimumSize(new Dimension(600,500));
+			//view.setSize(1000, 800);
 			view.setVisible(true);
 	}
 }
