@@ -30,57 +30,123 @@ public class BoardPanel extends JPanel{
 		Color bc = Color.RED;
 		Color pc = Color.BLUE;
 		final int boneSize = getHeight() / 15;
-		final int offset = boneSize / 15;
+		final int offset = (boneSize / 15 < 2) ? 1 : boneSize / 15;
 		DominoImages boneImages = new DominoImages(boneSize, bc, pc);
 		BufferedImage image = boneImages.getBufferedImage(board.getSpinner());
-		final Dimension loc = new Dimension((getWidth() / 2) - (image.getWidth()/2), 
-											(getHeight() / 2) - (image.getHeight()/2));
-		int nextX = loc.width;
-		int nextY = loc.height;
+		Dimension sLoc = new Dimension(image.getWidth(), image.getHeight());
+		int nextX = (getWidth() / 2) - (image.getWidth()/2);
+		int nextY = (getHeight() / 2) - (image.getHeight()/2);
 		
 		//draw spinner
 		g.drawImage(image, nextX, nextY, null);
 		
-		nextX += image.getWidth() + offset;
-		nextY = (getHeight() / 2) - (image.getHeight()/4);
-		
-//		boneImages.flip(board.getSpokes().get(0).getSpoke().get(0));
-//		image = boneImages.getBufferedImage(board.getSpokes().get(0).getSpoke().get(0));
-//		g.drawImage(image, nextX, nextY, null);
-//		System.out.println(image.getWidth());
+		//set location for north spoke
+		nextY -= image.getHeight() + offset;
 		
 		int xReq = 0;
 		int yReq = 0;
+		boolean up = false;
+		boolean back = false;
 		for(int index = 0; index < board.getSpokes().size(); index++){
 			Spoke s = board.getSpokes().get(index);
 			for(int i = 0; i < s.getSpoke().size(); i++){
 				Domino bone = s.getSpoke().get(i);
+				Domino last = s.getSpoke().get(i);
+				if(i > 0){
+					last = s.getSpoke().get(i - 1);
+				}
 				if(bone.isAOpen()){
 					boneImages.invert(bone);
 				}
-				switch(index){
-				case 0:
-					if(!bone.isDouble()){
-						nextY = (getHeight() / 2) - (boneImages.getHeight(bone)/4);
-						boneImages.flip(bone);
-					}else{
-						nextY = (getHeight() / 2) - (boneImages.getHeight(bone)/2);
+				
+				//north spoke
+				if(index == 0){
+					boneImages.invert(bone);
+					image = boneImages.getBufferedImage(bone);
+					g.drawImage(image, nextX, nextY, null);
+					nextY -= boneImages.getHeight(bone) + offset;
+					//set location for south
+					if(i == (s.getSpoke().size() - 1)){ 
+						nextX = (getWidth() / 2) - sLoc.width/2;
+						nextY = (getHeight() / 2) + sLoc.height/2 + offset + offset/2;
 					}
-					xReq = nextX + boneImages.getWidth(bone) + offset;
-					if(xReq < getWidth()){
+				}
+				//south spoke
+				if(index == 1){
+					image = boneImages.getBufferedImage(bone);
+					g.drawImage(image, nextX, nextY, null);
+					nextY += boneImages.getHeight(bone) + offset;
+					
+					//set location for east
+					if(i == (s.getSpoke().size() - 1)){ 
+						nextX = (getWidth() / 2) + (sLoc.width/2) + offset + offset/2;
+						nextY = (getHeight() / 2) - (sLoc.height/2);
+					}
+				}
+				//east spoke
+				if(index == 2){ 
+					if(up == false){ //east spoke right horizontal
+						//check for double
+						if(!bone.isDouble()){
+							nextY = (getHeight() / 2) - (boneImages.getHeight(bone)/4);
+							boneImages.flip(bone);
+						}else{
+							nextY = (getHeight() / 2) - (boneImages.getHeight(bone)/2);
+						}
+						xReq = nextX + boneImages.getWidth(bone); 	//set space required to place horizontally
+						if(xReq < getWidth()){
+							image = boneImages.getBufferedImage(bone);
+							g.drawImage(image, nextX, nextY, null);
+							nextX += boneImages.getWidth(bone) + offset;
+							up = false;
+						}else{
+							nextY -= (boneImages.getHeight(bone) * 2) + (offset * 2);
+							nextX -= (boneImages.getWidth(bone) / 2) + offset;
+							if(last.isDouble()){
+								nextY -= boneImages.getHeight(bone)/2 + ((offset/3 < 1) ? 1 : offset/3);
+							}
+							if(!bone.isDouble()){
+								boneImages.flip(bone);
+							}else{
+								nextY += boneImages.getHeight(bone) + offset * 10;
+								xReq = nextX + boneImages.getWidth(bone); 	//set space required to place horizontally
+								if(xReq > getWidth()){
+									nextX -= xReq - getWidth();
+								}
+							}
+							boneImages.invert(bone);
+							
+							image = boneImages.getBufferedImage(bone);
+							g.drawImage(image, nextX, nextY, null);
+							up = true;
+						}
+						
+					}else if(up == true){
+						nextY -= boneImages.getHeight(bone) + offset;
+						boneImages.invert(bone);
+						if(bone.isDouble()){ //check for double
+							boneImages.invert(bone);
+							boneImages.flip(bone);
+							nextY += boneImages.getHeight(bone) + offset;
+							nextX -= boneImages.getWidth(bone)/4;
+						}
+						xReq = nextX + boneImages.getWidth(bone); 	//set space required to place horizontally
+						if(xReq > getWidth()){
+							nextX -= xReq - getWidth();
+						}
 						image = boneImages.getBufferedImage(bone);
-						g.drawImage(image, nextX, nextY, null);
-						nextX += boneImages.getWidth(bone) + offset;
-					}else{
-						nextX += image.getWidth()/2;
+						g.drawImage(image, nextX, nextY, null);	
+						nextX += (bone.isDouble()) ? boneImages.getWidth(bone)/4 : 0;
+					}
+					//set location for west
+					if(i == (s.getSpoke().size() - 1)){ 
 						
 					}
-					if(i == (s.getSpoke().size() - 1)){ //set location for west
-						nextX = loc.width - boneImages.getWidth(bone) - offset;
-					}
-					break;
 				}
-				
+				//west spoke
+				if(index == 3){
+					
+				}
 			}
 		}
 		
