@@ -178,6 +178,103 @@ public class DrawBoard {
 		}
 	}
 	
+	private void drawEast(Spoke spoke){
+		//coordinates for drawing next Domino
+		int nextY = y - sideL / 4;
+		int nextX = x + sideS * 1/2 + offset + offset/3;
+		
+		//used to determine bounds
+		int xReq = 0;
+		boolean up = false;
+		boolean back = false;
+		
+		//draw spoke
+		for(int i = 0; i < spoke.getSpoke().size(); i++){
+			Domino bone = spoke.getSpoke().get(i);
+			Domino last = spoke.getSpoke().get(i);
+			if(i > 0){
+				last = spoke.getSpoke().get(i - 1);
+			}
+			if(bone.isAOpen()){
+				boneImages.invert(bone);
+			}
+			//draw horizontally to the right
+			if(up == false){
+				if(!bone.isDouble()){
+					nextY = y - sideS / 2;
+					boneImages.flip(bone);
+				}else{
+					nextY = y - sideL / 2;
+				}	
+		
+				xReq = nextX + boneImages.getWidth(bone); 
+				if(xReq <= width){ //check if domino can fit 
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					nextX += boneImages.getWidth(bone) + offset;
+					up = false;
+				}else{ //position for drawing upwards
+					up = true;
+					if(!bone.isDouble()){
+						boneImages.flip(bone);
+					}
+					boneImages.invert(bone);
+					if(!last.isDouble()){ //check if the last Domino placed is a double
+						nextX -= sideS + offset;
+						nextY = y - sideL - sideL/4 - offset;
+						cImg = boneImages.getBufferedImage(bone);
+						g.drawImage(cImg, nextX, nextY, null);
+					}else{
+						nextX -= sideS + offset + offset/3;
+						nextY = y - sideL - sideL/2 - offset + offset/3;
+						cImg = boneImages.getBufferedImage(bone);
+						g.drawImage(cImg, nextX, nextY, null);
+					}
+					nextY -= cImg.getHeight() + offset;
+				}
+			}else if(up == true){
+				if(back == false){
+					boneImages.invert(bone);
+					if(nextY >= 0){ //check bounds
+						if(!bone.isDouble()){ //check for double
+							cImg = boneImages.getBufferedImage(bone);
+							g.drawImage(cImg, nextX, nextY, null);	
+						}else{ //double going up
+							boneImages.flip(bone);
+							nextY += boneImages.getHeight(bone) + offset/2;
+							nextX -= boneImages.getWidth(bone)/4;
+							xReq = nextX + boneImages.getWidth(bone);
+							if(width > xReq){
+								cImg = boneImages.getBufferedImage(bone);
+								//g.drawImage(cImg, nextX, nextY, null);
+								g.drawImage(cImg, nextX, nextY, null);
+							}else{
+								cImg = boneImages.getBufferedImage(bone);
+								g.drawImage(cImg, width - boneImages.getWidth(bone), nextY, null);
+							}
+							nextX += boneImages.getWidth(bone)/4;
+							nextY -= boneImages.getHeight(bone) + offset/2;
+						}
+						nextY -= boneImages.getHeight(bone) + offset;
+					}else{
+						back = true;
+						boneImages.flip(bone);
+						nextX -= ((!last.isDouble()) ? boneImages.getWidth(last) * 2: boneImages.getWidth(last) + sideS/2) + offset;
+						nextY += boneImages.getWidth(bone) + offset + 1;
+						cImg = boneImages.getBufferedImage(bone);
+						g.drawImage(cImg, nextX, nextY, null);	
+					}
+				}else if(back == true){
+					boneImages.flip(bone);
+					nextX -= boneImages.getWidth(bone) + offset;
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);	
+				}
+
+			}
+		}
+	}
+	
 	private void drawWest(Spoke spoke){
 		//coordinates for drawing next Domino
 		int nextY = y - sideL / 4 ;
@@ -237,65 +334,5 @@ public class DrawBoard {
 		}
 	}
 	
-	private void drawEast(Spoke spoke){
-		//coordinates for drawing next Domino
-		int nextY = y - sideL / 4;
-		int nextX = x + sideS * 1/2 + offset + offset/3;
-		
-		//used to determine bounds
-		int xReq = 0;
-		int yReq = 0;
-		boolean up = false;
-		
-		//draw spoke
-		for(int i = 0; i < spoke.getSpoke().size(); i++){
-			Domino bone = spoke.getSpoke().get(i);
-			Domino last = spoke.getSpoke().get(i);
-			if(i > 0){
-				last = spoke.getSpoke().get(i - 1);
-			}
-			if(bone.isAOpen()){
-				boneImages.invert(bone);
-			}
-			//draw horizontally to the right
-			if(up == false){
-				//space required to place horizontally right
-				//xReq = width - (width - sideL);	
-				//System.out.println(xReq + " "  + (xReq + nextX) + " " +  width);
-				if(!bone.isDouble()){
-					nextY = y - sideS / 2;
-					boneImages.flip(bone);
-				}else{
-					nextY = y - sideL / 2;
-				}		
-				xReq = nextX + boneImages.getWidth(bone); 
-				if(xReq < width){ //check if domino can fit 
-					cImg = boneImages.getBufferedImage(bone);
-					g.drawImage(cImg, nextX, nextY, null);
-					nextX += boneImages.getWidth(bone) + offset;
-					up = false;
-				}else{ //position for drawing upwards
-					up = true;
-					if(!bone.isDouble()){
-						boneImages.flip(bone);
-					}
-					boneImages.invert(bone);
-					if(!last.isDouble()){ //check if the last Domino placed is a double
-						nextX -= sideS + offset + offset/3;
-						nextY = y - sideL - sideL/4 - offset + offset/3;
-						cImg = boneImages.getBufferedImage(bone);
-						g.drawImage(cImg, nextX, nextY, null);
-						
-					}else{
-						nextX -= sideS + offset + offset/3;
-						nextY = y - sideL - sideL/2 - offset + offset/3;
-						cImg = boneImages.getBufferedImage(bone);
-						g.drawImage(cImg, nextX, nextY, null);
-					}
-				}
-			}else if(up == true){
-				
-			}
-		}
-	}
+
 }
