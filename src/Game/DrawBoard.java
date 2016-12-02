@@ -52,7 +52,7 @@ public class DrawBoard {
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor, Color pipColor, Color barColor){
 		this.g = g;
 		this.board = board;
-		this.boneSize = (height / 40) + (width / 40);
+		this.boneSize = (height / 41) + (width / 41);
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -64,7 +64,7 @@ public class DrawBoard {
 		cImg = boneImages.getBufferedImage(board.getSpinner());
 		sideL = cImg.getHeight();
 		sideS = cImg.getWidth();
-		offset = (this.boneSize / 12 < 4) ? 3 : this.boneSize / 12;
+		offset = (this.boneSize / 12 < 4) ? 2 : this.boneSize / 12;
 		draw();
 	}
 	
@@ -207,10 +207,10 @@ public class DrawBoard {
 						boneImages.flip(bone);
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
-						nextX -= (boneImages.getHeight(bone) * 2) + offset;
+						nextX -= (boneImages.getHeight(bone) * 2) + offset + offset/3;
 					}else{ //check for double
 						nextY -= sideS/2;
-						nextX += sideS;
+						nextX += sideS - offset/3;
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
 						nextX -= sideL + offset;
@@ -240,7 +240,7 @@ public class DrawBoard {
 	private void drawEast(Spoke spoke){
 		//coordinates for drawing next Domino
 		int nextY = y - sideL / 4;
-		int nextX = x + sideS * 1/2 + offset;
+		int nextX = x + sideS * 1/2 + offset + offset/3;
 		
 		//used to determine bounds
 		int xReq = 0;
@@ -262,59 +262,36 @@ public class DrawBoard {
 				//space required to place horizontally right
 				//xReq = width - (width - sideL);	
 				//System.out.println(xReq + " "  + (xReq + nextX) + " " +  width);
-				xReq = width - (width - sideL - sideS) + nextX;
-				
-				if(xReq < width){
-					if(!bone.isDouble()){
-						boneImages.flip(bone);
-						cImg = boneImages.getBufferedImage(bone);
-						g.drawImage(cImg, nextX, nextY, null);
-						nextX += sideL + offset;
-					}else{
-						nextY -= sideS/2;
-						cImg = boneImages.getBufferedImage(bone);
-						g.drawImage(cImg, nextX, nextY, null);
-						nextX += sideS + offset;
-						nextY += sideS / 2;
-					}
+				if(!bone.isDouble()){
+					nextY = y - sideS / 2;
+					boneImages.flip(bone);
+				}else{
+					nextY = y - sideL / 2;
+				}		
+				xReq = nextX + boneImages.getWidth(bone); 
+				if(xReq < width){ //check if domino can fit 
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					nextX += boneImages.getWidth(bone) + offset;
+					up = false;
 				}else{ //position for drawing upwards
 					up = true;
+					if(!bone.isDouble()){
+						boneImages.flip(bone);
+					}
 					boneImages.invert(bone);
 					if(!last.isDouble()){ //check if the last Domino placed is a double
-						//nextX += sideS/4;
-						nextY -= sideS + offset/2;
+						nextX -= sideS + offset + offset/3;
+						nextY = y - sideL - sideL/4 - offset + offset/3;
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
 						
 					}else{
-						nextX -= sideS + offset;
-						nextY -= sideL + (sideS/2 + offset);
+						nextX -= sideS + offset + offset/3;
+						nextY = y - sideL - sideL/2 - offset + offset/3;
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
 					}
-
-					
-//					nextY -= (boneImages.getHeight(bone) * 2) + (offset * 2);
-//					nextX -= (boneImages.getWidth(bone) / 2) + offset;
-//					if(last.isDouble()){
-//						nextY -= boneImages.getHeight(bone)/2 + ((offset/3 < 1) ? 1 : offset/3);
-//					}
-//					if(!bone.isDouble()){
-//						boneImages.flip(bone);
-//					}else{
-//						nextY += boneImages.getHeight(bone) + offset * 10;
-//						xReq = nextX + boneImages.getWidth(bone); 	//space required to place horizontally right
-//						if(xReq > getWidth()){
-//							nextX -= xReq - getWidth();
-//						}
-//					}
-//					boneImages.invert(bone);
-//					
-//					image = boneImages.getBufferedImage(bone);
-//					g.drawImage(image, nextX, nextY, null);
-//					nextY -= boneImages.getHeight(bone) + offset;
-//					up = true;
-					
 				}
 			}else if(up == true){
 				
