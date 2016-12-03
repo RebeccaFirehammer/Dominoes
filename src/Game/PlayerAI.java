@@ -43,6 +43,14 @@ public class PlayerAI extends Player{
 	 */
 	private int highValue;
 	
+	/**
+	 * Flag to determine whether or not PlayerAI is able
+	 * to make a valid play with current hand
+	 * False if play possible
+	 * True if no play is possible
+	 */
+	private boolean noPlay;
+	
 	public PlayerAI(String name, int level){
 		super(name);
 		this.level=level;
@@ -119,6 +127,10 @@ public class PlayerAI extends Player{
 		 * cmpval is equivalent to the current board value minus cmppip plus the value of the domino to be played
 		 */
 		int cmpval, cmppip;
+		if(playable.isEmpty()){
+			noPlay = true;
+			return;
+		}
 		for(Domino d : playable.keySet()){
 			List<Integer> spokes = new ArrayList<Integer>();
 			List<Integer> values = new ArrayList<Integer>();
@@ -318,6 +330,10 @@ public class PlayerAI extends Player{
 		highValue = 0;
 	}
 	
+	public boolean noPlay(){
+		return noPlay;
+	}
+	
 	/**
 	 * Returns a string representation of this class.
 	 */
@@ -380,6 +396,9 @@ public class PlayerAI extends Player{
 				}
 				System.out.println("Current board state");
 				System.out.println(board.toString());
+				if(player.getHand().isEmpty()){
+					break;
+				}
 				System.out.println("Player 2's turn");
 				System.out.println(player2.getHand());
 				player2.takeTurn(board, btest);
@@ -394,6 +413,14 @@ public class PlayerAI extends Player{
 						gameOver = true;
 						break;
 					}
+				}
+				/*
+				 * Check to see if both Player 1 and Player 2 are unable to make
+				 * valid plays. 
+				 */
+				if(player.noPlay() && player2.noPlay()){
+					System.out.println("Neither player is able to make a move, end of round.");
+					break;
 				}
 				turn++;
 			}
