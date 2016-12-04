@@ -43,28 +43,21 @@ public class GameInit{
 			//initialize boneyard of double-6 dominoes
 			Boneyard yard = new Boneyard(6);
 			yard.shuffle();
+			//finds spinner by drawing from boneyard
+			Domino spin = new Domino(yard.draw());
+			while(!(spin.isDouble())){
+				yard.add(spin);
+				yard.shuffle();
+				spin = yard.draw();
+			}	
+			//add spinner to board
+			Board board = new Board(spin);
 			//deal dominoes to players
 			one.addToHand(yard.drawHand(7));
 			two.addToHand(yard.drawHand(7));
 			three.addToHand(yard.drawHand(7));
 			four.addToHand(yard.drawHand(7));
 			System.out.println(players.toString());
-			//spinner is determined to be the highest double
-			ArrayList<Domino> doubles = new ArrayList<Domino>();
-			for(int a = 0; a < one.handSize(); a++){
-				if(one.getDomino(a).isDouble()){doubles.add(one.getDomino(a));}
-				if(two.getDomino(a).isDouble()){doubles.add(two.getDomino(a));}
-				if(three.getDomino(a).isDouble()){doubles.add(three.getDomino(a));}
-				if(four.getDomino(a).isDouble()){doubles.add(four.getDomino(a));}
-			}
-			System.out.println("Doubles: " + doubles.toString());
-			Domino spinner;
-			for(int b = 0; b < doubles.size(); b ++){
-				//compare all double dominoes and assign largest value double to "spinner"
-				///spinner = ...;
-			}		
-			//Board board = new Board(spinner);
-		
 			while(!(one.isHandEmpty() || two.isHandEmpty() || three.isHandEmpty() || four.isHandEmpty())){
 				//play game here
 			}
