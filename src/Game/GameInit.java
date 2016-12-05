@@ -19,6 +19,8 @@ public class GameInit{
 		int turn = 1, round = 1;
 		Boolean gameOver = false;
 		String player;
+		int play;
+		int spoke;
 		ArrayList<Player> players = new ArrayList<Player>();
 		
 		//eventually need to replace with GUI text box
@@ -39,12 +41,13 @@ public class GameInit{
 		players.add(four);
 		
 		//winning score set to 250
+		//initialize model, view, & controller
 		GameModel model = new GameModel(players, 250);
 		DominoesView view = new DominoesView();
 		StartPanelController controller = new StartPanelController(model, view);
 		
 		
-		while(!gameOver){
+		//while(!gameOver){
 			//initialize boneyard of double-6 dominoes
 			Boneyard yard = new Boneyard(6);
 			yard.shuffle();
@@ -62,57 +65,72 @@ public class GameInit{
 			two.addToHand(yard.drawHand(7));
 			three.addToHand(yard.drawHand(7));
 			four.addToHand(yard.drawHand(7));
-			while(!(one.isHandEmpty() || two.isHandEmpty() || three.isHandEmpty() || four.isHandEmpty())){
-				//play game here
+			//play game here
+			while(!(one.isHandEmpty() || two.isHandEmpty() || three.isHandEmpty() || four.isHandEmpty())){	
 				System.out.printf("----------Round %d Turn %d----------\n", round, turn);
 				System.out.println("Current board state");
 				System.out.println(board.toString());
 				System.out.println("Player 1's turn");
 				System.out.println(one.getHand());
+				//player one takes turn here
+				System.out.println("Choose Domino: ");
+				System.out.println("1. " + one.getDomino(0) + " 2. " + one.getDomino(1) + " 3. " + one.getDomino(2) 
+				+ " 4. " + one.getDomino(3) + " 5. " + one.getDomino(4) + " 6." + one.getDomino(5) + " 7. " +one.getDomino(6));
+				play = scan.nextInt();
+				System.out.println("Selected " + one.getDomino(play-1));
+				System.out.println("1. Spoke South 2. Spoke North 3. Spoke East 4. Spoke West");
+				spoke = scan.nextInt();
+				System.out.println("Selected spoke # " + spoke);
+				//options for placing on spoke east & west are not working
+				board.addToSpoke(spoke, one.getDomino(play-1));
+				System.out.println(board.toString());
+				
+				
 				/*
 				 * Check if Player 1 has scored and if their score
 				 * is enough to win the game.
 				 */
-				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 ==0){
-					one.addPoints(board.getBoardValue());
-					System.out.printf("Player 1's score is round: %d\ttotal: %d\n", one.getRoundScore(), one.getTotalScore());
-					if(one.getTotalScore() >= 250){
-						gameOver = true;
-						break;
-					}
-				}
-				System.out.println("Current board state");
-				System.out.println(board.toString());
-				if(one.getHand().isEmpty()){
-					break;
-				}
-				System.out.println("Player 2's turn");
-				System.out.println(two.getHand());
-				two.takeTurn(board, yard);
+				//if(board.getBoardValue() > 0 && board.getBoardValue() % 5 ==0){
+				//	one.addPoints(board.getBoardValue());
+				//	System.out.printf("Player 1's score is round: %d\ttotal: %d\n", one.getRoundScore(), one.getTotalScore());
+				//	if(one.getTotalScore() >= 250){
+				//		gameOver = true;
+				//		break;
+				//	}
+				//}
+				//System.out.println("Current board state");
+				//System.out.println(board.toString());
+				//if(one.getHand().isEmpty()){
+				//	break;
+				//}
+				//System.out.println("Player 2's turn");
+				//System.out.println(two.getHand());
+				//two.takeTurn(board, yard);
 				/*
 				 * Check if Player 2 has scored and if their score
 				 * is enough to win the game.
 				 */
-				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 == 0){
-					two.addPoints(board.getBoardValue());
-					System.out.printf("Player 2's score is round: %d\ttotal: %d\n", two.getRoundScore(), two.getTotalScore());
-					if(two.getTotalScore() >= 250){
-						gameOver = true;
-						break;
-					}
-				}
+				//if(board.getBoardValue() > 0 && board.getBoardValue() % 5 == 0){
+				//	two.addPoints(board.getBoardValue());
+				//	System.out.printf("Player 2's score is round: %d\ttotal: %d\n", two.getRoundScore(), two.getTotalScore());
+				//	if(two.getTotalScore() >= 250){
+				//		gameOver = true;
+				//		break;
+				//	}
+				//}
 				/*
 				 * Check to see if both Player 1 and Player 2 are unable to make
 				 * valid plays. 
 				 */
-				if(one.noPlay() && two.noPlay()){
-					System.out.println("Neither player is able to make a move, end of round.");
-					break;
-				}
-				turn++;
-			}
-			if(gameOver){
-				break;
+				//if(one.noPlay() && two.noPlay()){
+				//	System.out.println("Neither player is able to make a move, end of round.");
+				//	break;
+				//}
+				//turn++;
+			//}
+			//if(gameOver){
+			//	break;
+			//}
 			}
 			}
 		}
@@ -123,5 +141,5 @@ public class GameInit{
 		//view.setSize(1000, 800);
 		//view.setVisible(true);
 		
-	}
-}
+	//}
+
