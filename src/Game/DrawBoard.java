@@ -396,17 +396,26 @@ public class DrawBoard {
 				nextY = y - sideS/2 - offset/2;
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);	
-				//nextX = 0;
-				//nextY += cImg.getHeight();
 				down = true;
-			}else if(nextX + sideS >= 0 && last.isDouble() && down == false){
-				
+			}else if(nextX + sideS >= 0 && last.isDouble() && down == false){   //position for drawing down
+				boneImages.invert(bone);
+				nextX += boneImages.getWidth(last);
+				nextY = y;
+				cImg = boneImages.getBufferedImage(bone);
+				g.drawImage(cImg, nextX, nextY, null);	
+				down = true;
 			}else if(!last.isDouble() && down == false){ //position for drawing down
 				nextX = 0;
 				nextY += boneImages.getHeight(last);
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);	
 				down = true;
+			}else if(down == true){  //position for drawing down
+				boneImages.invert(bone);
+				nextX = 0;
+				nextY += boneImages.getHeight(last) + offset;
+				cImg = boneImages.getBufferedImage(bone);
+				g.drawImage(cImg, nextX, nextY, null);	
 			}
 		}
 	}	
