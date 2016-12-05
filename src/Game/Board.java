@@ -37,6 +37,8 @@ public class Board {
 		this(new Domino(-1, -1));
 	}
 	
+	private final int NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3;
+	
 	/**
 	 * Changes the spinner to a new spinner if the current spinner is currently null
 	 * otherwise nothing happens.
@@ -104,39 +106,32 @@ public class Board {
 	/**
 	 * Adds a new Domino to the specified spoke if the Domino was a valid move
 	 * otherwise nothing happens.
-	 * @param An integer value representing the spoke to add a Domino to
+	 * @param Index An integer value representing the spoke to add a Domino to
 	 * @param d A Domino object representing the Domino to be added
 	 */
 	public void addToSpoke(int index, Domino d){
 		switch(spokeCount()){
 		case 0:
-			this.spokes.get(0).addDomino(d);
+			if(index == NORTH || index == SOUTH){
+				this.spokes.get(index).addDomino(d);
+			}else{
+				if(spokes.get(NORTH).isValidMove(d)){
+					this.spokes.get(NORTH).addDomino(d);
+				}else if(spokes.get(SOUTH).isValidMove(d)){
+					this.spokes.get(SOUTH).addDomino(d);
+				}
+			}
 			break;
 		case 1:
-			if(index == 0){
+			if(index == NORTH || index == SOUTH){
 				this.spokes.get(index).addDomino(d);
-			}else{
-				this.spokes.get(1).addDomino(d);
 			}
 			break;
-		case 2:
-			if(index == 0 || index == 1){
+		case 2: case 3: case 4:
+			if(index >= 0 && index <= 3){
 				this.spokes.get(index).addDomino(d);
-			}else{
-				this.spokes.get(2).addDomino(d);
 			}
 			break;
-		case 3:
-			if(index == 0 || index == 1 || index == 2){
-				this.spokes.get(index).addDomino(d);
-			}else{
-				this.spokes.get(3).addDomino(d);
-			}
-			break;
-		default:
-			if(index >= 0 && index < spokeCount()){
-				this.spokes.get(index).addDomino(d);
-			}
 		}
 	}
 	

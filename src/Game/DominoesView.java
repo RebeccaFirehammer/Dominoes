@@ -120,19 +120,20 @@ public class DominoesView extends JFrame {
 
 		//north spoke test
 		board.addToSpoke(0, new Domino(6,4));
-		board.addToSpoke(0, new Domino(4,1));
-		board.addToSpoke(0, new Domino(1,1));
-		board.addToSpoke(0, new Domino(3,1));
-		board.addToSpoke(0, new Domino(3,0));
-		board.addToSpoke(0, new Domino(0,0));
-		board.addToSpoke(0, new Domino(1,0));
-		board.addToSpoke(0, new Domino(2,1));
-		board.addToSpoke(0, new Domino(6,2));
-		board.addToSpoke(0, new Domino(6,3));
-		board.addToSpoke(0, new Domino(4,3));
-		board.addToSpoke(0, new Domino(5,4));
+//		board.addToSpoke(0, new Domino(4,1));
+//		board.addToSpoke(0, new Domino(1,1));
+//		board.addToSpoke(0, new Domino(3,1));
+//		board.addToSpoke(0, new Domino(3,0));
+//		board.addToSpoke(0, new Domino(0,0));
+//		board.addToSpoke(0, new Domino(1,0));
+//		board.addToSpoke(0, new Domino(2,1));
+//		board.addToSpoke(0, new Domino(6,2));
+//		board.addToSpoke(0, new Domino(6,3));
+//		board.addToSpoke(0, new Domino(4,3));
+//		board.addToSpoke(0, new Domino(5,4));
+//		board.addToSpoke(0, new Domino(5,5));
 		//south spoke test
-//		board.addToSpoke(1, new Domino(6,3));
+		board.addToSpoke(1, new Domino(6,3));
 //		board.addToSpoke(1, new Domino(3,3));
 //		board.addToSpoke(1, new Domino(5,3));
 //		board.addToSpoke(1, new Domino(5,2));
@@ -154,12 +155,15 @@ public class DominoesView extends JFrame {
 //		board.addToSpoke(2, new Domino(5,2));
 //		board.addToSpoke(2, new Domino(4,2));
 		//west spoke test
-//		board.addToSpoke(3, new Domino(6,0));
-//		board.addToSpoke(3, new Domino(0,0));
-//		board.addToSpoke(3, new Domino(1,0));
-//		board.addToSpoke(3, new Domino(5,1));
-//		board.addToSpoke(3, new Domino(5,0));
-//		board.addToSpoke(3, new Domino(2,0));
+		board.addToSpoke(3, new Domino(6,0));
+		board.addToSpoke(3, new Domino(0,0));
+		board.addToSpoke(3, new Domino(1,0));
+		board.addToSpoke(3, new Domino(5,1));
+		board.addToSpoke(3, new Domino(5,0));
+		board.addToSpoke(3, new Domino(2,0));
+		board.addToSpoke(3, new Domino(2,2));
+		board.addToSpoke(3, new Domino(4,2));
+		board.addToSpoke(3, new Domino(5,4));
 		System.out.println(board.toString());
 		
 		this.model.setBoard(board);
