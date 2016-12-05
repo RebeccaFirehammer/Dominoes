@@ -52,7 +52,7 @@ public class DrawBoard {
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor, Color pipColor, Color barColor){
 		this.g = g;
 		this.board = board;
-		this.boneSize = (height / 41) + (width / 41);
+		this.boneSize = (height + width) / 45;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -124,6 +124,8 @@ public class DrawBoard {
 		//coordinates for drawing next Domino
 		int nextY = y - (sideS * 3) - offset;
 		int nextX = x - sideS / 2;
+		boolean back = false;
+		boolean down = false;
 		
 		
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
@@ -133,20 +135,72 @@ public class DrawBoard {
 				last = spoke.getSpoke().get(i - 1);
 			}
 			//determines which end pips are drawn
-			if(!bone.isAOpen()){ boneImages.invert(bone); } 
-			//check for doubles
-			if(!bone.isDouble()){ //check for double
-				cImg = boneImages.getBufferedImage(bone);
-				g.drawImage(cImg, nextX, nextY, null);
-				nextY -= (sideS * 2) + offset;
-			}else{ //check for double
+			
+			if(nextY > 0 && back == false){  //drawing up
+				if(!bone.isAOpen()){ boneImages.invert(bone); } 
+				//check for doubles
+				if(!bone.isDouble()){ //check for double
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					nextY -= (sideS * 2) + offset;
+				}else{ //check for double
+					boneImages.flip(bone);
+					nextX -= sideS/2;
+					nextY += sideS - offset/4;
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					nextX += sideS/2;
+					nextY -= sideL + offset;
+				}
+			}else if(back == false){ //set up for drawing across
+				boneImages.invert(bone);
 				boneImages.flip(bone);
-				nextX -= sideS/2;
-				nextY += sideS - offset/4;
+				if(nextY + sideS > 0 && !last.isDouble()){
+					nextX -= sideS;
+					nextY += sideS;
+				}else if(nextY + sideS > 0 && last.isDouble()){
+					nextX -= sideS + sideS/2;
+					nextY += sideS;
+				}else if(last.isDouble()){
+					nextY = 0;
+					nextX -= boneImages.getWidth(bone) - sideS/2;
+				}else{
+					nextY = 0;
+					nextX -= boneImages.getWidth(bone) + offset;
+				}
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
-				nextX += sideS/2;
-				nextY -= sideL + offset;
+				nextY = 0;
+				back = true;
+			}else if(back == true && down == false){ //draw across going back
+				if((nextX - sideL) >= 0){
+					if(!bone.isDouble()){
+						boneImages.flip(bone);
+					}
+					nextX -= boneImages.getWidth(bone) + offset;
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+				}else if((nextX - sideS) > 0){
+					nextX -= boneImages.getWidth(bone) + offset;
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					down = true;
+				}else{
+					nextX = 0;
+					nextY += boneImages.getWidth(bone);
+					cImg = boneImages.getBufferedImage(bone);
+					g.drawImage(cImg, nextX, nextY, null);
+					down = true;
+				}
+			}else if(down == true){
+				nextX = 0;
+				nextY = boneImages.getHeight(last) + offset;
+				if(bone.isDouble()){
+					boneImages.flip(bone);
+				}
+				cImg = boneImages.getBufferedImage(bone);
+				g.drawImage(cImg, nextX, nextY, null);
+				down = true;
 			}
 		}
 	}
@@ -187,14 +241,12 @@ public class DrawBoard {
 		int xReq = 0;
 		boolean up = false;
 		boolean back = false;
+		boolean down = false;
 		
 		//draw spoke
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
 			Domino bone = spoke.getSpoke().get(i);
-			Domino last = spoke.getSpoke().get(i);
-			if(i > 0){
-				last = spoke.getSpoke().get(i - 1);
-			}
+			Domino last =  (i > 0) ?  last = spoke.getSpoke().get(i - 1) : spoke.getSpoke().get(i);
 			if(bone.isAOpen()){
 				boneImages.invert(bone);
 			}
@@ -206,7 +258,6 @@ public class DrawBoard {
 				}else{
 					nextY = y - sideL / 2;
 				}	
-		
 				xReq = nextX + boneImages.getWidth(bone); 
 				if(xReq <= width){ //check if domino can fit 
 					cImg = boneImages.getBufferedImage(bone);
@@ -215,24 +266,42 @@ public class DrawBoard {
 					up = false;
 				}else{ //position for drawing upwards
 					up = true;
+					boneImages.invert(bone);
 					if(!bone.isDouble()){
 						boneImages.flip(bone);
 					}
-					boneImages.invert(bone);
-					if(!last.isDouble()){ //check if the last Domino placed is a double
-						nextX -= sideS + offset;
-						nextY = y - sideL - sideL/4 - offset;
+					if(nextX + sideS <= width){
+						nextY -= boneImages.getHeight(bone)/2 + offset;
+						if(last.isDouble()){
+							nextY -= boneImages.getHeight(bone)/4;
+						}
+						cImg = boneImages.getBufferedImage(bone);
+						g.drawImage(cImg, nextX, nextY, null);
+					}else if(width - nextX > 0){
+						nextX = width - boneImages.getWidth(bone);
+						if(!last.isDouble()){
+							nextY -= sideL + offset;
+						}else{
+							nextY -= boneImages.getHeight(last) + sideS/2 + offset;
+						}
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
 					}else{
-						nextX -= sideS + offset + offset/3;
-						nextY = y - sideL - sideL/2 - offset + offset/3;
-						cImg = boneImages.getBufferedImage(bone);
-						g.drawImage(cImg, nextX, nextY, null);
+						if(!last.isDouble()){ //check if the last Domino placed is a double
+							nextX -= sideS + offset;
+							nextY = y - sideL - sideL/4 - offset;
+							cImg = boneImages.getBufferedImage(bone);
+							g.drawImage(cImg, nextX, nextY, null);
+						}else{
+							nextX -= sideS + offset + offset/3;
+							nextY = y - sideL - sideL/2 - offset + offset/3;
+							cImg = boneImages.getBufferedImage(bone);
+							g.drawImage(cImg, nextX, nextY, null);
+						}
 					}
 					nextY -= cImg.getHeight() + offset;
 				}
-			}else if(up == true){
+			}else if(up == true){ //drawing upwards
 				if(back == false){
 					boneImages.invert(bone);
 					if(nextY >= 0){ //check bounds
@@ -255,20 +324,35 @@ public class DrawBoard {
 							nextX += boneImages.getWidth(bone)/4;
 							nextY -= boneImages.getHeight(bone) + offset/2;
 						}
+						back = false;
 						nextY -= boneImages.getHeight(bone) + offset;
-					}else{
+					}else{  //position for drawing back
 						back = true;
 						boneImages.flip(bone);
-						nextX -= ((!last.isDouble()) ? boneImages.getWidth(last) * 2: boneImages.getWidth(last) + sideS/2) + offset;
-						nextY += boneImages.getWidth(bone) + offset + 1;
 						cImg = boneImages.getBufferedImage(bone);
+						if(nextY + sideS > 0){
+							nextY += sideS;
+							nextX = width - boneImages.getWidth(bone);
+							if(last.isDouble()){
+								nextX += boneImages.getWidth(last)/4;
+							}
+						}else{
+							nextX -= (!last.isDouble()) ? boneImages.getWidth(last) * 2 + offset 
+									: boneImages.getWidth(last);
+							//nextY += (!last.isDouble()) ? cImg.getWidth() + offset : cImg.getWidth();
+							nextY = 0;
+						}
 						g.drawImage(cImg, nextX, nextY, null);	
 					}
-				}else if(back == true){
-					boneImages.flip(bone);
+				}else if(back == true){ //drawing back
+					if(!bone.isDouble()){
+						boneImages.flip(bone);	
+					}else{
+						
+					}
 					nextX -= boneImages.getWidth(bone) + offset;
 					cImg = boneImages.getBufferedImage(bone);
-					g.drawImage(cImg, nextX, nextY, null);	
+					g.drawImage(cImg, nextX, 0, null);	
 				}
 
 			}
@@ -288,10 +372,7 @@ public class DrawBoard {
 		//draw spoke
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
 			Domino bone = spoke.getSpoke().get(i);
-			Domino last = spoke.getSpoke().get(i);
-			if(i > 0){
-				last = spoke.getSpoke().get(i - 1);
-			}
+			Domino last =  (i > 0) ?  last = spoke.getSpoke().get(i - 1) : spoke.getSpoke().get(i);
 			if(!bone.isAOpen()){
 				boneImages.invert(bone);
 			}

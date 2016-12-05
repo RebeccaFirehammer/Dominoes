@@ -129,9 +129,10 @@ public class DrawDomino{
 	}
 	
 	private void drawBar(Graphics g){
+		g.setColor(boneColor);
+		g.fill3DRect(1, endSize, endSize, barSize, false);
 		g.setColor(barColor);
-		g.fill3DRect(-1, endSize, endSize, barSize, false);
-		//g.fillRect(0, endSize, endSize, barSize);
+		g.fill3DRect(1, endSize, endSize, barSize, false);
 	}
 		
 	public void drawPip(Graphics g, int x, int y){
