@@ -84,15 +84,13 @@ public class GameInit{
 				System.out.println("Player 1's turn");
 				System.out.println("Your hand: " + one.getHand());
 				//player one takes turn here
-				System.out.println("Choose Domino (1-7): ");
-				System.out.println("1. " + one.getDomino(0) + " 2. " + one.getDomino(1) + " 3. " + one.getDomino(2) 
-				+ " 4. " + one.getDomino(3) + " 5. " + one.getDomino(4) + " 6." + one.getDomino(5) + " 7. " +one.getDomino(6));
-				play = scan.nextInt();
-				System.out.println("Selected " + one.getDomino(play-1));
+				System.out.println("Click Domino");
+				System.out.println("Click Spoke");
 				System.out.println("1. Spoke South 2. Spoke North 3. Spoke East 4. Spoke West");
 				spoke = scan.nextInt();
 				System.out.println("Selected spoke # " + spoke);
-				board.addToSpoke(spoke, one.getDomino(play-1));
+				board.addToSpoke(spoke, model.getActive());
+				view.update();
 				System.out.println(board.toString());
 				/*
 				 * Check if Player 1 has scored and if their score

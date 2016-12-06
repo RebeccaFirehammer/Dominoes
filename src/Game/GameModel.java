@@ -260,6 +260,9 @@ public class GameModel {
 		this.active = d;
 		System.out.println(d);
 	}
+	public Domino getActive(){
+		return this.active;
+	}
 
 	public void newGame() {
 		clearGame();

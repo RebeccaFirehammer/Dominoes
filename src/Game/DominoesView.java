@@ -199,14 +199,14 @@ public class DominoesView extends JFrame {
 		//model.addPoints(playerNumber, points) for adding points
 		//score.updatePanel(model) redraws the score panel to reflect changes to model
 		
-		model.addPoints(0, 0);
-		model.addPoints(1, 0);
-		model.addPoints(2, 0);
-		model.addPoints(3, 0);
-		model.setPlayerName(0, "Player");
-		model.setPlayerName(1, "CPU 1");
-		model.setPlayerName(2, "CPU 2");
-		model.setPlayerName(3, "CPU 3");
+		//model.addPoints(0, 0);
+		//model.addPoints(1, 0);
+		//model.addPoints(2, 0);
+		//model.addPoints(3, 0);
+		//model.setPlayerName(0, "Player");
+		//model.setPlayerName(1, "CPU 1");
+		//model.setPlayerName(2, "CPU 2");
+		//model.setPlayerName(3, "CPU 3");
 		scorePanel.updatePanel(model);
 		//test values for updating players hand
 		//model.addToPlayerHand(0, 7);
