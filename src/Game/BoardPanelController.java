@@ -7,9 +7,11 @@ import java.util.ArrayList;
 public class BoardPanelController implements MouseListener {
 	
 	private ArrayList<ActiveLocation> actLocs;
+	private GameModel model;
 	
-	public BoardPanelController(ArrayList<ActiveLocation> actLocs){
+	public BoardPanelController(ArrayList<ActiveLocation> actLocs, GameModel model){
 		this.actLocs = actLocs;
+		this.model = model;
 	}
 
 	@Override
@@ -27,24 +29,28 @@ public class BoardPanelController implements MouseListener {
 				switch(loc.getSpoke()){
 				case SPINNER:
 					System.out.println("SPINNER");
+					model.setActiveSpoke(SPINNER);
 					break;
 				case NORTH:
 					System.out.println("NORTH ACTIVE");
+					model.setActiveSpoke(NORTH);
 					break;
 				case SOUTH:
 					System.out.println("SOUTH ACTIVE");
+					model.setActiveSpoke(SOUTH);
 					break;
 				case EAST:
 					System.out.println("EAST ACTIVE");
+					model.setActiveSpoke(EAST);
 					break;
 				case WEST:
 					System.out.println("WEST ACTIVE");
+					model.setActiveSpoke(WEST);
 					break;
 				}
 			}
 		}
 	}
-
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub

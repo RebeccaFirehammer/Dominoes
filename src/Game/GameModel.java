@@ -37,6 +37,10 @@ public class GameModel {
 	private Domino active;
 	
 	/**
+	 * The Active Spoke being played on
+	 */
+	private int spoke;
+	/**
 	 * Constructs the model of the game
 	 * @param players An ArrayList of Player objects representing the players 
 	 * 		  of the game
@@ -262,6 +266,12 @@ public class GameModel {
 	}
 	public Domino getActive(){
 		return this.active;
+	}
+	public void setActiveSpoke(int spoke){
+		this.spoke = spoke;
+	}
+	public int getActiveSpoke(){
+		return this.spoke;
 	}
 
 	public void newGame() {

@@ -127,7 +127,7 @@ public class DominoesView extends JFrame {
 		this.getContentPane().removeAll();
 		setLayout(new BorderLayout(2, 2));
 		this.model = model;
-		
+
 		//Board board = new Board(new Domino(6,6)); //for testing board
 
 		//north spoke test
@@ -175,7 +175,7 @@ public class DominoesView extends JFrame {
 //		scrollPane.setViewportView(boardPanel);
 //		scrollPane.getViewport().setViewPosition(new Point(100,250));
 //		scrollPane.setOpaque(false);
-		boardController = new BoardPanelController(actLocs);
+		boardController = new BoardPanelController(actLocs, model);
 		boardPanel.addMouseListener(boardController);
 		
 		
@@ -261,7 +261,7 @@ public class DominoesView extends JFrame {
 		try{
 			update();
 		}catch(NullPointerException e){
-			System.out.println("null");
+			//System.out.println("null");
 		}
 	}
 	
@@ -282,7 +282,7 @@ public class DominoesView extends JFrame {
 		scorePanel.updatePanel(model);
 		boardPanel.removeMouseListener(boardController);
 		boardPanel.updateBoard(model);
-		boardController = new BoardPanelController(actLocs);
+		boardController = new BoardPanelController(actLocs, model);
 		boardPanel.addMouseListener(boardController);
 	}
 }
