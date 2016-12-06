@@ -1,15 +1,9 @@
 package Game;
 
-
-
-/**
- * 
- */
-
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class DrawBoard {
 	
@@ -56,6 +50,8 @@ public class DrawBoard {
 	
 	private int height;
 	
+	private ArrayList<ActiveLocation> actLocs;
+	
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor, Color pipColor, Color barColor){
 		this.g = g;
 		this.board = board;
@@ -67,7 +63,8 @@ public class DrawBoard {
 		this.boneColor = boneColor;
 		this.pipColor = pipColor;
 		this.barColor = barColor;
-		boneImages = new DominoImages(this.boneSize, boneColor, pipColor, barColor);
+		actLocs = new ArrayList<ActiveLocation>();
+		boneImages = new DominoImages(this.boneSize, this.boneColor, this.pipColor, this.barColor);
 		cImg = boneImages.getBufferedImage(board.getSpinner());
 		sideL = cImg.getHeight();
 		sideS = cImg.getWidth();
@@ -104,10 +101,15 @@ public class DrawBoard {
 		this(g, board, width/2, width, height);
 	}
 	
+	public ArrayList<ActiveLocation> getActiveLocations(){
+		return actLocs;
+	}
+	
 	private void draw(){
 		//draw spinner
 		g.drawImage(cImg, x - (sideS/2), y - (sideL/2), null);
-		
+		actLocs.add(new ActiveLocation(-1, x - (sideS/2), y - (sideL/2), 
+									cImg.getWidth(), cImg.getHeight()));
 		//draw spokes
 		drawNorth(board.getSpokes().get(0));
 		drawSouth(board.getSpokes().get(1));
@@ -117,11 +119,12 @@ public class DrawBoard {
 	
 	private void drawNorth(Spoke spoke){
 		//coordinates for drawing next Domino
+		final int NORTH = 0;
+		ActiveLocation al = new ActiveLocation(NORTH, 0, 0 ,0, 0);
 		int nextY = y - (sideS * 3) - offset;
 		int nextX = x - sideS / 2;
 		boolean back = false;
 		boolean down = false;
-		
 		
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
 			Domino bone = spoke.getSpoke().get(i);
@@ -137,6 +140,7 @@ public class DrawBoard {
 				if(!bone.isDouble()){ //check for double
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextY -= (sideS * 2) + offset;
 				}else{ //check for double
 					boneImages.flip(bone);
@@ -144,6 +148,7 @@ public class DrawBoard {
 					nextY += sideS - offset/4;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += sideS/2;
 					nextY -= sideL + offset;
 				}
@@ -164,6 +169,7 @@ public class DrawBoard {
 				}
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextY = 0;
 				back = true;
 			}else if(back == true && down == false){ //draw across going back
@@ -174,11 +180,13 @@ public class DrawBoard {
 					nextX -= boneImages.getWidth(bone) + offset;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				}else if((nextX - sideS) > 0){ //set up to draw down
 					boneImages.invert(bone);
 					nextX -= boneImages.getWidth(bone) + offset;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					down = true;
 				}else{ //set up to draw down
 					boneImages.invert(bone);
@@ -186,6 +194,7 @@ public class DrawBoard {
 					nextY += boneImages.getWidth(bone) + offset;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextY = boneImages.getHeight(last) + offset;
 					down = true;
 				}
@@ -198,20 +207,24 @@ public class DrawBoard {
 				}
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(NORTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				down = true;
 			}
 		}
+		actLocs.add(al);
 	}
 	
 	private void drawSouth(Spoke spoke){
 		//coordinates for drawing next Domino
+		final int SOUTH = 1;
+		ActiveLocation al = new ActiveLocation(SOUTH, 0, 0 ,0, 0);
 		int nextY = y + sideS + offset;
 		int nextX = x - sideS / 2;
 		int yReq = 0;
 		int xReq = 0;
 		boolean across = false;
 		boolean up = false;
-		
+	
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
 			Domino bone = spoke.getSpoke().get(i);
 			Domino last = (i > 0) ? spoke.getSpoke().get(i - 1) : spoke.getSpoke().get(0);
@@ -227,12 +240,14 @@ public class DrawBoard {
 				}
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextY += boneImages.getHeight(bone) + offset;
 				nextX = x - sideS / 2;
 			}else if(yReq - sideS < height && !last.isDouble() && across == false){
 				boneImages.flip(bone);
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextX += cImg.getWidth() + offset;
 				nextY = height - sideS;
 				across = true;
@@ -241,6 +256,7 @@ public class DrawBoard {
 				cImg = boneImages.getBufferedImage(bone);
 				nextX = x;
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextX += cImg.getWidth() + offset;
 				nextY = height - sideS;
 				across = true;
@@ -250,6 +266,7 @@ public class DrawBoard {
 				nextX += boneImages.getWidth(last) + offset;
 				nextY = height - cImg.getHeight();
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextX += cImg.getWidth() + offset;
 				nextY = height - sideS;
 				across = true;
@@ -263,6 +280,7 @@ public class DrawBoard {
 					}
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += cImg.getWidth() + offset;
 					nextY = height - sideS;
 				}else if(xReq - sideS <= width && !last.isDouble() && up == false){ //set up to draw up
@@ -271,6 +289,7 @@ public class DrawBoard {
 					cImg = boneImages.getBufferedImage(bone);
 					nextY = height - cImg.getHeight();
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX = width - cImg.getWidth();
 					nextY -= cImg.getHeight();
 					up = true;
@@ -280,6 +299,7 @@ public class DrawBoard {
 					cImg = boneImages.getBufferedImage(bone);
 					nextY = height - sideS - cImg.getHeight();
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX = width - cImg.getWidth();
 					nextY -= cImg.getHeight() + offset;
 					up = true;
@@ -290,6 +310,7 @@ public class DrawBoard {
 					nextX = width - cImg.getWidth();
 					nextY -= cImg.getHeight() + offset;
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextY -= cImg.getHeight() + offset;
 					up = true;
 				}else if(up == true && across == true){
@@ -301,26 +322,28 @@ public class DrawBoard {
 						nextY += sideS + offset/2;
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
+						al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 						nextY -= cImg.getWidth() + offset;;
 						nextX = width - sideS;
 					}else{
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
+						al = new ActiveLocation(SOUTH, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 						nextX = width - sideS;
 						nextY -= cImg.getHeight() + offset;
 					}
-					
 				}
-	
 			}
 		}
+		actLocs.add(al);
 	}
 	
 	private void drawEast(Spoke spoke){
+		final int EAST = 2;
+		ActiveLocation al = new ActiveLocation(EAST, 0, 0 ,0, 0);
 		//coordinates for drawing next Domino
 		int nextY = y - sideL / 4;
 		int nextX = x + sideS * 1/2 + offset + offset/3;
-		
 		//used to determine bounds
 		int xReq = 0;
 		boolean up = false;
@@ -346,6 +369,7 @@ public class DrawBoard {
 				if(xReq <= width){ //check if domino can fit 
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += boneImages.getWidth(bone) + offset;
 					up = false;
 				}else{ //position for drawing upwards
@@ -361,6 +385,7 @@ public class DrawBoard {
 						}
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
+						al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					}else if(width - nextX > 0){
 						nextX = width - boneImages.getWidth(bone);
 						if(!last.isDouble()){
@@ -370,17 +395,20 @@ public class DrawBoard {
 						}
 						cImg = boneImages.getBufferedImage(bone);
 						g.drawImage(cImg, nextX, nextY, null);
+						al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					}else{
 						if(!last.isDouble()){ //check if the last Domino placed is a double
 							nextX -= sideS + offset;
 							nextY = y - sideL - sideL/4 - offset;
 							cImg = boneImages.getBufferedImage(bone);
 							g.drawImage(cImg, nextX, nextY, null);
+							al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 						}else{
 							nextX -= sideS + offset + offset/3;
 							nextY = y - sideL - sideL/2 - offset + offset/3;
 							cImg = boneImages.getBufferedImage(bone);
 							g.drawImage(cImg, nextX, nextY, null);
+							al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 						}
 					}
 					nextY -= cImg.getHeight() + offset;
@@ -392,6 +420,7 @@ public class DrawBoard {
 						if(!bone.isDouble()){ //check for double
 							cImg = boneImages.getBufferedImage(bone);
 							g.drawImage(cImg, nextX, nextY, null);	
+							al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 						}else{ //double going up
 							boneImages.flip(bone);
 							nextY += boneImages.getHeight(bone) + offset/2;
@@ -401,9 +430,11 @@ public class DrawBoard {
 								cImg = boneImages.getBufferedImage(bone);
 								//g.drawImage(cImg, nextX, nextY, null);
 								g.drawImage(cImg, nextX, nextY, null);
+								al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 							}else{
 								cImg = boneImages.getBufferedImage(bone);
 								g.drawImage(cImg, width - boneImages.getWidth(bone), nextY, null);
+								al = new ActiveLocation(EAST, width - boneImages.getWidth(bone), nextY, cImg.getWidth(), cImg.getHeight());
 							}
 							nextX += boneImages.getWidth(bone)/4;
 							nextY -= boneImages.getHeight(bone) + offset/2;
@@ -427,6 +458,7 @@ public class DrawBoard {
 							nextY = 0;
 						}
 						g.drawImage(cImg, nextX, nextY, null);	
+						al = new ActiveLocation(EAST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					}
 				}else if(back == true){ //drawing back
 					if(!bone.isDouble()){
@@ -437,20 +469,20 @@ public class DrawBoard {
 					nextX -= boneImages.getWidth(bone) + offset;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, 0, null);	
+					al = new ActiveLocation(EAST, nextX, 0, cImg.getWidth(), cImg.getHeight());
 				}
-
 			}
 		}
+		actLocs.add(al);
 	}
 	
 	private void drawWest(Spoke spoke){
+		final int WEST = 3;
+		ActiveLocation al = new ActiveLocation(WEST, 0, 0 ,0, 0);
 		//coordinates for drawing next Domino
 		int nextY = y - sideL / 4 ;
 		int nextX = x - sideL - sideS/2 - offset;
-		
 		//used to determine bounds
-		int xReq = 0;
-		int yReq = 0;
 		boolean down = false;
 		boolean back = false;
 		//draw spoke
@@ -469,7 +501,8 @@ public class DrawBoard {
 					nextY = y - (sideL/2);
 				}
 				cImg = boneImages.getBufferedImage(bone);
-				g.drawImage(cImg, nextX, nextY, null);	
+				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextY = y - sideL / 4 ;
 				nextX -= sideL + offset;
 			}else if(nextX + sideS >= 0 && !last.isDouble() && down == false){ // position for drawing down
@@ -478,6 +511,7 @@ public class DrawBoard {
 				nextY = y - sideL / 4 ;
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				down = true;
 			}else if(nextX + sideS >= 0 && last.isDouble() && down == false){   //position for drawing down
 				boneImages.invert(bone);
@@ -485,6 +519,7 @@ public class DrawBoard {
 				nextY = y - sideL / 4 + sideS/2  ;
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				down = true;
 			}else if(!last.isDouble() && down == false){ //position for drawing down
 				boneImages.invert(bone);
@@ -492,12 +527,14 @@ public class DrawBoard {
 				nextX = 0;
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				down = true;
 			}else if(last.isDouble() && down == false){
 				nextY = y + sideS + offset;
 				nextX = 0;
 				cImg = boneImages.getBufferedImage(bone);
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				down = true;
 			}else if(down == true && back == false){  //position for drawing down
 				boneImages.invert(bone);
@@ -509,12 +546,14 @@ public class DrawBoard {
 					}
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				}else if(nextY + sideS <= height && !last.isDouble()){ //set up for drawing back horizontally
 					boneImages.flip(bone);
 					nextX = 0;
 					nextY += offset;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += cImg.getWidth() + offset;
 					back = true;
 				}else if(nextY + sideS <= height && last.isDouble()){ //set up for drawing back horizontally
@@ -522,6 +561,7 @@ public class DrawBoard {
 					nextX = boneImages.getWidth(last)/2;
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += cImg.getWidth() + offset;
 					back = true;
 				}else if(!last.isDouble()){//set up for drawing back horizontally
@@ -530,6 +570,7 @@ public class DrawBoard {
 					nextY = height - boneImages.getHeight(bone);
 					cImg = boneImages.getBufferedImage(bone);
 					g.drawImage(cImg, nextX, nextY, null);
+					al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 					nextX += cImg.getWidth() + offset;
 					back = true;
 				}
@@ -542,9 +583,10 @@ public class DrawBoard {
 				cImg = boneImages.getBufferedImage(bone);
 				nextY = height - cImg.getHeight();
 				g.drawImage(cImg, nextX, nextY, null);
+				al = new ActiveLocation(WEST, nextX, nextY, cImg.getWidth(), cImg.getHeight());
 				nextX += cImg.getWidth() + offset;
 			}
 		}
+		actLocs.add(al);
 	}	
-	
 }

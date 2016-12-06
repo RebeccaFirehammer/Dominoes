@@ -2,24 +2,46 @@ package Game;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class BoardPanelController implements MouseListener {
+	
+	private ArrayList<ActiveLocation> actLocs;
+	
+	public BoardPanelController(ArrayList<ActiveLocation> actLocs){
+		this.actLocs = actLocs;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		final int SPINNER = -1;
+		final int NORTH = 0;
+		final int SOUTH = 1;
+		final int EAST = 2;
+		final int WEST = 3;
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("Domino placed at ("+x+", "+y+")");
-		if(x>380 && y > 500 && y < 550){
-			System.out.println("East Spoke");
-		}else if(x<362 && y > 500 && y < 550){
-			System.out.println("West Spoke");
-		}else if(y<520 && x > 355 && x < 395){
-			System.out.println("North Spoke");
-		}else if(y > 565 && x > 355 && x < 395){
-			System.out.println("South Spoke");
-		}else{
-			System.out.println("Not on Spoke");
+		for(ActiveLocation loc: actLocs){
+			if(x >= loc.getX() && x <= loc.getX() + loc.getWidth() && 
+					y >= loc.getY() && y <= loc.getY() + loc.getHeight()){
+				switch(loc.getSpoke()){
+				case SPINNER:
+					System.out.println("SPINNER");
+					break;
+				case NORTH:
+					System.out.println("NORTH ACTIVE");
+					break;
+				case SOUTH:
+					System.out.println("SOUTH ACTIVE");
+					break;
+				case EAST:
+					System.out.println("EAST ACTIVE");
+					break;
+				case WEST:
+					System.out.println("WEST ACTIVE");
+					break;
+				}
+			}
 		}
 	}
 

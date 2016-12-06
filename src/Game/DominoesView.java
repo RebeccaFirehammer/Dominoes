@@ -18,6 +18,7 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,6 +49,10 @@ public class DominoesView extends JFrame {
 	
 	private boolean screen;
 	
+	private BoardPanelController boardController;
+	
+	private ArrayList<ActiveLocation> actLocs;
+	
 	private enum Actions{
 		START,
 		RULES,
@@ -62,6 +67,7 @@ public class DominoesView extends JFrame {
 	 */
 	public DominoesView(){
 		super("Dominoes");
+		actLocs = new ArrayList<ActiveLocation>();
 		
 		//add icon
 		ImageIcon dominoIcon = new ImageIcon("Images/Domino-icon.png");
@@ -160,13 +166,14 @@ public class DominoesView extends JFrame {
 		this.boardPanel = new BoardPanel(this.model);
 		//boardPanel.setPreferredSize(new Dimension(750,1000));
 		
-		JScrollPane scrollPane = new JScrollPane(boardPanel);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setViewportView(boardPanel);
-		scrollPane.getViewport().setViewPosition(new Point(100,250));
-		scrollPane.setOpaque(false);
-		boardPanel.addMouseListener(new BoardPanelController());
+//		JScrollPane scrollPane = new JScrollPane(boardPanel);
+//		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollPane.setViewportView(boardPanel);
+//		scrollPane.getViewport().setViewPosition(new Point(100,250));
+//		scrollPane.setOpaque(false);
+		boardController = new BoardPanelController(actLocs);
+		boardPanel.addMouseListener(boardController);
 		
 		
 		//scoreboard
@@ -180,7 +187,7 @@ public class DominoesView extends JFrame {
 		//add components
 		this.setJMenuBar(menuPanel);
 		
-		this.add(scrollPane, BorderLayout.CENTER);
+		this.add(boardPanel, BorderLayout.CENTER);
 		this.add(scorePanel, BorderLayout.EAST);
 		this.add(handView, BorderLayout.SOUTH);
 		
@@ -244,6 +251,13 @@ public class DominoesView extends JFrame {
 		super.paint(g);
 		if(screen == true){
 			title(g);
+		}else{
+			actLocs = boardPanel.getActiveLocs();
+		}
+		try{
+			update();
+		}catch(NullPointerException e){
+			System.out.println("null");
 		}
 	}
 	
@@ -262,5 +276,9 @@ public class DominoesView extends JFrame {
 	public void update(){
 		handView.update();
 		scorePanel.updatePanel(model);
+		boardPanel.removeMouseListener(boardController);
+		boardPanel.updateBoard(model);
+		boardController = new BoardPanelController(actLocs);
+		boardPanel.addMouseListener(boardController);
 	}
 }
