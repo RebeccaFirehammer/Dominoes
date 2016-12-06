@@ -81,14 +81,13 @@ public class GameInit{
 				System.out.println(board.toString());
 				System.out.println("Player 1's turn");
 				System.out.println("Your hand: " + one.getHand());
-				//player one takes turn here
 				System.out.println("Click Domino then click Spoke. Press ENTER on console when ready...");
-				//0 = Spoke North, 1 = Spoke South, 2 = Spoke East, 3 = Spoke West");
 				//wait for user input on console to place domino on spoke
 				play = scan.nextLine();
+					//0 = Spoke North, 1 = Spoke South, 2 = Spoke East, 3 = Spoke West");
 					System.out.println("Place " +model.getActive()+ " on Spoke " +model.getActiveSpoke()+".");
-					board.addToSpoke(model.getActiveSpoke() , model.getActive());
-					
+					//add active Domino to active Spoke
+					board.addToSpoke(model.getActiveSpoke() , one.playDomino(one.getHand().indexOf(model.getActive())));				
 				//update GUI
 				view.update();
 				/*
