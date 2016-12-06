@@ -28,9 +28,25 @@ public class BoardPanelController implements MouseListener {
 					y >= loc.getY() && y <= loc.getY() + loc.getHeight()){
 				switch(loc.getSpoke()){
 				case SPINNER:
-					System.out.println("SPINNER");
-					model.setActiveSpoke(SPINNER);
-					break;
+					if(y >= loc.getY() && y <= loc.getY() + (loc.getHeight()/2)){
+						System.out.println("SPINNER NORTH ACTIVE");
+						model.setActiveSpoke(NORTH);
+						break;
+					}
+					else if (y >= loc.getY() && y >= loc.getY() + (loc.getHeight()/2)){
+						System.out.println("SPINNER SOUTH ACTIVE");
+						model.setActiveSpoke(SOUTH);
+						break;
+					}
+					//Not Working
+					//else if(x <= loc.getX()  && x <= loc.getX() + (loc.getWidth())/2){
+					//	System.out.println("SPINNER EAST ACTIVE");
+					//	break;
+					//}
+					//else if(x >= loc.getX() && x <= loc.getX() + (loc.getWidth())/2){
+					//	System.out.println("SPINNER WEST ACTIVE");
+					//	break;
+					//}
 				case NORTH:
 					System.out.println("NORTH ACTIVE");
 					model.setActiveSpoke(NORTH);

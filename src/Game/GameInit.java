@@ -20,7 +20,6 @@ public class GameInit{
 		int turn = 1, round = 1;
 		Boolean gameOver;
 		String play;
-		int spoke;
 		ArrayList<Player> players = new ArrayList<Player>();
 		Scanner scan = new Scanner(System.in);
 		
@@ -84,20 +83,14 @@ public class GameInit{
 				System.out.println("Your hand: " + one.getHand());
 				//player one takes turn here
 				System.out.println("Click Domino then click Spoke. Press ENTER on console when ready...");
-				//1. Spoke South 2. Spoke North 3. Spoke East 4. Spoke West");
+				//0 = Spoke North, 1 = Spoke South, 2 = Spoke East, 3 = Spoke West");
 				//wait for user input on console to place domino on spoke
 				play = scan.nextLine();
-					if(model.getActiveSpoke() == -1){
-						System.out.println("Place " +model.getActive()+ " on Spinner.");
-						board.addToSpoke(1 , model.getActive());
-					}else{
 					System.out.println("Place " +model.getActive()+ " on Spoke " +model.getActiveSpoke()+".");
 					board.addToSpoke(model.getActiveSpoke() , model.getActive());
-					}
+					
 				//update GUI
 				view.update();
-				
-				//System.out.println(board.toString());
 				/*
 				 * Check if Player 1 has scored and if their score
 				 * is enough to win the game.
@@ -110,7 +103,7 @@ public class GameInit{
 						break;
 					}
 				}
-				System.out.println("Current board state");
+				//System.out.println("Current board state");
 				//System.out.println(board.toString());
 				if(one.getHand().isEmpty()){
 					break;
