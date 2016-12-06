@@ -128,43 +128,46 @@ public class DominoesView extends JFrame {
 		setLayout(new BorderLayout(2, 2));
 		this.model = model;
 		
-		Board board = new Board(new Domino(6,6)); //for testing board
+		//Board board = new Board(new Domino(6,6)); //for testing board
 
 		//north spoke test
-		board.addToSpoke(0, new Domino(6,4));
-		board.addToSpoke(0, new Domino(5,4));
-		board.addToSpoke(0, new Domino(5,5));
-		board.addToSpoke(0, new Domino(5,0));
-		board.addToSpoke(0, new Domino(2,0));
-		board.addToSpoke(0, new Domino(6,2));
+		//board.addToSpoke(0, new Domino(6,4));
+		//board.addToSpoke(0, new Domino(5,4));
+		//board.addToSpoke(0, new Domino(5,5));
+		//board.addToSpoke(0, new Domino(5,0));
+		//board.addToSpoke(0, new Domino(2,0));
+		//board.addToSpoke(0, new Domino(6,2));
 		
 		//south spoke test
-		board.addToSpoke(1, new Domino(6,3));
-		board.addToSpoke(1, new Domino(4,3));
-		board.addToSpoke(1, new Domino(4,4));
-		board.addToSpoke(1, new Domino(4,0));
-		board.addToSpoke(1, new Domino(0,0));
-		board.addToSpoke(1, new Domino(3,0));
+		//board.addToSpoke(1, new Domino(6,3));
+		//board.addToSpoke(1, new Domino(4,3));
+		//board.addToSpoke(1, new Domino(4,4));
+		//board.addToSpoke(1, new Domino(4,0));
+		//board.addToSpoke(1, new Domino(0,0));
+		//board.addToSpoke(1, new Domino(3,0));
+		
 		//east spoke test
-		board.addToSpoke(2, new Domino(6,5));
-		board.addToSpoke(2, new Domino(5,2));
-		board.addToSpoke(2, new Domino(2,2));
-		board.addToSpoke(2, new Domino(2,1));
-		board.addToSpoke(2, new Domino(6,1));
+		//board.addToSpoke(2, new Domino(6,5));
+		//board.addToSpoke(2, new Domino(5,2));
+		//board.addToSpoke(2, new Domino(2,2));
+		//board.addToSpoke(2, new Domino(2,1));
+		//board.addToSpoke(2, new Domino(6,1));
+		
 		//west spoke test
-		board.addToSpoke(3, new Domino(6,0));
-		board.addToSpoke(3, new Domino(1,0));
-		board.addToSpoke(3, new Domino(1,1));
-		board.addToSpoke(3, new Domino(5,1));
-		board.addToSpoke(3, new Domino(5,3));
-		board.addToSpoke(3, new Domino(3,3));
+		//board.addToSpoke(3, new Domino(6,0));
+		//board.addToSpoke(3, new Domino(1,0));
+		//board.addToSpoke(3, new Domino(1,1));
+		//board.addToSpoke(3, new Domino(5,1));
+		//board.addToSpoke(3, new Domino(5,3));
+		//board.addToSpoke(3, new Domino(3,3));
 		
 
-		System.out.println(board.toString());
+		//System.out.println(board.toString());
 		
-		this.model.setBoard(board);
+		//this.model.setBoard(board);
 		this.boardPanel = new BoardPanel(this.model);
-		//boardPanel.setPreferredSize(new Dimension(750,1000));
+		
+		boardPanel.setPreferredSize(new Dimension(750,1000));
 		
 //		JScrollPane scrollPane = new JScrollPane(boardPanel);
 //		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -195,17 +198,18 @@ public class DominoesView extends JFrame {
 		//model.setPlayerName(playerNumber, String) for changing names
 		//model.addPoints(playerNumber, points) for adding points
 		//score.updatePanel(model) redraws the score panel to reflect changes to model
-		model.addPoints(0, 310);
-		model.addPoints(1, 405);
-		model.addPoints(2, 515);
-		model.addPoints(3, 645);
-		model.setPlayerName(0, "Shane");
-		model.setPlayerName(1, "Marcus");
-		model.setPlayerName(2, "Rebecca");
-		model.setPlayerName(3, "Steve");
+		
+		model.addPoints(0, 0);
+		model.addPoints(1, 0);
+		model.addPoints(2, 0);
+		model.addPoints(3, 0);
+		model.setPlayerName(0, "Player");
+		model.setPlayerName(1, "CPU 1");
+		model.setPlayerName(2, "CPU 2");
+		model.setPlayerName(3, "CPU 3");
 		scorePanel.updatePanel(model);
 		//test values for updating players hand
-		model.addToPlayerHand(0, 7);
+		//model.addToPlayerHand(0, 7);
 		handView.update();
 		this.revalidate();
 		this.repaint();
