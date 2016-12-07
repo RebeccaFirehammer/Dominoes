@@ -275,23 +275,38 @@ public class GameModel {
 		return this.spoke;
 	}
 	
-	public void pass(){
+	public void gameOver(){
+		
+	}
+	
+	public void checkState(){
 		//if(!(players.get(currentPlayer).noPlay())){
-			//addPoints(currentPlayer, board.getBoardValue());
+		addPoints(currentPlayer, board.getBoardValue());
 		//}
-		currentPlayer = (currentPlayer + 1) % 4;
-		System.out.printf("Play passing to player %d\n", currentPlayer);
+		if(getPlayerTotalScore(currentPlayer) >= winningScore){
+			gameOver();
+		}
+	}
+	
+	public void pass(){
+		checkState();
+		setCurrentPlayer((currentPlayer + 1) % 4);
+		System.out.printf("Play passing to player %d\n", currentPlayer + 1);
 		takeTurn();
 	}
 	
 	public void takeTurn(){
-		if(players.get(currentPlayer) instanceof PlayerAI){
+		Player player = players.get(currentPlayer);
+		if(player instanceof PlayerAI){
 			System.out.printf("Player %d's turn\n", currentPlayer + 1);
 			((PlayerAI)players.get(currentPlayer)).takeTurn(board, boneyard);
 			pass();
 		}
 		else{
-			Player player = players.get(currentPlayer);
+			if(player.noPlay(board)){
+				System.out.printf("Player %d has no valid moves\n", currentPlayer + 1);
+				pass();
+			}
 			if((getActive() != null && players.get(currentPlayer).getHand().contains(getActive()) && getActiveSpoke() >= 0)){
 				if(board.getSpokes().get(getActiveSpoke()).isValidMove(getActive())){
 					board.addToSpoke(getActiveSpoke(), player.playDomino(player.getHand().indexOf(getActive())));
@@ -317,7 +332,7 @@ public class GameModel {
 				if(d.value() == 12){
 					spin = p.playDomino(p.getHand().indexOf(d));
 					board = new Board(spin);
-					currentPlayer = (players.indexOf(p) + 1) % 4;
+					setCurrentPlayer((players.indexOf(p) + 1) % 4);
 					System.out.printf("Player %d has the spinner, Player %d is active player\n", (players.indexOf(p) % 4) + 1, currentPlayer + 1);
 				}
 			}

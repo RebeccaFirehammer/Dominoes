@@ -153,6 +153,22 @@ public class Player {
 	public boolean isHandEmpty(){
 		return this.hand.size() == 0;
 	}
+	
+	public boolean noPlay(Board b){
+		int openSpokes = 2;
+		if(b.getSpokes().get(0).size() > 0 && b.getSpokes().get(1).size() > 0){
+			openSpokes = 4;
+		}
+		for(Domino d : getHand()){
+			for(int i = 0; i < openSpokes; i++){
+				if(d.getEndA() == b.getSpokes().get(i).getOpenValue() ||
+						d.getEndB() == b.getSpokes().get(i).getOpenValue()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * A string literal representation of this player.
