@@ -16,6 +16,8 @@ public class Player {
 	/** The player's hand */
 	private ArrayList<Domino> hand;
 	
+	private boolean noPlay;
+	
 	/**
 	 * Constructs a player consisting of a name, an initial round score of 0,
 	 * an initial score of 0 and a empty hand of Dominoes.
@@ -154,7 +156,11 @@ public class Player {
 		return this.hand.size() == 0;
 	}
 	
-	public boolean noPlay(Board b){
+	public boolean noPlay(){
+		return noPlay;
+	}
+	
+	public void checkPlay(Board b){
 		int openSpokes = 2;
 		if(b.getSpokes().get(0).size() > 0 && b.getSpokes().get(1).size() > 0){
 			openSpokes = 4;
@@ -163,11 +169,11 @@ public class Player {
 			for(int i = 0; i < openSpokes; i++){
 				if(d.getEndA() == b.getSpokes().get(i).getOpenValue() ||
 						d.getEndB() == b.getSpokes().get(i).getOpenValue()){
-					return false;
+					noPlay = false;
 				}
 			}
 		}
-		return true;
+		noPlay = true;
 	}
 
 	/**
