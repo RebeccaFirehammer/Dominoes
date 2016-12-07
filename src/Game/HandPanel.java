@@ -14,7 +14,7 @@ public class HandPanel extends JPanel implements ActionListener{
 	private ArrayList<Domino> dominoes;
 	private ArrayList<DominoImage> images;
 	private GameModel model;
-	public JButton button;
+	public JButton button, play;
 	
 	public HandPanel(){
 		this.dominoes = new ArrayList<>();
@@ -87,6 +87,9 @@ public class HandPanel extends JPanel implements ActionListener{
 			button.addActionListener(this);
 			this.add(button);
 		}
+		JButton play = new JButton("Play");
+		play.addActionListener(this);
+		add(play);
 	}
 	
 	@Override
@@ -98,7 +101,15 @@ public class HandPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		button = (JButton) e.getSource();
-		DominoImage icon = (DominoImage) button.getIcon();
-		model.setActive(icon.getDomino());	
+		String command = button.getActionCommand();
+		if(command.equals("Play")){
+			System.out.println("Play has been clicked");
+			model.takeTurn();
+		}
+		else{
+			DominoImage icon = (DominoImage) button.getIcon();
+			model.setActive(icon.getDomino());
+		}
+
 	}
 }
