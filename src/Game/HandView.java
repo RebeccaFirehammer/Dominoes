@@ -17,7 +17,7 @@ public class HandView extends JPanel{
 	private JLabel playerLabel;	
 	private HandPanel handPanel;	
 	private int width = 50;
-	private DominoesView view;
+	private HandPanelController handControl;
 	
 	
 	public HandView(String owner, ArrayList<Domino> hand){
@@ -37,7 +37,7 @@ public class HandView extends JPanel{
 //		this.add(imgLabel, BorderLayout.LINE_START);
 //		handPanel = new JPanel();
 		
-		handPanel = new HandPanel(width, model, view);
+		handPanel = new HandPanel(width, model, handControl);
 		this.add(handPanel, BorderLayout.CENTER);
 	}
 	
@@ -46,9 +46,9 @@ public class HandView extends JPanel{
 		
 	}
 	
-	public HandView(GameModel model, DominoesView view){
+	public HandView(GameModel model, HandPanelController control){
 		this.model = model;
-		this.view = view;
+		handControl = control;
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.setLayout(new BorderLayout());
 		
@@ -56,7 +56,7 @@ public class HandView extends JPanel{
 		playerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(playerLabel, BorderLayout.NORTH);
 		
-		handPanel = new HandPanel(width, model, view);
+		handPanel = new HandPanel(width, model, control);
 		this.add(handPanel, BorderLayout.CENTER);
 		
 	}

@@ -15,7 +15,6 @@ public class HandPanel extends JPanel /*implements ActionListener*/{
 	private ArrayList<DominoImage> images;
 	private GameModel model;
 	public JButton button, play;
-	private DominoesView view;
 	private HandPanelController handController;
 	
 	public HandPanel(){
@@ -29,10 +28,9 @@ public class HandPanel extends JPanel /*implements ActionListener*/{
 		this.side = width;
 	}
 	
-	public HandPanel(int width, GameModel model, DominoesView view){
+	public HandPanel(int width, GameModel model, HandPanelController control){
 		this.model = model;
-		this.view = view;
-		this.handController = new HandPanelController(view, model);
+		this.handController = control;
 		this.dominoes = model.getPlayers().get(0).getHand();
 		this.side = width;
 		this.images = new ArrayList<DominoImage>();

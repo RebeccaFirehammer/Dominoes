@@ -142,7 +142,8 @@ public class DominoesView extends JFrame {
 		scorePanel.setPreferredSize(new Dimension(215,0));
 		
 		//hand
-		this.handView = new HandView(this.model, this);
+		HandPanelController control = new HandPanelController(this, model);
+		this.handView = new HandView(this.model, control);
 		handView.setPreferredSize(new Dimension(200,150));
 		
 		//add components
