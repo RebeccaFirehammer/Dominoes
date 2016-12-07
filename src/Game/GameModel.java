@@ -279,12 +279,29 @@ public class GameModel {
 		
 	}
 	
+	public void endRound(){
+		int value = 0;
+		for(int i = 0; i < playerSize(); i++){
+			if(i == currentPlayer){
+				continue;
+			}
+			for(Domino d : players.get(i).getHand()){
+				value += d.value();
+			}
+		}
+		addPoints(currentPlayer, value - (value%5));
+	}
+	
 	public void checkState(){
-		//if(!(players.get(currentPlayer).noPlay())){
-		addPoints(currentPlayer, board.getBoardValue());
-		//}
+		if(!(players.get(currentPlayer).noPlay())){
+			addPoints(currentPlayer, board.getBoardValue());
+		}
 		if(getPlayerTotalScore(currentPlayer) >= winningScore){
 			gameOver();
+		}
+		if(players.get(currentPlayer).getHand().size() == 0 ||
+				(players.get(0).noPlay() && players.get(1).noPlay() && players.get(2).noPlay() && players.get(3).noPlay())){
+			endRound();
 		}
 	}
 	
@@ -303,7 +320,8 @@ public class GameModel {
 			pass();
 		}
 		else{
-			if(player.noPlay(board)){
+			player.checkPlay(board);
+			if(player.noPlay()){
 				System.out.printf("Player %d has no valid moves\n", currentPlayer + 1);
 				pass();
 			}
