@@ -34,6 +34,7 @@ public class StartPanelController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand() == Actions.START.name()){
 			GameMenuController menuController = new GameMenuController(model, view);
+			model.newGame();
 			view.gameScreen(model);
 			view.registerListeners(menuController);
 		}
