@@ -320,7 +320,7 @@ public class GameModel {
 			pass();
 		}
 		else{
-			player.checkPlay(board);
+			//player.checkPlay(board);
 			if(player.noPlay()){
 				System.out.printf("Player %d has no valid moves\n", currentPlayer + 1);
 				pass();
