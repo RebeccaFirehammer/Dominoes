@@ -55,7 +55,8 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 	        Runnable r = new Runnable(){ 
 	        	//adds rules to window
 	            public void run() {
-	                JOptionPane.showMessageDialog(null, new JLabel(html1 + "300" + html2 + rules));
+	                JOptionPane.showMessageDialog(null, new JLabel(html1 + "200" + html2 + rules));
+	                
 	            }
 	        };
 	        SwingUtilities.invokeLater(r);

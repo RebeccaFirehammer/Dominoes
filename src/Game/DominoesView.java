@@ -224,7 +224,8 @@ public class DominoesView extends JFrame {
 		scorePanel.updatePanel(model);
 		boardPanel.removeMouseListener(boardController);
 		boardPanel.updateBoard(model);
-		boardController = new BoardPanelController(actLocs, model);
+		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model);
 		boardPanel.addMouseListener(boardController);
+		validate();
 	}
 }
