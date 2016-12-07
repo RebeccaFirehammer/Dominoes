@@ -348,22 +348,22 @@ public class PlayerAI extends Player{
 	 * PlayerAI, generating a board with a random spinner
 	 * to start play
 	 */
-	public static void main(String args[]){
+	/*public static void main(String args[]){
 		int turn = 1, round = 1;
 		boolean gameOver = false;
 		PlayerAI player = new PlayerAI("AI", 1);
 		PlayerAI player2 = new PlayerAI("AI 2", 2);
-		/*
+		
 		 * Two AI players play against each other
-		 */
+		 
 		while(!gameOver){
 			Boneyard btest = new Boneyard(6);
 			btest.shuffle();
 			Domino spin = new Domino(btest.draw());
-			/*
+			
 			 * Draw from boneyard until a valid double is found, then
 			 * create a new board using that double as the spinner.
-			 */
+			 
 			while(!(spin.isDouble())){
 				btest.add(spin);
 				btest.shuffle();
@@ -372,9 +372,9 @@ public class PlayerAI extends Player{
 			Board board = new Board(spin);
 			player.addToHand(btest.drawHand(7));
 			player2.addToHand(btest.drawHand(7));
-			/*
+			
 			 * Play through a round until either player's hand is empty or no more plays are possible
-			 */
+			 
 			while(!(player.isHandEmpty() || player2.isHandEmpty())){
 				System.out.printf("----------Round %d Turn %d----------\n", round, turn);
 				System.out.println("Current board state");
@@ -382,10 +382,10 @@ public class PlayerAI extends Player{
 				System.out.println("Player 1's turn");
 				System.out.println(player.getHand());
 				player.takeTurn(board, btest);
-				/*
+				
 				 * Check if Player 1 has scored and if their score
 				 * is enough to win the game.
-				 */
+				 
 				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 ==0){
 					player.addPoints(board.getBoardValue());
 					System.out.printf("Player 1's score is round: %d\ttotal: %d\n", player.getRoundScore(), player.getTotalScore());
@@ -402,10 +402,10 @@ public class PlayerAI extends Player{
 				System.out.println("Player 2's turn");
 				System.out.println(player2.getHand());
 				player2.takeTurn(board, btest);
-				/*
+				
 				 * Check if Player 2 has scored and if their score
 				 * is enough to win the game.
-				 */
+				 
 				if(board.getBoardValue() > 0 && board.getBoardValue() % 5 == 0){
 					player2.addPoints(board.getBoardValue());
 					System.out.printf("Player 2's score is round: %d\ttotal: %d\n", player2.getRoundScore(), player2.getTotalScore());
@@ -414,10 +414,10 @@ public class PlayerAI extends Player{
 						break;
 					}
 				}
-				/*
+				
 				 * Check to see if both Player 1 and Player 2 are unable to make
 				 * valid plays. 
-				 */
+				 
 				if(player.noPlay() && player2.noPlay()){
 					System.out.println("Neither player is able to make a move, end of round.");
 					break;
@@ -427,11 +427,11 @@ public class PlayerAI extends Player{
 			if(gameOver){
 				break;
 			}
-			/*
+			
 			 * If the round has ended due to a player emptying their hand,
 			 * the other AI player gives their hand value (rounded down to nearest 5)
 			 * to the winning player.
-			 */
+			 
 			int handScore = 0;
 			if(player.isHandEmpty()){
 				for(Domino d : player2.getHand()){
@@ -456,5 +456,5 @@ public class PlayerAI extends Player{
 			turn = 1;
 		}
 		System.out.printf("Game Over\nFinal Score: Player 1: %d\tPlayer2: %d\n", player.getTotalScore(), player2.getTotalScore());
-	}
+	}*/
 }
