@@ -9,12 +9,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class HandPanel extends JPanel implements ActionListener{
+public class HandPanel extends JPanel /*implements ActionListener*/{
 	private int side;
 	private ArrayList<Domino> dominoes;
 	private ArrayList<DominoImage> images;
 	private GameModel model;
 	public JButton button, play;
+	private DominoesView view;
+	private HandPanelController handController;
 	
 	public HandPanel(){
 		this.dominoes = new ArrayList<>();
@@ -27,8 +29,10 @@ public class HandPanel extends JPanel implements ActionListener{
 		this.side = width;
 	}
 	
-	public HandPanel(int width, GameModel model){
+	public HandPanel(int width, GameModel model, DominoesView view){
 		this.model = model;
+		this.view = view;
+		this.handController = new HandPanelController(view, model);
 		this.dominoes = model.getPlayers().get(0).getHand();
 		this.side = width;
 		this.images = new ArrayList<DominoImage>();
@@ -84,11 +88,11 @@ public class HandPanel extends JPanel implements ActionListener{
 		for(DominoImage i : images){
 			JButton button = new JButton(i);
 			button.setPreferredSize(new Dimension(i.getIconWidth(), i.getIconHeight()));
-			button.addActionListener(this);
+			button.addActionListener(handController);
 			this.add(button);
 		}
 		JButton play = new JButton("Play");
-		play.addActionListener(this);
+		play.addActionListener(handController);
 		add(play);
 	}
 	
@@ -98,18 +102,19 @@ public class HandPanel extends JPanel implements ActionListener{
 		this.setBackground(Color.CYAN);
 	}
 
-	@Override
+	/*@Override
 	public void actionPerformed(ActionEvent e) {
 		button = (JButton) e.getSource();
 		String command = button.getActionCommand();
 		if(command.equals("Play")){
 			System.out.println("Play has been clicked");
 			model.takeTurn();
+			
 		}
 		else{
 			DominoImage icon = (DominoImage) button.getIcon();
 			model.setActive(icon.getDomino());
 		}
-
-	}
+		
+	}*/
 }

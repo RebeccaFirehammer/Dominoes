@@ -45,6 +45,8 @@ public class DominoesView extends JFrame {
 	/** The hand panel that displays the hand of the player */
 	private HandView handView;
 	
+	private HandPanelController handController;
+	
 	private JPanel startPanel;
 	
 	private boolean screen;
@@ -133,15 +135,14 @@ public class DominoesView extends JFrame {
 		boardPanel.setPreferredSize(new Dimension(750,1000));
 		
 		boardController = new BoardPanelController(actLocs, model);
-		boardPanel.addMouseListener(boardController);
-		
+		boardPanel.addMouseListener(boardController);		
 		
 		//scoreboard
 		this.scorePanel = new ScorePanel(this.model);
 		scorePanel.setPreferredSize(new Dimension(215,0));
 		
 		//hand
-		this.handView = new HandView(this.model);
+		this.handView = new HandView(this.model, this);
 		handView.setPreferredSize(new Dimension(200,150));
 		
 		//add components
@@ -191,6 +192,7 @@ public class DominoesView extends JFrame {
 			}
 		}
 	}
+
 		
 	/**
 	 * Paints graphics components
