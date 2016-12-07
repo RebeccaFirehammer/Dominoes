@@ -104,10 +104,6 @@ public class DominoesView extends JFrame {
 		JButton rules = new JButton("Rules");
 		rules.setActionCommand(Actions.RULES.name());
 		
-		//Options button
-		JButton options = new JButton("Options");
-		options.setActionCommand(Actions.OPTIONS.name());
-		
 		//Exit button
 		JButton exit = new JButton("Exit");
 		exit.setActionCommand(Actions.EXIT.name());
@@ -115,7 +111,6 @@ public class DominoesView extends JFrame {
 		//add buttons
 		startPanel.add(start, gbc);
 		startPanel.add(rules, gbc);
-		startPanel.add(options, gbc);
 		startPanel.add(exit, gbc);
 		
 		//add button panel

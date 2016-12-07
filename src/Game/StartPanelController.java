@@ -69,10 +69,7 @@ public class StartPanelController implements ActionListener {
 	        };
 	        SwingUtilities.invokeLater(r);
 		}
-		else if(e.getActionCommand() == Actions.OPTIONS.name()){
-			//add options later
-			
-		}else if (e.getActionCommand() == Actions.EXIT.name()){
+		else if (e.getActionCommand() == Actions.EXIT.name()){
 			System.exit(0);
 		}
 	}
