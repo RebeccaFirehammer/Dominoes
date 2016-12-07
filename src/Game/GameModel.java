@@ -293,11 +293,13 @@ public class GameModel {
 		else{
 			Player player = players.get(currentPlayer);
 			if((getActive() != null && players.get(currentPlayer).getHand().contains(getActive()) && getActiveSpoke() >= 0)){
-				board.addToSpoke(getActiveSpoke(), player.playDomino(player.getHand().indexOf(getActive())));
-				pass();
-			}
-			else{
-				System.out.println("Not a valid play");
+				if(board.getSpokes().get(getActiveSpoke()).isValidMove(getActive())){
+					board.addToSpoke(getActiveSpoke(), player.playDomino(player.getHand().indexOf(getActive())));
+					pass();
+				}
+				else{
+					System.out.println("Not a valid play");
+				}
 			}
 		}
 	}
