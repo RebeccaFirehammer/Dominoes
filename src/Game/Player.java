@@ -170,6 +170,7 @@ public class Player {
 				if(d.getEndA() == b.getSpokes().get(i).getOpenValue() ||
 						d.getEndB() == b.getSpokes().get(i).getOpenValue()){
 					noPlay = false;
+					return;
 				}
 			}
 		}
