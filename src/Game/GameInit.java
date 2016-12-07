@@ -11,6 +11,22 @@ import javax.swing.JFrame;
  *  with a user Player and 3 AI Players
  */
 public class GameInit{
+	public static void Init(Boneyard b, Board board){
+		//initialize boneyard of double-6 dominoes
+		Boneyard yard = new Boneyard(6);
+		yard.shuffle();
+		//finds spinner by drawing from boneyard
+		Domino spin = new Domino(yard.draw());
+		while(!(spin.isDouble())){
+			yard.add(spin);
+			yard.shuffle();
+			spin = yard.draw();
+		}	
+		//add spinner to board
+		board = new Board(spin);
+		//model.setBoard(board);
+	}
+	
 	private boolean noPlay;
 	
 	public boolean noPlay(){

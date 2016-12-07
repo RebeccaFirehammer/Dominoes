@@ -48,11 +48,11 @@ public class GameModel {
 	 * 		  to win this game
 	 */
 	public GameModel(ArrayList<Player> players, int winningScore){
-		this.boneyard = new Boneyard();
-		this.board = new Board();
+		boneyard = new Boneyard();
+		board = new Board();
 		this.players = players;
-		this.winningScore = (winningScore <= 5 && winningScore % 5 == 0 ) ? winningScore : 250;
-		currentPlayer = 0;
+		winningScore = (winningScore <= 5 && winningScore % 5 == 0 ) ? winningScore : 250;
+		System.out.println("Creating GameModel");
 	}
 	
 	/**
@@ -231,8 +231,9 @@ public class GameModel {
 	 * @param playerNum The number of players to be created
 	 */
 	private void makePlayers(int playerNum){
-		for(int i = 1; i <= playerNum; i++){
-			this.players.add(new Player("Player" + i));
+		this.players.add(new Player("Player"));
+		for(int i = 2; i <= playerNum; i++){
+			players.add(new PlayerAI("AI " + i, (i%2) + 1));
 		}
 	}
 	
@@ -273,14 +274,57 @@ public class GameModel {
 	public int getActiveSpoke(){
 		return this.spoke;
 	}
+	
+	public void pass(){
+		//if(!(players.get(currentPlayer).noPlay())){
+			//addPoints(currentPlayer, board.getBoardValue());
+		//}
+		currentPlayer = (currentPlayer + 1) % 4;
+		System.out.printf("Play passing to player %d\n", currentPlayer);
+		takeTurn();
+	}
+	
+	public void takeTurn(){
+		if(players.get(currentPlayer) instanceof PlayerAI){
+			System.out.printf("Player %d's turn\n", currentPlayer + 1);
+			((PlayerAI)players.get(currentPlayer)).takeTurn(board, boneyard);
+			pass();
+		}
+		else{
+			Player player = players.get(currentPlayer);
+			if((getActive() != null && players.get(currentPlayer).getHand().contains(getActive()) && getActiveSpoke() >= 0)){
+				board.addToSpoke(getActiveSpoke(), player.playDomino(player.getHand().indexOf(getActive())));
+			}
+			else{
+				System.out.println("Not a valid play");
+			}
+		}
+	}
 
 	public void newGame() {
 		clearGame();
-		this.boneyard = new Boneyard();
+		boneyard = new Boneyard(6);
+		boneyard.shuffle();
+		Domino spin;
+		//this.players = players;
+		//System.out.println(players);
+		for(Player p : players){
+			p.addToHand(boneyard.drawHand(7));
+			for(Domino d : p.getHand()){
+				if(d.value() == 12){
+					spin = p.playDomino(p.getHand().indexOf(d));
+					board = new Board(spin);
+					currentPlayer = (players.indexOf(p) + 1) % 4;
+					System.out.printf("Player %d has the spinner, Player %d is active player\n", (players.indexOf(p) % 4) + 1, currentPlayer + 1);
+				}
+			}
+		}
+		takeTurn();
+		/*this.boneyard = new Boneyard(6);
 		boneyard.shuffle();
 		for(int i = 0; i < this.playerSize(); i++){
 			addToPlayerHand(i,7);
-		}		
+		}*/		
 	}
 	
 }
