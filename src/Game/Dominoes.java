@@ -6,6 +6,10 @@ import javax.swing.JFrame;
 
 public class Dominoes {
 		
+	/**
+	 * Executes the Dominoes application
+	 * @param args
+	 */
 	public static void main(String args[]){
 			GameModel model = new GameModel();
 			DominoesView view = new DominoesView();
@@ -13,7 +17,7 @@ public class Dominoes {
 			
 			view.registerListeners(controller);
 			view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			view.setMinimumSize(new Dimension(800,800));
+			view.setMinimumSize(new Dimension(1000,800));
 			view.setResizable(false);
 			view.setVisible(true);
 	}

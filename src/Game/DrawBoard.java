@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Draws a Board containing Dominoes.
+ */
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -46,12 +50,34 @@ public class DrawBoard {
 	/** The length of the short side of the Domino */
 	private int sideS;
 	
+	/**
+	 * The width of the board
+	 */
 	private int width;
 	
+	/**
+	 * The height of the board
+	 */
 	private int height;
 	
+	/**
+	 * An ArrayList of ActiveLocation objects representing the locations
+	 * of the Dominoes that can be played off of
+	 */
 	private ArrayList<ActiveLocation> actLocs;
 	
+	/**
+	 * Constructs a new DrawBoard object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param x The x location of the spinner
+	 * @param y The y location of the spinner
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 * @param boneColor The background color of the Domino
+	 * @param pipColor The pip color of the Domino
+	 * @param barColor The bar color of the Domino
+	 */
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor, Color pipColor, Color barColor){
 		this.g = g;
 		this.board = board;
@@ -72,39 +98,107 @@ public class DrawBoard {
 		draw();
 	}
 	
+	/**
+	 * Constructs a new DrawBoard object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param x The x location of the spinner
+	 * @param y The y location of the spinner
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 * @param boneColor The background color of the Domino
+	 * @param pipColor The pip color of the Domino
+	 */
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor, Color pipColor){
 		this(g, board, x, y, width, height, boneColor, pipColor, pipColor);
 	}
 	
+	/**
+	 * Constructs a new DrawBoard object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param x The x location of the spinner
+	 * @param y The y location of the spinner
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 * @param boneColor The background color of the Domino
+	 */
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height, Color boneColor){
 		this(g, board, x, y, width, height, boneColor, Color.BLACK);
 	}
 	
+	/**
+	 * Constructs a new DrawBoard object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 * @param boneColor The background color of the Domino
+	 * @param pipColor The pip color of the Domino
+	 */
 	public DrawBoard(Graphics g, Board board, int width, int height, Color boneColor, Color pipColor){
 		this(g, board, width/2, height/2, width, height,  boneColor, pipColor);
 	}
 	
+	/**
+	 * Constructs a new DrawBoard object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 * @param boneColor The background color of the Domino
+	 */
 	public DrawBoard(Graphics g, Board board, int width, int height, Color boneColor){
 		this(g, board, width/2, height/2, width, height,  boneColor, Color.BLACK);
 	}
 	
+	/**
+	 * Construcs a new DrawDomino object.
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param x The x location of the spinner
+	 * @param y The y location of the spinner
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 */
 	public DrawBoard(Graphics g, Board board, int x, int y, int width, int height){
 		this(g, board, x, y, width, height, Color.WHITE);
 	}
 
-	
+	/**
+	 * Constructs a new DrawDomino object
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param x The x location of the spinner
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 */
 	public DrawBoard(Graphics g, Board board, int x, int width, int height){
 		this(g, board, x, height/2, width, height);
 	}
 	
+	/**
+	 * Constructs a new DrawDomino object
+	 * @param g A graphics object
+	 * @param board The game board
+	 * @param width The width of the board
+	 * @param height The height of the board
+	 */
 	public DrawBoard(Graphics g, Board board, int width, int height){
 		this(g, board, width/2, width, height);
 	}
 	
+	/**
+	 * Returns a list specifying the location of the playable Dominoes.
+	 * @return An ArrayList of ActiveLocation objects
+	 */
 	public ArrayList<ActiveLocation> getActiveLocations(){
 		return actLocs;
 	}
 	
+	/**
+	 * Draws the Dominoes on the board.
+	 */
 	private void draw(){
 		//draw spinner
 		g.drawImage(cImg, x - (sideS/2), y - (sideL/2), null);
@@ -117,6 +211,10 @@ public class DrawBoard {
 		drawWest(board.getSpokes().get(3));
 	}
 	
+	/***
+	 * Draws the north spoke on the board.
+	 * @param spoke A spoke object
+	 */
 	private void drawNorth(Spoke spoke){
 		//coordinates for drawing next Domino
 		final int NORTH = 0;
@@ -214,6 +312,10 @@ public class DrawBoard {
 		actLocs.add(al);
 	}
 	
+	/**
+	 * Draws the south spoke on the board.
+	 * @param spoke A spoke object
+	 */
 	private void drawSouth(Spoke spoke){
 		//coordinates for drawing next Domino
 		final int SOUTH = 1;
@@ -338,6 +440,10 @@ public class DrawBoard {
 		actLocs.add(al);
 	}
 	
+	/**
+	 * Draws the east spoke on the board.
+	 * @param spoke A spoke object
+	 */
 	private void drawEast(Spoke spoke){
 		final int EAST = 2;
 		ActiveLocation al = new ActiveLocation(EAST, 0, 0 ,0, 0);
@@ -348,7 +454,6 @@ public class DrawBoard {
 		int xReq = 0;
 		boolean up = false;
 		boolean back = false;
-		boolean down = false;
 		
 		//draw spoke
 		for(int i = 0; i < spoke.getSpoke().size(); i++){
@@ -476,6 +581,10 @@ public class DrawBoard {
 		actLocs.add(al);
 	}
 	
+	/**
+	 * Draws the west spoke on the board.
+	 * @param spoke A spoke object
+	 */
 	private void drawWest(Spoke spoke){
 		final int WEST = 3;
 		ActiveLocation al = new ActiveLocation(WEST, 0, 0 ,0, 0);

@@ -25,6 +25,10 @@ public class Domino implements Comparable<Domino> {
 		this.endAOpen = false;
 	}
 	
+	/**
+	 * Constructs a new Domino from a specified Domino.
+	 * @param d A Domino object
+	 */
 	public Domino(Domino d){
 		this(d.getEndA(), d.getEndB());
 	}

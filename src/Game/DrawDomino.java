@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Draws a Domino object
+ */
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,33 +14,63 @@ import javax.swing.ImageIcon;
 
 public class DrawDomino{
 	
+	/**
+	 * The size of each end of the Domino
+	 */
 	private int endSize;
 	
+	/**
+	 * The size of the Domino pips
+	 */
 	private int pipSize;
 		
+	/**
+	 * The Domino that will be drawn
+	 */
 	private Domino bone;
 	
+	/**
+	 * The size of the bar in the middle of the Domino
+	 */
 	private int barSize;
 	
+	/**
+	 * A BufferedImage of the Domino
+	 */
 	private BufferedImage image;
 	
+	/**
+	 * An ArrayList of Dimensions that specify the pip locations
+	 */
 	private ArrayList<Dimension> loc;
 	
+	/**
+	 * A boolean value specifying if the Domino is flipped 90 degrees
+	 */
 	private boolean flip = false;
 	
+	/**
+	 * The color of the bar
+	 */
 	private Color barColor;
 	
+	/**
+	 * The color of the background of the Domino
+	 */
 	private Color boneColor;
 	
+	/**
+	 * The pip color of the Domino
+	 */
 	private Color pipColor;
 		
 	/**
-	 * 
-	 * @param bone
-	 * @param size
-	 * @param boneColor
-	 * @param pipColor
-	 * @param barColor
+	 * Constructs a new DrawDomino object
+	 * @param bone The Domino
+	 * @param size The size of the Domino
+	 * @param boneColor The background color of the Domino
+	 * @param pipColor The color of the pips
+	 * @param barColor The color of the bar
 	 */
 	public DrawDomino(Domino bone, int size, Color boneColor, Color pipColor, Color barColor){
 		this.bone = bone;
@@ -51,50 +85,53 @@ public class DrawDomino{
 	}
 	
 	/**
-	 * 
-	 * @param d
-	 * @param size
-	 * @param boneColor
-	 * @param pipColor
+	 * Constructs a new DrawDomino object
+	 * @param bone The Domino
+	 * @param size The size of the Domino
+	 * @param boneColor The background color of the Domino
+	 * @param pipColor The color of the pipsr
 	 */
 	public DrawDomino(Domino d, int size, Color boneColor, Color pipColor){
 		this(d, size, boneColor, pipColor, pipColor);
 	}
 	
 	/**
-	 * 
-	 * @param d
-	 * @param size
-	 * @param color
+	 * Constructs a new DrawDomino object
+	 * @param bone The Domino
+	 * @param size The size of the Domino
+	 * @param color The background color of the Domino
 	 */
 	public DrawDomino(Domino d, int size, Color color){
 		this(d, size, color.WHITE, color, color);
 	}
 	
 	/**
-	 * 
-	 * @param d
-	 * @param size
+	 * Constructs a new DrawDomino object
+	 * @param bone The Domino
+	 * @param size The size of the Domino
 	 */
 	public DrawDomino(Domino d, int size){
 		this(d, size, Color.BLACK);
 	}
 	
 	/**
-	 * 
-	 * @param d
+	 * Construcst a new DrawDomin object
+	 * @param d The domino
 	 */
 	public DrawDomino(Domino d){
 		this(d, 20);
 	}
 	
 	/**
-	 * 
+	 * Constructs a new DrawDomino object
 	 */
 	public DrawDomino(){
 		this(new Domino(0,0));
 	}
 	
+	/**
+	 * Draws the domino
+	 */
 	public void draw(){
 		int pipsA = bone.getEndA();
 		int pipsB = bone.getEndB();
@@ -121,6 +158,10 @@ public class DrawDomino{
 		g.drawImage(bEnd, 0, (endSize + barSize), null);
 	}
 	
+	/**
+	 * Resizes the Domino
+	 * @param size The size of the domino
+	 */
 	public void resize(int size){
 		endSize = (size < 12) ? 12 : size;
 		barSize = (endSize / 25 > 0) ? (endSize / 25) : 1;
@@ -128,6 +169,10 @@ public class DrawDomino{
 		draw();
 	}
 	
+	/**
+	 * Draws the bar on the Domino
+	 * @param g A graphics object
+	 */
 	private void drawBar(Graphics g){
 		g.setColor(boneColor);
 		g.fill3DRect(1, endSize, endSize, barSize, false);
@@ -135,6 +180,12 @@ public class DrawDomino{
 		g.fill3DRect(1, endSize, endSize, barSize, false);
 	}
 		
+	/***
+	 * Draws a pip
+	 * @param g A graphics object
+	 * @param x The x location
+	 * @param y The y location
+	 */
 	public void drawPip(Graphics g, int x, int y){
 		//g.fillOval(x, y, pipSize, pipSize);
 		g.fillArc(x, y, pipSize, pipSize, 0, 360);
@@ -143,11 +194,27 @@ public class DrawDomino{
 		
 	}
 	
+	/**
+	 * Draws a pi
+	 * @param g A graphics object
+	 * @param x The x location
+	 * @param y The y location
+	 * @param color The color of the pip
+	 */
 	public void drawPip(Graphics g, int x, int y, Color color){
 		g.setColor(color);
 		drawPip(g, x, y);
 	}
 	
+	/**
+	 * Draws one end of the Domino
+	 * @param g A graphics object
+	 * @param pips The number of pips
+	 * @param x The x location
+	 * @param y The y location
+	 * @param dColor The color of the Domino
+	 * @param pColor The pip color of the  domino
+	 */
 	public void drawEnd(Graphics g, int pips, int x, int y, Color dColor, Color pColor){
 		g.setColor(dColor);
 		g.fill3DRect(x, y, endSize, endSize, true);
@@ -183,6 +250,12 @@ public class DrawDomino{
 		}
 	}
 	
+	/**
+	 * Determines where the pips will be drawn.
+	 * @param pips The number of pips
+	 * @param x The x location
+	 * @param y The y location
+	 */
 	private void locations(int pips, int x, int y){
 		loc.clear();
 		int nextX = 0;
@@ -219,10 +292,17 @@ public class DrawDomino{
 		}
 	}
 		
+	/**
+	 * Returns a buffered image of this Domino
+	 * @return A buffered image
+	 */
 	public BufferedImage getBufferedImage(){
 		return image;
 	}
 	
+	/**
+	 * Rotates the Domino by 90 degrees
+	 */
 	public void rotate(){
 		if(!flip){
 			BufferedImage temp = new BufferedImage(image.getHeight(), image.getWidth(),
@@ -239,25 +319,43 @@ public class DrawDomino{
 		}
 	}
 	
+	/**
+	 * Inverts the ends of the Domino
+	 */
 	public void invert(){
 		bone.flipEndA();
 		draw();
 	}
 	
+	/**
+	 * Returns an image icon of this Domino object
+	 * @return A image icon
+	 */
 	public ImageIcon getImageIcon(){
 		return new ImageIcon(image);
 	}
 	
+	/**
+	 * Returns the width of this Domino.
+	 * @return An integer value specifying the width
+	 */
 	public int getWidth(){
 		return (!flip) ? endSize : (this.endSize * 2) + barSize;
 	}
 	
+	/**
+	 * Returns the height of this Domino.
+	 * @return An integer value specifying the height of the Domino
+	 */
 	public int getHeight(){
 		return (!flip) ? (this.endSize * 2) + barSize : endSize;
 	}
 		
+	/**
+	 * Returns A Domino
+	 * @return A Domino object
+	 */
 	public Domino getDomino(){
 		return this.bone;
-	}
-		
+	}	
 }
