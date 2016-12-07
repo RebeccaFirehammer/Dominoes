@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Dominoes {
-		
+	
 	public static void main(String args[]){
 			GameModel model = new GameModel();
 			DominoesView view = new DominoesView();
