@@ -138,7 +138,7 @@ public class DominoesView extends JFrame {
 		
 		boardPanel.setPreferredSize(new Dimension(750,1000));
 		
-		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model);
+		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model, this);
 		boardPanel.addMouseListener(boardController);		
 		
 		//scoreboard
@@ -208,7 +208,7 @@ public class DominoesView extends JFrame {
 			title(g);
 		}else{
 			try{
-				update();
+				update(model);
 			}catch(NullPointerException e){
 				//System.out.println("null");
 			}
@@ -235,8 +235,13 @@ public class DominoesView extends JFrame {
 		scorePanel.updatePanel(model);
 		boardPanel.removeMouseListener(boardController);
 		boardPanel.updateBoard(model);
-		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model);
+		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model, this);
 		boardPanel.addMouseListener(boardController);
 		validate();
+	}
+	
+	public void update(GameModel model){
+		this.model = model;
+		update();
 	}
 }
