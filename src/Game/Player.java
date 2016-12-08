@@ -161,6 +161,7 @@ public class Player {
 	}
 	
 	public void checkPlay(Board b){
+		noPlay = false;
 		int openSpokes = 2;
 		if(b.getSpokes().get(0).size() > 0 && b.getSpokes().get(1).size() > 0){
 			openSpokes = 4;
@@ -169,7 +170,7 @@ public class Player {
 			for(int i = 0; i < openSpokes; i++){
 				if(d.getEndA() == b.getSpokes().get(i).getOpenValue() ||
 						d.getEndB() == b.getSpokes().get(i).getOpenValue()){
-					noPlay = false;
+					//noPlay = false;
 					return;
 				}
 			}
