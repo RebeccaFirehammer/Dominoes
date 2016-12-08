@@ -102,7 +102,7 @@ public class Board {
 	 * 		   on the board.
 	 * @return An integer value specifying the total value of the open pips
 	 */
-	private int openPipsTotal(){
+	public int openPipsTotal(){
 		int value = 0;
 		for(Spoke s: this.spokes){
 			if((s.size() - 1 >= 0) && s.getSpoke().get(s.size() - 1).isDouble()){

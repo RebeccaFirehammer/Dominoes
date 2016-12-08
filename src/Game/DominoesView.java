@@ -227,6 +227,10 @@ public class DominoesView extends JFrame {
 		g.drawString("DOMINOES", x + (x/15), y);
 	}
 	
+	public HandView getHandView(){
+		return this.handView;
+	}
+	
 	/**
 	 * Updates the view.
 	 */

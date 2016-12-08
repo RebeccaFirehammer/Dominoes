@@ -20,11 +20,13 @@ public class HandPanelController implements ActionListener {
 		if (command.equals("Play")) {
 			System.out.println("Play has been clicked");
 			model.takeTurn();
+			view.getHandView().setStatus("Pip Total: " + model.getBoard().openPipsTotal());
 
 		} else {
 			JButton button = (JButton) e.getSource();
 			DominoImage icon = (DominoImage) button.getIcon();
 			model.setActive(icon.getDomino());
+			view.getHandView().setStatus("Selected Domino: " + icon.getDomino());
 
 		}
 		view.update(model);

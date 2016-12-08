@@ -18,6 +18,7 @@ public class HandView extends JPanel{
 	private HandPanel handPanel;	
 	private int width = 50;
 	private HandPanelController handControl;
+	JLabel statusBar;
 	
 	
 	public HandView(String owner, ArrayList<Domino> hand){
@@ -59,6 +60,9 @@ public class HandView extends JPanel{
 		handPanel = new HandPanel(width, model, control);
 		this.add(handPanel, BorderLayout.CENTER);
 		
+		statusBar = new JLabel(" ");
+		this.add(statusBar, BorderLayout.SOUTH);
+		
 	}
 	
 	public HandView(){
@@ -71,6 +75,10 @@ public class HandView extends JPanel{
 	
 	public void setHand(ArrayList<Domino> hand){
 		this.hand = hand;
+	}
+	
+	public void setStatus(String s){
+		statusBar.setText(s);
 	}
 	
 	public void update(){
