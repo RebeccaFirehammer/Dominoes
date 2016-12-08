@@ -27,7 +27,7 @@ public class HandPanelController implements ActionListener {
 			model.setActive(icon.getDomino());
 
 		}
-		view.update();
+		view.update(model);
 
 	}
 }
