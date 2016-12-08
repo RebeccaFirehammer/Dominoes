@@ -5,11 +5,6 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Dominoes {
-		
-	/**
-	 * Executes the Dominoes application
-	 * @param args
-	 */
 	public static void main(String args[]){
 			GameModel model = new GameModel();
 			DominoesView view = new DominoesView();
