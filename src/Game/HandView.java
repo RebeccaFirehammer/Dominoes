@@ -60,7 +60,7 @@ public class HandView extends JPanel{
 		handPanel = new HandPanel(width, model, control);
 		this.add(handPanel, BorderLayout.CENTER);
 		
-		statusBar = new JLabel(" ");
+		statusBar = new JLabel("Pip Total: " + model.getBoard().openPipsTotal());
 		this.add(statusBar, BorderLayout.SOUTH);
 		
 	}
