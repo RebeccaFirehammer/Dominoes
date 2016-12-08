@@ -1,5 +1,9 @@
 package Game;
 
+/**
+ * Creates a game menu controller
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -11,10 +15,21 @@ import javax.swing.SwingUtilities;
 
 public class GameMenuController extends KeyAdapter implements ActionListener {
 
+	/**
+	 * The Game Model
+	 */
 	private GameModel model;
 	
+	/**
+	 * The Game view
+	 */
 	private DominoesView view;
 	
+	/**
+	 * A Game Menu Controller
+	 * @param model The game Model
+	 * @param view The game view
+	 */
 	public GameMenuController(GameModel model, DominoesView view){
 		this.model = model;
 		this.view = view;
