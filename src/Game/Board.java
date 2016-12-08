@@ -29,16 +29,26 @@ public class Board {
 		setSpinner(spinner);
 	}
 	
+	/**
+	 * Constructs a new Board from a Board object.
+	 * @param board A board object
+	 */
 	public Board(Board board){
 		this.spinner = board.getSpinner();
 		this.spokes = board.getSpokes();
 	}
 	
+	/**
+	 * Constructs an empty board.
+	 */
 	public Board(){
 		this(new Domino(-1, -1));
 	}
 	
-	private final int NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3;
+	/**
+	 * Locations of the North and South spokes
+	 */
+	private final int NORTH = 0, SOUTH = 1;
 	
 	/**
 	 * Changes the spinner to a new spinner if the current spinner is currently null

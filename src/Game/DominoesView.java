@@ -1,7 +1,5 @@
 package Game;
 
-
-
 /**
  * 
  */
@@ -14,18 +12,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class DominoesView extends JFrame {
@@ -45,15 +38,25 @@ public class DominoesView extends JFrame {
 	/** The hand panel that displays the hand of the player */
 	private HandView handView;
 	
+	/**
+	 * Controller for the HandPanel
+	 */
 	private HandPanelController handController;
 	
+	/**
+	 * The startPanel
+	 */
 	private JPanel startPanel;
 	
+	/**
+	 * Boolean value used to determine which screen to display
+	 */
 	private boolean screen;
 	
+	/**
+	 * Controller for the BoardPanel
+	 */
 	private BoardPanelController boardController;
-	
-	private ArrayList<ActiveLocation> actLocs;
 	
 	private enum Actions{
 		START,
@@ -69,7 +72,6 @@ public class DominoesView extends JFrame {
 	 */
 	public DominoesView(){
 		super("Dominoes");
-		actLocs = new ArrayList<ActiveLocation>();
 		
 		//add icon
 		ImageIcon dominoIcon = new ImageIcon("Images/Domino-icon.png");
@@ -81,6 +83,9 @@ public class DominoesView extends JFrame {
 		startScreen();
 	}
 	
+	/**
+	 * Displays the start screen
+	 */
 	public void startScreen(){
 		screen = true;	
 		this.getContentPane().setBackground(Color.BLACK);	
@@ -119,6 +124,10 @@ public class DominoesView extends JFrame {
 		repaint();
 	}
 	
+	/**
+	 * Displays the Game.
+	 * @param model The game mode
+	 */
 	public void gameScreen(GameModel model){
 		screen = false;
 		this.getContentPane().removeAll();
@@ -129,7 +138,7 @@ public class DominoesView extends JFrame {
 		
 		boardPanel.setPreferredSize(new Dimension(750,1000));
 		
-		boardController = new BoardPanelController(actLocs, model);
+		boardController = new BoardPanelController(boardPanel.getActiveLocs(), model);
 		boardPanel.addMouseListener(boardController);		
 		
 		//scoreboard
@@ -198,12 +207,11 @@ public class DominoesView extends JFrame {
 		if(screen == true){
 			title(g);
 		}else{
-			actLocs = boardPanel.getActiveLocs();
-		}
-		try{
-			update();
-		}catch(NullPointerException e){
-			//System.out.println("null");
+			try{
+				update();
+			}catch(NullPointerException e){
+				//System.out.println("null");
+			}
 		}
 	}
 	
@@ -219,6 +227,9 @@ public class DominoesView extends JFrame {
 		g.drawString("DOMINOES", x + (x/15), y);
 	}
 	
+	/**
+	 * Updates the view.
+	 */
 	public void update(){
 		handView.update();
 		scorePanel.updatePanel(model);
