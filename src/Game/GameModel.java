@@ -40,6 +40,8 @@ public class GameModel {
 	 * The Active Spoke being played on
 	 */
 	private int spoke;
+	
+	private boolean gameOver;
 	/**
 	 * Constructs the model of the game
 	 * @param players An ArrayList of Player objects representing the players 
@@ -51,7 +53,7 @@ public class GameModel {
 		boneyard = new Boneyard();
 		board = new Board();
 		this.players = players;
-		winningScore = (winningScore <= 5 && winningScore % 5 == 0 ) ? winningScore : 250;
+		this.winningScore = winningScore;
 		System.out.println("Creating GameModel");
 	}
 	
@@ -134,7 +136,7 @@ public class GameModel {
 	 * @return An integer value representing the winning score.
 	 */
 	public int getWinningScore(){
-		return this.winningScore;
+		return winningScore;
 	}
 	
 	/**
@@ -276,7 +278,28 @@ public class GameModel {
 	}
 	
 	public void gameOver(){
-		
+		System.out.printf("Game over, winner is Player %d\n", currentPlayer + 1);
+		gameOver = true;
+	}
+	
+	public void newRound(){
+		//board.clearBoard();
+		boneyard = new Boneyard(6);
+		boneyard.shuffle();
+		Domino spin;
+		for(Player p : players){
+			p.clearRound();
+			p.clearHand();
+			p.addToHand(boneyard.drawHand(7));
+			for(Domino d : p.getHand()){
+				if(d.value() == 12){
+					spin = p.playDomino(p.getHand().indexOf(d));
+					board = new Board(spin);
+				}
+			}
+		}
+		setCurrentPlayer((currentPlayer + 1) % 4);
+		takeTurn();
 	}
 	
 	public void endRound(){
@@ -290,6 +313,10 @@ public class GameModel {
 			}
 		}
 		addPoints(currentPlayer, value - (value%5));
+		if(getPlayerTotalScore(currentPlayer) >= getWinningScore()){
+			gameOver();
+		}
+		newRound();
 	}
 	
 	public void checkState(){
@@ -313,6 +340,9 @@ public class GameModel {
 	}
 	
 	public void takeTurn(){
+		if(gameOver){
+			return;
+		}
 		Player player = players.get(currentPlayer);
 		if(player instanceof PlayerAI){
 			System.out.printf("Player %d's turn\n", currentPlayer + 1);
@@ -320,7 +350,7 @@ public class GameModel {
 			pass();
 		}
 		else{
-			//player.checkPlay(board);
+			player.checkPlay(board);
 			if(player.noPlay()){
 				System.out.printf("Player %d has no valid moves\n", currentPlayer + 1);
 				pass();
@@ -335,6 +365,7 @@ public class GameModel {
 				}
 			}
 		}
+		active = null;
 	}
 
 	public void newGame() {
@@ -342,8 +373,6 @@ public class GameModel {
 		boneyard = new Boneyard(6);
 		boneyard.shuffle();
 		Domino spin;
-		//this.players = players;
-		//System.out.println(players);
 		for(Player p : players){
 			p.addToHand(boneyard.drawHand(7));
 			for(Domino d : p.getHand()){
@@ -355,7 +384,10 @@ public class GameModel {
 				}
 			}
 		}
+		System.out.println(getWinningScore());
 		takeTurn();
+		//this.players = players;
+		//System.out.println(players);
 		/*this.boneyard = new Boneyard(6);
 		boneyard.shuffle();
 		for(int i = 0; i < this.playerSize(); i++){

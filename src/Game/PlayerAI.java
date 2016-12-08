@@ -66,6 +66,7 @@ public class PlayerAI extends Player{
 	 * @param board the game board
 	 */
 	public void takeTurn(Board board, Boneyard b){
+		noPlay = false;
 		findMove(board);
 		if(playable.isEmpty()){
 			playFromBoneyard(board, b);
@@ -206,6 +207,9 @@ public class PlayerAI extends Player{
 	 * @param scorable an ArrayList of playable dominoes that can also score points
 	 */
 	private void chooseMove(Board board){
+		if(noPlay()){
+			return;
+		}
 		Domino play;
 		Random random = new Random();
 		int playIndex;
