@@ -71,11 +71,11 @@ public class PlayerAI extends Player{
 		if(playable.isEmpty()){
 			playFromBoneyard(board, b);
 		}
-		System.out.printf("\nPlayable dominos: " + playable.keySet() + "\nPlayable spokes: " + playable.values());
+		//System.out.printf("\nPlayable dominos: " + playable.keySet() + "\nPlayable spokes: " + playable.values());
 		findScore(board);	
-		System.out.printf("\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values() + "\n");
+		//System.out.printf("\nScorable dominoes: " + scorable.keySet() + "\nScorable spokes: " + scorable.values() + "\n");
 		chooseMove(board);
-		System.out.printf("Current score: %d\n", getRoundScore());
+		//System.out.printf("Current score: %d\n", getRoundScore());
 		reset();
 	}
 	
@@ -334,6 +334,11 @@ public class PlayerAI extends Player{
 		highValue = 0;
 	}
 	
+	/**
+	 * Returns a boolean value indicating whether or not Player is able to play
+	 * a domino on the current board
+	 * @return noPlay a boolean value indicating whether or no Player is able to play a domino
+	 */
 	public boolean noPlay(){
 		return noPlay;
 	}
