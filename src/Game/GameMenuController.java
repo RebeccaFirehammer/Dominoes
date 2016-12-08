@@ -78,7 +78,7 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 		}
 		if(command.equals("New Game")){
 			model.newGame();
-			view.update();
+			view.update(model);
 		}
 	}
 	
