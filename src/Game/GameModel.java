@@ -1,6 +1,8 @@
 package Game;
 
-import java.util.ArrayList;
+import java.util.*;
+
+import javax.swing.JOptionPane;
 
 
 public class GameModel {
@@ -54,7 +56,6 @@ public class GameModel {
 		board = new Board();
 		this.players = players;
 		this.winningScore = winningScore;
-		System.out.println("Creating GameModel");
 	}
 	
 	/**
@@ -278,7 +279,8 @@ public class GameModel {
 	}
 	
 	public void gameOver(){
-		System.out.printf("Game over, winner is Player %d\n", currentPlayer + 1);
+		JOptionPane.showMessageDialog(null, "Game Over! Winner is Player " + (currentPlayer + 1) + "." +
+						"\nSelect \"New Game\" from the Menu Bar to start a new game.");
 		gameOver = true;
 	}
 	
@@ -313,6 +315,8 @@ public class GameModel {
 			}
 		}
 		addPoints(currentPlayer, value - (value%5));
+		JOptionPane.showMessageDialog(null, "Round Over! Player " + (currentPlayer + 1) + " won this round and receives " +
+					(value - (value%5)) + " points from the other players' hands.\n\nClick OK to start next round.");
 		if(getPlayerTotalScore(currentPlayer) >= getWinningScore()){
 			gameOver();
 		}
@@ -320,7 +324,8 @@ public class GameModel {
 	}
 	
 	public void checkState(){
-		if(!(players.get(currentPlayer).noPlay())){
+		if(!(players.get(currentPlayer).noPlay()) && validPoints(board.getBoardValue())){
+			System.out.printf("Player %d has scored %d points!\n", (currentPlayer + 1), board.getBoardValue());
 			addPoints(currentPlayer, board.getBoardValue());
 		}
 		if(getPlayerTotalScore(currentPlayer) >= winningScore){
@@ -373,6 +378,21 @@ public class GameModel {
 		boneyard = new Boneyard(6);
 		boneyard.shuffle();
 		Domino spin;
+		//Randomly generate starting spinner
+		/*Random random = new Random();
+		int spinvalue = random.nextInt(7);
+		for(Player p : players){
+			p.addToHand(boneyard.drawHand(7));
+			for(Domino d : p.getHand()){
+				if(d.isDouble() && d.getEndA() == spinvalue){
+					spin = p.playDomino(p.getHand().indexOf(d));
+					board = new Board(spin);
+					setCurrentPlayer((players.indexOf(p) + 1) % 4);
+					System.out.printf("Player %d has the spinner, Player %d is active player\n", (players.indexOf(p) % 4) + 1, currentPlayer + 1);
+				}
+			}
+		}*/
+		//Starting spinner is always 6|6
 		for(Player p : players){
 			p.addToHand(boneyard.drawHand(7));
 			for(Domino d : p.getHand()){
