@@ -46,7 +46,7 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 		} 
 		if(command.equals("Rules")){
 			String rules = ("Starting the game:"
-					+ "\n\nEach player starts with 7 dominoes.The highest double drawn from the boneyard is placed on the board to start the game. "
+					+ "\n\nEach player starts with 7 dominoes.The highest double drawn by a player is placed on the board to start the game. "
 					+ "\nAfter the first round, the person who won the previous round starts first."
 					+ "\n\nPlaying the Game:"
 					+ "\nThe next player must then place a matching domino next to the first domino. "
@@ -55,8 +55,7 @@ public class GameMenuController extends KeyAdapter implements ActionListener {
 					+ "\nThe spinner may be played off of either end first. "
 					+ "\nThe spinner is the only place where it can be played off of 4 ways after the North & South sides have been played on."
 					+ "\nIf the player doesn’t have a domino of matching value, they will draw a domino from the “boneyard”. "
-					+ "\nThey keep recieving dominoes from the “boneyard” until they get a playable domino. "
-					+ "\nIf there is no playable domino then the player must “knock” or pass their turn onto the next player."
+					+ "\nIf there is no playable domino then the player must pass their turn onto the next player."
 					+ "\n\nScoring:"
 					+ "\n\nPoints may be awarded during the play of the hand by making the exposed ends of the chain total to a multiple of five."
 					+ "\nThe winner at the end of each hand also scores points for all the remaining unplayed dominoes in the other player’s hands "
