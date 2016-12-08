@@ -46,7 +46,7 @@ public class BoardPanelController implements MouseListener {
 					y >= loc.getY() && y <= loc.getY() + loc.getHeight()){
 				switch(loc.getSpoke()){
 				case SPINNER:
-					//if(!(model.getBoard().getSpokes().get(0).size() > 0 && model.getBoard().getSpokes().get(1).size() > 0)){
+					if((model.getBoard().getSpokes().get(0).size() == 0 || model.getBoard().getSpokes().get(1).size() == 0)){
 						if(y >= loc.getY() && y <= loc.getY() + (loc.getHeight()/2)){
 							System.out.println("SPINNER NORTH ACTIVE");
 							model.setActiveSpoke(NORTH);
@@ -57,16 +57,19 @@ public class BoardPanelController implements MouseListener {
 							model.setActiveSpoke(SOUTH);
 							break;
 						}
-					//}
-					//Not Working
-					//else if(x <= loc.getX()  && x <= loc.getX() + (loc.getWidth())/2){
-					//	System.out.println("SPINNER EAST ACTIVE");
-					//	break;
-					//}
-					//else if(x >= loc.getX() && x <= loc.getX() + (loc.getWidth())/2){
-					//	System.out.println("SPINNER WEST ACTIVE");
-					//	break;
-					//}
+					}
+					else if((model.getBoard().getSpokes().get(2).size() == 0 || model.getBoard().getSpokes().get(3).size() == 0)){
+						if(x >= loc.getX()  && x >= loc.getX() + (loc.getWidth())/2){
+							System.out.println("SPINNER EAST ACTIVE");
+							model.setActiveSpoke(EAST);
+							break;
+						}
+						else if(x >= loc.getX() && x <= loc.getX() + (loc.getWidth())/2){
+							System.out.println("SPINNER WEST ACTIVE");
+							model.setActiveSpoke(WEST);
+							break;
+						}
+					}
 				case NORTH:
 					System.out.println("NORTH ACTIVE");
 					model.setActiveSpoke(NORTH);
