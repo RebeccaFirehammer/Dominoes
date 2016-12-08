@@ -278,12 +278,19 @@ public class GameModel {
 		return this.spoke;
 	}
 	
+	/**
+	 * Ends the game
+	 */
+	
 	public void gameOver(){
 		JOptionPane.showMessageDialog(null, "Game Over! Winner is Player " + (currentPlayer + 1) + "." +
 						"\nSelect \"New Game\" from the Menu Bar to start a new game.");
 		gameOver = true;
 	}
 	
+	/**
+	 * Begins a new round
+	 */
 	public void newRound(){
 		//board.clearBoard();
 		boneyard = new Boneyard(6);
@@ -304,6 +311,10 @@ public class GameModel {
 		takeTurn();
 	}
 	
+	
+	/**
+	 * Ends the current round, cleaning up the board
+	 */
 	public void endRound(){
 		int value = 0;
 		for(int i = 0; i < playerSize(); i++){
@@ -323,6 +334,9 @@ public class GameModel {
 		newRound();
 	}
 	
+	/**
+	 * Checks the state of the game to see if the round or game is over
+	 */
 	public void checkState(){
 		if(!(players.get(currentPlayer).noPlay()) && validPoints(board.getBoardValue())){
 			System.out.printf("Player %d has scored %d points!\n", (currentPlayer + 1), board.getBoardValue());
@@ -337,6 +351,10 @@ public class GameModel {
 		}
 	}
 	
+	/**
+	 * Passes the turn from Player to Player
+	 */
+	
 	public void pass(){
 		checkState();
 		setCurrentPlayer((currentPlayer + 1) % 4);
@@ -344,6 +362,9 @@ public class GameModel {
 		takeTurn();
 	}
 	
+	/**
+	 * Allows Players to take their turn
+	 */
 	public void takeTurn(){
 		if(gameOver){
 			return;
@@ -372,6 +393,10 @@ public class GameModel {
 		}
 		active = null;
 	}
+	
+	/**
+	 * Starts a new game of Dominoes
+	 */
 
 	public void newGame() {
 		clearGame();
